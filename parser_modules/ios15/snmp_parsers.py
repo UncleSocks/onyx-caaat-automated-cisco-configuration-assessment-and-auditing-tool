@@ -3,12 +3,10 @@ from ssh_module import ssh_send
 from report import generate_report
 
 
-
-
 def complaince_check_snmp_enabled(connection, command, cis_check, level, global_report_output):
     command_output = ssh_send(connection, command)
     compliant = "snmp agent not enabled" in command_output.lower()
-    current_configuration = "snmp agent enabled" if not compliant else None
+    current_configuration = "snmp agent enabled" if not compliant else command_output
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
     return compliant
 
@@ -21,7 +19,7 @@ def compliance_check_no_snmp(global_report_output):
                      {'CIS Check':"1.5.10 Require 'aes 128' as minimum for 'snmp-server user' when using SNMPv3", 'Level':2}]
     
     for snmp_cis_check in snmp_cis_checks:
-        compliant = True
+        compliant = "Not Applicable"
         current_configuration = "snmp agent not enabled"
         cis_check = snmp_cis_check['CIS Check']
         level = snmp_cis_check['Level']

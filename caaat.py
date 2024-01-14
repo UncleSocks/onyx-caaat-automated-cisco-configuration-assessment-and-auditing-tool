@@ -1,6 +1,7 @@
 from maskpass import askpass
-from ssh_module import ssh_login
-from parser_modules.ios15 import aaa_parsers, general_parsers, line_parsers, logging_parsers, ntp_parsers, services_parsers, snmp_parsers, ssh_parsers, users_parsers
+import re
+from ssh_module import ssh_login, ssh_send
+from parser_modules.ios15 import aaa_parsers, general_parsers, line_parsers, logging_parsers, ntp_parsers, services_parsers, snmp_parsers, ssh_parsers, users_parsers, routing_parsers
 
 
 if __name__ == "__main__":
@@ -19,6 +20,8 @@ if __name__ == "__main__":
         print("Exiting the Onyx: CAAAT...")
         exit()
 
+
+    #1 Management Plane CIS Compliance Checks
 
     general_parsers.compliance_check_without_no_prefix(connection, "show running-config | include aaa new-model", "1.1.1 Enable 'aaa new-model'", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include aaa authentication login", "1.1.2 Enable 'aaa authentication login'", 1, global_report_output)
@@ -68,6 +71,7 @@ if __name__ == "__main__":
         snmp_parsers.compliance_check_snmp_group(connection, "show snmp group | include groupname", "1.5.9 Set 'priv' for each 'snmp-server group' using SNMPv3", 2, global_report_output)
         snmp_parsers.compliance_check_snmp_user(connection, "show snmp user", "1.5.10 Require 'aes 128' as minimum for 'snmp-server user' when using SNMPv3", 2, global_report_output)
     
+    #2. Control Plane CIS Compliance Checks
 
     ssh_parsers.compliance_check_hostname(connection, "show running-config | include hostname", "2.1.1.1.1 Set the 'hostname'", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show crypto key mypubkey rsa", "2.1.1.1.3 Set 'modulus' to greater than or equal to 2048 for 'crypto key generate rsa'",
@@ -107,6 +111,15 @@ if __name__ == "__main__":
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include ntp source Loopback", "2.4.3 Set 'ntp source' to Loopback Interface", 2, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include tftp source-interface Loopback", "2.4.4 Set 'ip tftp source-interface' to the Loopback Interface",
                                                         2, global_report_output)
+    
+    #3 Data Plane CIS Compliance Checks
+
+    routing_parsers.compliance_check_source_route(connection, "show running-config | include ip source-route", "3.1.1 Set 'no ip source-route'", 1, global_report_output)
+    routing_parsers.compliance_check_proxy_arp(connection, "show ip interface", "3.1.2 Set 'no ip proxy-arp'", 2, global_report_output)
+    general_parsers.compliance_check_with_expected_empty_output(connection, "show ip interface brief | include Tunnel", "3.1.3 Set 'no interface tunnel;", 2, global_report_output)
+    routing_parsers.compliance_check_urpf(connection, "show ip interface", "3.1.4 Set 'ip verify unicast source reachable-via'", 2, global_report_output)
+
+    enabled_dynamic_routing = routing_parsers.compliance_check_dynamic_routing_tester(connection, "show running-config | include router")
     
 
 

@@ -3,8 +3,6 @@ from ssh_module import ssh_send
 from report import generate_report
 
 
-
-
 def compliance_check_transport_input(connection, command, cis_check, level, global_report_output):
     command_output = ssh_send(connection, command)
     regex_pattern = re.compile(r'line vty (?P<start>\d+) (?P<end>\d+)\n(?P<config>.*?)(?=\nline|\Z)', re.MULTILINE | re.DOTALL)

@@ -2,7 +2,6 @@ from ssh_module import ssh_send
 from report import generate_report
 
 
-
 def compliance_check_cdp(connection, command, cis_check, level, global_report_output):
     command_output = ssh_send(connection, command)
     compliant = "cdp is not enabled" in command_output.lower()

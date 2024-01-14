@@ -3,8 +3,6 @@ from ssh_module import ssh_send
 from report import generate_report
 
 
-
-
 def compliance_check_aaa_auth_line(connection, command, level, global_report_output):
     command_output = ssh_send(connection, command)
     regex_pattern = re.compile(r'line (?P<line_type>con|vty|tty) (?P<channel>\d+(?: \d)?)\n(?P<config>.*?)(?=\nline|\Z)', re.DOTALL)
