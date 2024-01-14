@@ -119,7 +119,21 @@ if __name__ == "__main__":
     general_parsers.compliance_check_with_expected_empty_output(connection, "show ip interface brief | include Tunnel", "3.1.3 Set 'no interface tunnel;", 2, global_report_output)
     routing_parsers.compliance_check_urpf(connection, "show ip interface", "3.1.4 Set 'ip verify unicast source reachable-via'", 2, global_report_output)
 
-    enabled_dynamic_routing = routing_parsers.compliance_check_dynamic_routing_tester(connection, "show running-config | include router")
+
+    match routing_parsers.compliance_check_dynamic_routing_tester(connection, "show running-config | include router"):
+
+        case {'EIGRP':False, 'OSPF':False, 'RIP':False, 'BGP':False}:
+            routing_parsers.compliance_check_no_eigrp(global_report_output)
+            routing_parsers.compliance_check_no_ospf(global_report_output)
+            routing_parsers.compliance_check_no_rip(global_report_output)
+            routing_parsers.compliance_check_no_bgp(global_report_output)
+        
+        case {'EIGRP':True, 'OSPF':False, 'RIP':False, 'BGP':False}:
+            routing_parsers.compliance_check_eigrp_key(connection, "show running-config | section key chain", 2, global_report_output)
+
+            routing_parsers.compliance_check_no_ospf(global_report_output)
+            routing_parsers.compliance_check_no_rip(global_report_output)
+            routing_parsers.compliance_check_no_bgp(global_report_output)
     
 
 
