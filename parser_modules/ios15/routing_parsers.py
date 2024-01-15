@@ -173,8 +173,6 @@ def compliance_check_eigrp(connection, command_one, command_two, level, global_r
                     current_configuration = eigrp_key_list
                     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
 
-    complaince_check_eigrp_key(connection, command_one, level, global_report_output)
-
     def compliance_check_eigrp_auth(non_compliant_as_counter, non_compliant_af_interface_counter, 
                                     non_compliaint_key_chain_counter, non_compliant_auth_mode_counter,
                                     eigrp_as_list, eirgp_af_list, eigrp_key_chain_list, eirgp_auth_mode_list,
@@ -235,9 +233,9 @@ def compliance_check_eigrp(connection, command_one, command_two, level, global_r
             if autonomous_system == None:
 
                 eigrp_as_list.append({'VRF':vrf, 'Autonomous System':None})
-                eirgp_af_list.append({'VRF': vrf, 'AF Interface':None})
-                eigrp_key_chain_list.append({'VRF': vrf, 'Auth Key Chain':None})
-                eirgp_auth_mode_list.append({'VRF': vrf, 'Auth Mode':None})
+                eirgp_af_list.append({'VRF':vrf, 'AF Interface':None})
+                eigrp_key_chain_list.append({'VRF':vrf, 'Auth Key Chain':None})
+                eirgp_auth_mode_list.append({'VRF':vrf, 'Auth Mode':None})
 
                 non_compliant_as_counter += 1
                 non_compliant_af_interface_counter += 1
@@ -264,7 +262,6 @@ def compliance_check_eigrp(connection, command_one, command_two, level, global_r
                         auth_mode = af_interface_match[1] if af_interface_match[1] else None
                         auth_key_chain = af_interface_match[2] if af_interface_match[2] else None
                         
-
                         af_interface_list.append(af_interface)
                         auth_key_chain_list.append(auth_key_chain)
                         auth_mode_list.append(auth_mode)
@@ -276,14 +273,14 @@ def compliance_check_eigrp(connection, command_one, command_two, level, global_r
                         elif af_interface.lower() == "default" and (auth_mode.lower() != "md5" or auth_mode == None):
                             non_compliant_auth_mode_counter += 1
                     
-                    eirgp_af_list.append({'VRF': vrf, 'AF Interface': af_interface_list})
-                    eigrp_key_chain_list.append({'VRF': vrf, 'Auth Key Chain': auth_key_chain_list})
-                    eirgp_auth_mode_list.append({'VRF': vrf, 'Auth Mode': auth_mode_list})
+                    eirgp_af_list.append({'VRF':vrf, 'AF Interface': af_interface_list})
+                    eigrp_key_chain_list.append({'VRF':vrf, 'Auth Key Chain': auth_key_chain_list})
+                    eirgp_auth_mode_list.append({'VRF':vrf, 'Auth Mode': auth_mode_list})
                 
                 else:
-                    eirgp_af_list.append({'VRF': vrf, 'AF Interface': None})
-                    eigrp_key_chain_list.append({'VRF': vrf, 'Auth Key Chain':None})
-                    eirgp_auth_mode_list.append({'VRF': vrf, 'Auth Mode':None})
+                    eirgp_af_list.append({'VRF':vrf, 'AF Interface':None})
+                    eigrp_key_chain_list.append({'VRF':vrf, 'Auth Key Chain':None})
+                    eirgp_auth_mode_list.append({'VRF':vrf, 'Auth Mode':None})
 
                     non_compliant_af_interface_counter += 1
                     non_compliant_key_chain_counter += 1
@@ -294,7 +291,7 @@ def compliance_check_eigrp(connection, command_one, command_two, level, global_r
                                            eigrp_as_list, eirgp_af_list, eigrp_key_chain_list, eirgp_auth_mode_list, 
                                            level, global_report_output)
 
+    complaince_check_eigrp_key(connection, command_one, level, global_report_output)
     compliance_check_eigrp_auth_stager(connection, command_two, level, global_report_output)
-
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include key-chain", "3.3.1.8 Set 'ip authentication key-chain eigrp", 2, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include authentication mode", "3.3.1.9 Set 'ip authentication mode eigrp'", 2, global_report_output)
