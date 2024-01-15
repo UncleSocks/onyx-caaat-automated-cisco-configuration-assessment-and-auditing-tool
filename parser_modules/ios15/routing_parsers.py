@@ -1,6 +1,7 @@
 import re
 from ssh_module import ssh_send
 from report import generate_report
+from parser_modules.ios15 import general_parsers
 
 
 def compliance_check_source_route(connection, command, cis_check, level, global_report_output):
@@ -121,50 +122,179 @@ def compliance_check_no_bgp(global_report_output):
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
 
 
-def compliance_check_eigrp_key(connection, command, level, global_report_output):
-    command_output = ssh_send(connection, command)
-    eigrp_key_cis_checks = [{'CIS Check':"3.3.1.1 Set 'key chain'", 'Compliant':False}, 
-                            {'CIS Check':"3.3.1.2 Set 'key'", 'Compliant': False}, 
-                            {'CIS Check':"3.3.1.3 Set 'key-string'", 'Compliant':False}]
+def compliance_check_eigrp(connection, command_one, command_two, level, global_report_output):
 
-    if not command_output:
-        current_configuration = None
-        for eigrp_cis_check in eigrp_key_cis_checks:
-            cis_check = eigrp_cis_check['CIS Check']
-            compliant = eigrp_cis_check['Compliant']
-            global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
-    
-    else:
-        regex_pattern = re.compile(r'key chain (?P<chain>\S+)\n(?: key (?P<key>\d+)(?:\n  key-string (?P<key_string>\S+))?)?')
-        parser = regex_pattern.finditer(command_output)
-        eigrp_key_list = []
-        eigrp_without_key_string_counter = 0
+    def complaince_check_eigrp_key(connection, command, level, global_report_output):
 
-        for match in parser:
-            key_chain = match.group('chain')
-            key = match.group('key')
-            key_string = match.group('key_string') or None
-            current_eigrp_key_info = {'Key Chain':key_chain, 'Key':key, 'Key String':key_string}
-            eigrp_key_list.append(current_eigrp_key_info)
+        command_output = ssh_send(connection, command)
+        eigrp_key_cis_checks = [{'CIS Check':"3.3.1.1 Set 'key chain'", 'Compliant':False}, 
+                                {'CIS Check':"3.3.1.2 Set 'key'", 'Compliant': False}, 
+                                {'CIS Check':"3.3.1.3 Set 'key-string'", 'Compliant':False}]
 
-            if key_string == None:
-                eigrp_without_key_string_counter += 1
-        
-        for eigrp_cis_check in eigrp_key_cis_checks:
-
-            if eigrp_without_key_string_counter == 0:
+        if not command_output:
+            current_configuration = None
+            for eigrp_cis_check in eigrp_key_cis_checks:
                 cis_check = eigrp_cis_check['CIS Check']
-                eigrp_cis_check['Compliant'] = True
                 compliant = eigrp_cis_check['Compliant']
-                current_configuration = eigrp_key_list
+                global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+        
+        else:
+            regex_pattern = re.compile(r'key chain (?P<chain>\S+)\n(?: key (?P<key>\d+)(?:\n  key-string (?P<key_string>\S+))?)?')
+            parser = regex_pattern.finditer(command_output)
+            eigrp_key_list = []
+            eigrp_without_key_string_counter = 0
+
+            for match in parser:
+                key_chain = match.group('chain')
+                key = match.group('key')
+                key_string = match.group('key_string') or None
+                current_eigrp_key_info = {'Key Chain':key_chain, 'Key':key, 'Key String':key_string}
+                eigrp_key_list.append(current_eigrp_key_info)
+
+                if key_string == None:
+                    eigrp_without_key_string_counter += 1
+            
+            for eigrp_cis_check in eigrp_key_cis_checks:
+
+                if eigrp_without_key_string_counter == 0:
+                    cis_check = eigrp_cis_check['CIS Check']
+                    eigrp_cis_check['Compliant'] = True
+                    compliant = eigrp_cis_check['Compliant']
+                    current_configuration = eigrp_key_list
+                    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+                
+                else:
+                    cis_check = eigrp_cis_check['CIS Check']
+
+                    if eigrp_cis_check['CIS Check'] == "3.3.1.1 Set 'key chain'" or eigrp_cis_check['CIS Check'] == "3.3.1.2 Set 'key'":
+                        eigrp_cis_check['Compliant'] = True
+                    compliant = eigrp_cis_check['Compliant']
+                    
+                    current_configuration = eigrp_key_list
+                    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+    complaince_check_eigrp_key(connection, command_one, level, global_report_output)
+
+    def compliance_check_eigrp_auth(non_compliant_as_counter, non_compliant_af_interface_counter, 
+                                    non_compliaint_key_chain_counter, non_compliant_auth_mode_counter,
+                                    eigrp_as_list, eirgp_af_list, eigrp_key_chain_list, eirgp_auth_mode_list,
+                                    level, global_report_output):
+
+        eigrp_cis_checks = [{'CIS Check':"3.3.1.4 Set 'address-family ipv4 autonomous-system", 'Current Configuration':eigrp_as_list},
+                            {'CIS Check':"3.3.1.5 Set 'af-interface default'", 'Current Configuration':eirgp_af_list},
+                            {'CIS Check':"3.3.1.6 Set 'authentication key-chain", 'Current Configuration':eigrp_key_chain_list},
+                            {'CIS Check':"3.3.1.7 Set 'authentication mode md5'", 'Current Configuration':eirgp_auth_mode_list}]
+        
+        for eigrp_cis_check in eigrp_cis_checks:
+
+            if eigrp_cis_check['CIS Check'] == "3.3.1.4 Set 'address-family ipv4 autonomous-system":
+                cis_check = eigrp_cis_check['CIS Check']
+                compliant = non_compliant_as_counter == 0
+                current_configuration = eigrp_cis_check['Current Configuration']
+                global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+            
+            elif eigrp_cis_check['CIS Check'] == "3.3.1.5 Set 'af-interface default'":
+                cis_check = eigrp_cis_check['CIS Check']
+                compliant = non_compliant_af_interface_counter == 0
+                current_configuration = eigrp_cis_check['Current Configuration']
+                global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+            
+            elif eigrp_cis_check['CIS Check'] == "3.3.1.6 Set 'authentication key-chain":
+                cis_check = eigrp_cis_check['CIS Check']
+                compliant = non_compliaint_key_chain_counter == 0
+                current_configuration = eigrp_cis_check['Current Configuration']
                 global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
             
             else:
                 cis_check = eigrp_cis_check['CIS Check']
+                compliant = non_compliant_auth_mode_counter == 0
+                current_configuration = eigrp_cis_check['Current Configuration']
+                global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))                
 
-                if eigrp_cis_check['CIS Check'] == "3.3.1.1 Set 'key chain'" or eigrp_cis_check['CIS Check'] == "3.3.1.2 Set 'key'":
-                    eigrp_cis_check['Compliant'] = True
-                compliant = eigrp_cis_check['Compliant']
+    def compliance_check_eigrp_auth_stager(connection, command, level, global_report_output):
+        command_output = ssh_send(connection, command)
+        regex_pattern = re.compile(r'router eigrp (?P<vrf>[A-Za-z]+\d*[A-Za-z]*)(?:\n.*?address-family ipv4 unicast autonomous-system (?P<as>\d+)\n(?P<af_config>.*?)(?=exit-address-family|\Z))?', 
+                                   re.DOTALL)
+        parser = regex_pattern.finditer(command_output)
+
+        eigrp_as_list = []
+        eirgp_af_list= []
+        eigrp_key_chain_list= []
+        eirgp_auth_mode_list = []
+
+        non_compliant_as_counter = 0
+        non_compliant_af_interface_counter = 0
+        non_compliant_key_chain_counter = 0
+        non_compliant_auth_mode_counter = 0
+
+        for match in parser:
+            vrf = match.group('vrf')
+            autonomous_system = match.group('as') or None
+            af_config = match.group('af_config')
+            
+            if autonomous_system == None:
+
+                eigrp_as_list.append({'VRF':vrf, 'Autonomous System':None})
+                eirgp_af_list.append({'VRF': vrf, 'AF Interface':None})
+                eigrp_key_chain_list.append({'VRF': vrf, 'Auth Key Chain':None})
+                eirgp_auth_mode_list.append({'VRF': vrf, 'Auth Mode':None})
+
+                non_compliant_as_counter += 1
+                non_compliant_af_interface_counter += 1
+                non_compliant_key_chain_counter += 1
+                non_compliant_auth_mode_counter += 1
+            
+            else:
+
+                eigrp_as_list.append({'VRF':vrf, 'Autonomous System':autonomous_system})
+                address_family_regex_pattern = re.compile(r'af-interface (?P<interface>\S+)(?:\s+authentication mode (?P<mode>\S+))?(?:\s+authentication key-chain (?P<chain>\S+))?', 
+                                                        re.DOTALL)
                 
-                current_configuration = eigrp_key_list
-                global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+                af_interface_parser = address_family_regex_pattern.findall(af_config)
+
+                if af_interface_parser:
+
+                    af_interface_list = []
+                    auth_key_chain_list = []
+                    auth_mode_list = []
+
+                    for af_interface_match in af_interface_parser:
+
+                        af_interface = af_interface_match[0]
+                        auth_mode = af_interface_match[1] if af_interface_match[1] else None
+                        auth_key_chain = af_interface_match[2] if af_interface_match[2] else None
+                        
+
+                        af_interface_list.append(af_interface)
+                        auth_key_chain_list.append(auth_key_chain)
+                        auth_mode_list.append(auth_mode)
+
+                        if af_interface.lower() != "default":
+                            non_compliant_af_interface_counter += 1
+                        elif af_interface.lower() == "default" and auth_key_chain == None:
+                            non_compliant_key_chain_counter += 1
+                        elif af_interface.lower() == "default" and (auth_mode.lower() != "md5" or auth_mode == None):
+                            non_compliant_auth_mode_counter += 1
+                    
+                    eirgp_af_list.append({'VRF': vrf, 'AF Interface': af_interface_list})
+                    eigrp_key_chain_list.append({'VRF': vrf, 'Auth Key Chain': auth_key_chain_list})
+                    eirgp_auth_mode_list.append({'VRF': vrf, 'Auth Mode': auth_mode_list})
+                
+                else:
+                    eirgp_af_list.append({'VRF': vrf, 'AF Interface': None})
+                    eigrp_key_chain_list.append({'VRF': vrf, 'Auth Key Chain':None})
+                    eirgp_auth_mode_list.append({'VRF': vrf, 'Auth Mode':None})
+
+                    non_compliant_af_interface_counter += 1
+                    non_compliant_key_chain_counter += 1
+                    non_compliant_auth_mode_counter += 1
+
+        return compliance_check_eigrp_auth(non_compliant_as_counter, non_compliant_af_interface_counter, 
+                                           non_compliant_key_chain_counter, non_compliant_auth_mode_counter,
+                                           eigrp_as_list, eirgp_af_list, eigrp_key_chain_list, eirgp_auth_mode_list, 
+                                           level, global_report_output)
+
+    compliance_check_eigrp_auth_stager(connection, command_two, level, global_report_output)
+
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include key-chain", "3.3.1.8 Set 'ip authentication key-chain eigrp", 2, global_report_output)
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include authentication mode", "3.3.1.9 Set 'ip authentication mode eigrp'", 2, global_report_output)
