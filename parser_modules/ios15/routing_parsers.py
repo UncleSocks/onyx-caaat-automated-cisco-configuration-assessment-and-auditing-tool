@@ -293,5 +293,39 @@ def compliance_check_eigrp(connection, command_one, command_two, level, global_r
 
     complaince_check_eigrp_key(connection, command_one, level, global_report_output)
     compliance_check_eigrp_auth_stager(connection, command_two, level, global_report_output)
-    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include key-chain", "3.3.1.8 Set 'ip authentication key-chain eigrp", 2, global_report_output)
-    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include authentication mode", "3.3.1.9 Set 'ip authentication mode eigrp'", 2, global_report_output)
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include key-chain", 
+                                                          "3.3.1.8 Set 'ip authentication key-chain eigrp", 2, global_report_output)
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include authentication mode", 
+                                                          "3.3.1.9 Set 'ip authentication mode eigrp'", 2, global_report_output)
+    
+
+def compliance_check_ospf(connection, command, level, global_report_output):
+
+    def compliance_check_ospf_auth(connection, command, level, global_report_output):
+        command_output = ssh_send(connection, command)
+        regex_pattern = re.compile(r"router ospf (?P<id>\d+)(?:\s*area (?P<area_number>\d+) authentication(?:\s+(?P<authentication_value>\S+))?)?")
+        parser = regex_pattern.finditer(command_output)
+
+        non_compliant_ospf_counter = 0
+        ospf_list = []
+
+        for match in parser:
+            ospf_process_id = match.group('id')
+            area_number = match.group('area_number')
+            authentication_value = match.group('authentication_value') or None
+            
+            current_ospf_info = {'Process ID':ospf_process_id, 'Area Number':area_number, 'Authentication':authentication_value}
+            ospf_list.append(current_ospf_info)
+
+            if authentication_value != "message-digest":
+                non_compliant_ospf_counter += 1
+        
+        compliant = non_compliant_ospf_counter == 0
+        cis_check = "3.3.2.1 Set 'authentication message-digest' for OSPF area"
+        current_configuration = ospf_list
+        global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+    
+    compliance_check_ospf_auth(connection, command, level, global_report_output)
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include ip ospf message-digest", 
+                                                          "3.3.2.2 Set 'ip ospf message-digest-key md5'", 2, global_report_output)
+
