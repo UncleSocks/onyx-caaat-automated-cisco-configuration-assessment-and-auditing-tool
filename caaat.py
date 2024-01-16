@@ -1,7 +1,7 @@
 from maskpass import askpass
-import re
 from ssh_module import ssh_login, ssh_send
-from parser_modules.ios15 import aaa_parsers, general_parsers, line_parsers, logging_parsers, ntp_parsers, services_parsers, snmp_parsers, ssh_parsers, users_parsers, routing_parsers
+from parser_modules.ios15 import aaa_parsers, general_parsers, line_parsers, logging_parsers, ntp_parsers, services_parsers, snmp_parsers, ssh_parsers, users_parsers
+from parser_modules.ios15.routing_module import routing_parsers, routing_check
 
 
 if __name__ == "__main__":
@@ -119,54 +119,7 @@ if __name__ == "__main__":
     general_parsers.compliance_check_with_expected_empty_output(connection, "show ip interface brief | include Tunnel", "3.1.3 Set 'no interface tunnel;", 2, global_report_output)
     routing_parsers.compliance_check_urpf(connection, "show ip interface", "3.1.4 Set 'ip verify unicast source reachable-via'", 2, global_report_output)
 
-
-    match routing_parsers.compliance_check_dynamic_routing_tester(connection, "show running-config | include router"):
-
-        case {'EIGRP':False, 'OSPF':False, 'RIP':False, 'BGP':False}:
-            routing_parsers.compliance_check_no_eigrp(global_report_output)
-            routing_parsers.compliance_check_no_ospf(global_report_output)
-            routing_parsers.compliance_check_no_rip(global_report_output)
-            routing_parsers.compliance_check_no_bgp(global_report_output)
-        
-        case {'EIGRP':False, 'OSPF':False, 'RIP':False, 'BGP':True}:
-            routing_parsers.compliance_check_no_eigrp(global_report_output)
-            routing_parsers.compliance_check_no_ospf(global_report_output)
-            routing_parsers.compliance_check_no_rip(global_report_output)
-            routing_parsers.compliance_check_bgp(connection, "show running-config | section router bgp", "3.3.4.1 Set 'neighbor password'", 2, global_report_output)
-        
-        case {'EIGRP':False, 'OSPF':False, 'RIP':True, 'BGP':False}:
-            routing_parsers.compliance_check_no_eigrp(global_report_output)
-            routing_parsers.compliance_check_no_ospf(global_report_output)
-            routing_parsers.compliance_check_rip(connection, "show running-config | section key chain", 2, global_report_output)
-            routing_parsers.compliance_check_no_bgp(global_report_output)   
-        
-        case {'EIGRP':True, 'OSPF':False, 'RIP':False, 'BGP':False}:
-            routing_parsers.compliance_check_eigrp(connection, "show running-config | section key chain", 
-                                                   "show running-config | section router eigrp", 2, global_report_output)
-            routing_parsers.compliance_check_no_ospf(global_report_output)
-            routing_parsers.compliance_check_no_rip(global_report_output)
-            routing_parsers.compliance_check_no_bgp(global_report_output)
-        
-        case {'EIGRP':False, 'OSPF':True, 'RIP':False, 'BGP':False}:
-            routing_parsers.compliance_check_no_eigrp(global_report_output)
-            routing_parsers.compliance_check_ospf(connection, "show running-config | section router ospf", 2, global_report_output)
-            routing_parsers.compliance_check_no_rip(global_report_output)
-            routing_parsers.compliance_check_no_bgp(global_report_output)
-            
-        case {'EIGRP':True, 'OSPF':True, 'RIP':False, 'BGP':False}:
-            routing_parsers.compliance_check_eigrp(connection, "show running-config | section key chain", 
-                                                   "show running-config | section router eigrp", 2, global_report_output)
-            routing_parsers.compliance_check_ospf(connection, "show running-config | section router ospf", 2, global_report_output)
-            routing_parsers.compliance_check_no_rip(global_report_output)
-            routing_parsers.compliance_check_no_bgp(global_report_output)
-        
-        case {'EIGRP':True, 'OSPF':True, 'RIP':True, 'BGP':False}:
-            routing_parsers.compliance_check_eigrp(connection, "show running-config | section key chain", 
-                                                   "show running-config | section router eigrp", 2, global_report_output)
-            routing_parsers.compliance_check_ospf(connection, "show running-config | section router ospf", 2, global_report_output)
-            routing_parsers.compliance_check_rip(connection, "show running-config | section key chain", 2, global_report_output)
-            routing_parsers.compliance_check_no_bgp(global_report_output)
-    
+    routing_check.compliance_check_routing(connection, global_report_output)
 
 
     for report in global_report_output:
