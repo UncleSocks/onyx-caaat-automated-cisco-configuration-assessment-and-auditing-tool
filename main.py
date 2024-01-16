@@ -2,9 +2,13 @@ from maskpass import askpass
 from ssh_module import ssh_login
 from version_check import ios_version_check
 from audit_modules.caaat15 import run_cis_cisco_ios_15_assessment
+from logo import logo
 
 
 if __name__ == "__main__":
+
+    print(logo())
+
     ip_address = input("Target: ")
     username = input("Username: ")
     password = askpass("Password: ")
