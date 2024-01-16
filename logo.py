@@ -2,7 +2,7 @@
 
 def logo():
 
-    caaat_logo = '''                                                                          
+    caaat_logo = """                                                                         
     ===============================================================================================                                                                                      
                                                                                           
                   :;       ..    _______                                                         
@@ -19,14 +19,14 @@ def logo():
           .$$$$$$$$$$$X  .&&&&&. $&&&&X  x  .&&&&&X      x&&&&+        .&&&&&;            
           .X$$$$$$$$$$x   $&&&&. $&&&&.  x    $&&&&      ;&&&&+       :.:&&&&&:           
          ;$$$$$$$$$$$$$$.  +&&&. $&&&.  .&.    +&&&      ;&&&&+      $:  .&&&&&:          
-         ;$$X.   ....XX:      ....                                                        
+         ;$$X.   ....XX:      .....     ..    ....      ......      ..  .......                                     
            X$$$Xxxx+xX                                                                    
                .:;x;           Cisco Another Automated Assessment Tool                                                           
                                                                                           
        Created by Tyrone Kevin Ilisan, 2023
-       Tip: Ensure connectivity between the target Cisco router and the host machine running
-            the CAAAT is stable.                                                                                            
+       Tip: Ensure that the connectivity between the target Cisco router and the host machine 
+            running the CAAAT is stable.                                                                                            
     ==============================================================================================                                                                                      
-    '''
+    """
 
     return caaat_logo

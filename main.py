@@ -9,10 +9,10 @@ if __name__ == "__main__":
 
     print(logo())
 
-    ip_address = input("Target: ")
-    username = input("Username: ")
-    password = askpass("Password: ")
-    enable_password = askpass("Enable: ")
+    ip_address = input("Target > ")
+    username = input("Username > ")
+    password = askpass("Password > ")
+    enable_password = askpass("Enable > ")
 
     try:
         print(f"\nConnecting to target Cisco router {ip_address} via SSH...")
@@ -36,5 +36,5 @@ if __name__ == "__main__":
     else:
         print("Error 0002 - Unable to identify Cisco IOS version.")
 
-    print("Closing SSH connection...")
+    print("\nClosing SSH connection...")
     connection.disconnect
