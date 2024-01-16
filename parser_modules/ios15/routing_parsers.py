@@ -61,17 +61,29 @@ def compliance_check_dynamic_routing_tester(connection, command):
 
         for match in parser:
             dynamic_route = match.group('dynamic_route').lower()
+
             if dynamic_route == "eigrp":
                 enabled_dynamic_routing['EIGRP'] = True
+
             elif dynamic_route == "ospf":
                 enabled_dynamic_routing['OSPF'] = True
+
             elif dynamic_route == "rip":
-                enabled_dynamic_routing['RIP'] = True
+                if compliance_check_rip_version_checker(connection, "show running-config | section router rip") == True:
+                    enabled_dynamic_routing['RIP'] = True
+                else:
+                    enabled_dynamic_routing['RIP'] = False
+
             elif dynamic_route == 'bgp':
                 enabled_dynamic_routing['BGP'] = True
 
         return enabled_dynamic_routing
 
+
+def compliance_check_rip_version_checker(connection, command):
+    command_output = ssh_send(connection, command)
+    version_2_search = re.search(r'version\s+2', command_output, re.IGNORECASE)
+    return version_2_search is not None
 
 def compliance_check_no_eigrp(global_report_output):
     eigrp_cis_checks = [{'CIS Check':"3.3.1.1 Set 'key chain'", 'Level':2}, {'CIS Check':"3.3.1.2 Set 'key'", 'Level':2}, 
@@ -328,4 +340,63 @@ def compliance_check_ospf(connection, command, level, global_report_output):
     compliance_check_ospf_auth(connection, command, level, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include ip ospf message-digest", 
                                                           "3.3.2.2 Set 'ip ospf message-digest-key md5'", 2, global_report_output)
+
+
+def compliance_check_rip(connection, command, level, global_report_output):
+
+    def compliance_check_rip_key(connection, command, level, global_report_output):
+        command_output = ssh_send(connection, command)
+
+        rip_key_cis_checks = [{'CIS Check':"3.3.3.1 Set 'key chain'", 'Compliant':False},
+                              {'CIS Check':"3.3.3.2 Set 'key'", 'Compliant':False},
+                              {'CIS Check':"3.3.3.3 Set 'key-string", 'Compliant':False}]
+        
+        if not command_output:
+            current_configuration = None
+            for rip_key_cis_check in rip_key_cis_checks:
+                cis_check = rip_key_cis_check['CIS Check']
+                compliant = rip_key_cis_check['Compliant']
+                global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+        
+        else:
+            regex_pattern = re.compile(r'key chain (?P<chain>\S+)\n(?: key (?P<key>\d+)(?:\n  key-string (?P<key_string>\S+))?)?')
+            parser = regex_pattern.finditer(command_output)
+            rip_key_list = []
+            rip_without_key_string_counter = 0
+
+            for match in parser:
+                key_chain = match.group('chain')
+                key = match.group('key')
+                key_string = match.group('key_string') or None
+                current_rip_key_info = {'Key Chain':key_chain, 'Key':key, 'Key String':key_string}
+                rip_key_list.append(current_rip_key_info)
+
+                if key_string == None:
+                    rip_without_key_string_counter += 1
+
+            for rip_key_cis_check in rip_key_cis_checks:
+
+                if rip_without_key_string_counter == 0:
+                    cis_check = rip_key_cis_check['CIS Check']
+                    rip_key_cis_check['Compliant'] = True
+                    compliant = rip_key_cis_check['Compliant']
+                    current_configuration = rip_key_list
+                    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+                
+                else:
+                    cis_check = rip_key_cis_check['CIS Check']
+
+                    if rip_key_cis_check['CIS Check'] == "3.3.3.1 Set 'key chain'" or rip_key_cis_check['CIS Check'] == "3.3.3.2 Set 'key'":
+                        rip_key_cis_check['Compliant'] = True
+                    compliant = rip_key_cis_check['Compliant']
+                    
+                    current_configuration = rip_key_list
+                    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+    
+    compliance_check_rip_key(connection, command, level, global_report_output)
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include rip authentication key-chain", 
+                                                          "3.3.3.4 Set 'ip rip authentication key-chain", 2, global_report_output)
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include rip authentication mode",
+                                                          "3.3.3.5 Set 'rip ip authentication mode'", 2, global_report_output)
+
 
