@@ -400,3 +400,94 @@ def compliance_check_rip(connection, command, level, global_report_output):
                                                           "3.3.3.5 Set 'rip ip authentication mode'", 2, global_report_output)
 
 
+def compliance_check_bgp(connection, command, cis_check, level, global_report_output):
+    command_output = ssh_send(connection, command)
+    regex_pattern = re.compile(r'router bgp (?P<as>\d+)\n(?P<config>.*?)(?=\nrouter|\Z)', re.DOTALL)
+    parser = regex_pattern.finditer(command_output)
+    
+    bgp_list = []
+
+    for match in parser:
+        bgp_autonomous_system = match.group('as')
+        bgp_config = match.group('config')
+
+        bgp_neighbor_list = []
+        bgp_peer_list = []
+        non_compliant_neighbor_counter = 0
+        non_compliant_peer_counter = 0
+
+        regex_pattern_bgp_neighbor = re.compile(r'neighbor\s+(?P<neighbor>[\w\.]+)\s+(?P<neighbor_config>.*?)(?=\n|\Z)', re.DOTALL)
+        bgp_neighbor_parser = regex_pattern_bgp_neighbor.finditer(bgp_config)
+
+        for neighbor_match in bgp_neighbor_parser:
+            bgp_neighbor = neighbor_match.group('neighbor')
+            bgp_neighbor_config = neighbor_match.group('neighbor_config')
+
+            if re.match(r"^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", bgp_neighbor):
+                existing_neighbor = next((neighbor for neighbor in bgp_neighbor_list if neighbor['Neighbor'] == bgp_neighbor), None)
+
+                if existing_neighbor is None:
+                    current_neighbor_info = {'Neighbor':bgp_neighbor, 'Peer-Group':None, 'Password':None}
+                    
+                    regex_pattern_bgp_peer_match = re.match(r'peer-group (?P<peer>\w+)', bgp_neighbor_config)
+                    if regex_pattern_bgp_peer_match:
+                        bgp_peer_group = regex_pattern_bgp_peer_match.group('peer')
+                        current_neighbor_info['Peer-Group'] = bgp_peer_group
+
+                    regex_pattern_bgp_password_match = re.match(r'password (?P<password>\S+)', bgp_neighbor_config)
+                    if regex_pattern_bgp_password_match:
+                        bgp_password = regex_pattern_bgp_password_match.group('password')
+                        current_neighbor_info['Password'] = bgp_password
+                
+                    bgp_neighbor_list.append(current_neighbor_info)
+
+                else:
+                    regex_pattern_bgp_peer_match = re.match(r'peer-group (?P<peer>\w+)', bgp_neighbor_config)
+                    if regex_pattern_bgp_peer_match:
+                        bgp_peer_group = regex_pattern_bgp_peer_match.group('peer')
+                        current_neighbor_info['Peer-Group'] = bgp_peer_group
+
+                    regex_pattern_bgp_password_match = re.match(r'password (?P<password>\S+)',bgp_neighbor_config)
+                    if regex_pattern_bgp_password_match:
+                        bgp_password = regex_pattern_bgp_password_match.group('password')
+                        current_neighbor_info['Password'] = bgp_password
+
+            else:
+                existing_peer = next((peer for peer in bgp_peer_list if peer['Peer'] == bgp_neighbor), None)
+
+                if existing_peer is None:
+                    current_peer_info = {'Peer':bgp_neighbor, 'Password':None}
+                    regex_pattern_bgp_password_match = re.match(r'password (?P<password>\S+)', bgp_neighbor_config)
+
+                    if regex_pattern_bgp_password_match:
+                        bgp_password = regex_pattern_bgp_password_match.group('password')
+                        current_peer_info['Password'] = bgp_password
+                    
+                    bgp_peer_list.append(current_peer_info)
+                
+                else:
+                    regex_pattern_bgp_password_match = re.match(r'password (?P<password>\S+)', bgp_neighbor_config)
+                    if regex_pattern_bgp_password_match:
+                        bgp_password = regex_pattern_bgp_password_match.group('password')
+                        current_peer_info['Password'] = bgp_password
+        
+        current_bgp_info = {'Autonomous System':bgp_autonomous_system, 'Neighbor':bgp_neighbor_list if bgp_neighbor_list else None, 
+                            'Peer-Group':bgp_peer_list if bgp_peer_list else None}
+        bgp_list.append(current_bgp_info)
+
+        for neighbor in bgp_neighbor_list:
+            
+            if neighbor['Peer-Group'] == None and neighbor['Password'] == None:
+                non_compliant_neighbor_counter += 1
+        
+        non_compliant_peer_check = any('Password' in peer and not peer['Password'] for peer in bgp_peer_list)
+        if non_compliant_peer_check:
+            non_compliant_peer_counter += 1
+    
+    
+
+    compliant = non_compliant_neighbor_counter == 0 and non_compliant_peer_counter == 0
+    current_configuration = bgp_list
+    print(compliant)
+    print(current_configuration)
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
