@@ -1,26 +1,11 @@
-from maskpass import askpass
-from ssh_module import ssh_login
 from report import get_report
 from parser_modules.ios15 import aaa_parsers, general_parsers, line_parsers, logging_parsers, ntp_parsers, services_parsers, snmp_parsers, ssh_parsers, users_parsers
 from parser_modules.ios15.routing_module import routing_parsers, routing_check
 
 
-if __name__ == "__main__":
+def run_cis_cisco_ios_15_assessment(connection):
 
     global_report_output = []
-
-    ip_address = input("Target: ")
-    username = input("Username: ")
-    password = askpass("Password: ")
-    enable_password = askpass("Enable: ")
-
-    try:
-        connection = ssh_login(ip_address, username, password, enable_password)
-    except:
-        print("Error 0001 - Unable to login to the target router, check IP address and login credentials.")
-        print("Exiting the Onyx: CAAAT...")
-        exit()
-
 
     #1 Management Plane CIS Compliance Checks
 
@@ -124,6 +109,3 @@ if __name__ == "__main__":
 
 
     get_report(global_report_output)
-
-    print("Closing connection")
-    ssh_login(ip_address, username, password, enable_password).disconnect

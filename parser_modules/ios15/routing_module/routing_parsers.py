@@ -488,6 +488,4 @@ def compliance_check_bgp(connection, command, cis_check, level, global_report_ou
 
     compliant = non_compliant_neighbor_counter == 0 and non_compliant_peer_counter == 0
     current_configuration = bgp_list
-    print(compliant)
-    print(current_configuration)
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
