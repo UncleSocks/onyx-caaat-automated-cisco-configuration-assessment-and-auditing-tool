@@ -1,5 +1,6 @@
 from maskpass import askpass
-from ssh_module import ssh_login, ssh_send
+from ssh_module import ssh_login
+from report import get_report
 from parser_modules.ios15 import aaa_parsers, general_parsers, line_parsers, logging_parsers, ntp_parsers, services_parsers, snmp_parsers, ssh_parsers, users_parsers
 from parser_modules.ios15.routing_module import routing_parsers, routing_check
 
@@ -122,7 +123,7 @@ if __name__ == "__main__":
     routing_check.compliance_check_routing(connection, global_report_output)
 
 
-    for report in global_report_output:
-        print(report)
+    get_report(global_report_output)
+
     print("Closing connection")
     ssh_login(ip_address, username, password, enable_password).disconnect

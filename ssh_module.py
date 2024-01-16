@@ -1,7 +1,6 @@
 from netmiko import ConnectHandler
 
 
-
 def ssh_login(ip_address, username, password, enable_password):
     connection = ConnectHandler(host = ip_address, 
                                 username = username, 
