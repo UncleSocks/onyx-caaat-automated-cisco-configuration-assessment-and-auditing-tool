@@ -3,7 +3,7 @@
 def logo():
 
     caaat_logo = """                                                                         
-    ===============================================================================================                                                                                      
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                                                                                      
                                                                                           
                   :;       ..    _______                                                         
                    +X$XxxX$x    < MEOW >                                                          
@@ -23,10 +23,14 @@ def logo():
            X$$$Xxxx+xX                                                                    
                .:;x;           Cisco Another Automated Assessment Tool                                                           
                                                                                           
-       Created by Tyrone Kevin Ilisan, 2023
-       Tip: Ensure that the connectivity between the target Cisco router and the host machine 
-            running the CAAAT is stable.                                                                                            
-    ==============================================================================================                                                                                      
+       Created by Tyrone Kevin Ilisan
+       + Release 2023.1.0
+       + Audits CIS Cisco IOS 15 and IOS 17 Benchmarks version 8
+       + Supports HTML and CLI output
+       + Tip: Ensure stable connectivity between the target Cisco router and the host machine
+              running the CAAAT                                                                                         
+
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                                                                                      
     """
 
     return caaat_logo

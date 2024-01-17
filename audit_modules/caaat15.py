@@ -23,7 +23,7 @@ def run_cis_cisco_ios_15_assessment(connection):
                                           2, global_report_output)
         else:
             general_parsers.compliance_check_with_expected_output(connection, f"show running-config | include aaa accounting {aaa_accounting_command}", 
-                                               f"1.1.{index} Set '{aaa_accounting_command}'", 2, global_report_output)
+                                               f"1.1.{index} Set 'aaa accounting {aaa_accounting_command}'", 2, global_report_output)
 
     users_parsers.compliance_check_acl_privilege(connection, "show running-config | include privilege", "1.2.1 Set 'privilege 1' for local users", 1, global_report_output)        
     line_parsers.compliance_check_transport_input(connection, "show running-config | section vty", "1.2.2 Set 'transport input ssh' for 'line vty' connections", 1, global_report_output)
@@ -62,9 +62,10 @@ def run_cis_cisco_ios_15_assessment(connection):
     print("Performing CIS Cisco IOS 15 Control Plane Benchmarks assessment...")
 
     ssh_parsers.compliance_check_hostname(connection, "show running-config | include hostname", "2.1.1.1.1 Set the 'hostname'", 1, global_report_output)
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include domain name", "2.1.1.1.2 Set the 'ip domain-name'", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show crypto key mypubkey rsa", "2.1.1.1.3 Set 'modulus' to greater than or equal to 2048 for 'crypto key generate rsa'",
                                        1, global_report_output)
-
+    
     ssh_parsers.compliance_check_ssh(connection, "show ip ssh", "2.1.1.1.4 Set 'seconds' for 'ip ssh timeout'", "2.1.1.1.5 Set maximum value for 'ip ssh authentication-retries'", 
                          "2.1.1.2 Set version 2 for 'ip ssh version'", 1, global_report_output)
 
@@ -72,6 +73,7 @@ def run_cis_cisco_ios_15_assessment(connection):
     services_parsers.compliance_check_bootp(connection, "show running-config | include bootp", "2.1.3 Set 'no ip bootp server'", 1, global_report_output)
     general_parsers.compliance_check_with_expected_empty_output(connection, "show running-config | include dhcp", "2.1.4 Set 'no service dhcp'", 1, global_report_output)
     general_parsers.compliance_check_with_expected_empty_output(connection, "show running-config | include identd", "2.1.5 Set 'no ip identd'", 1, global_report_output)
+    general_parsers.compliance_check_with_expected_empty_output(connection, "show running-config | include service tcp", "2.1.6 Set 'service tcp-keepalives-in'", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include service tcp-keepalives-out", "2.1.7 Set 'service tcp-keepalives-out'", 1, global_report_output)
     services_parsers.compliance_check_service_pad(connection, "show running-config | include service pad", "2.1.8 Set 'no service pad'", 1, global_report_output)
     

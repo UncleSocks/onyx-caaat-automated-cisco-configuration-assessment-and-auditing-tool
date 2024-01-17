@@ -119,7 +119,7 @@ def compliance_check_no_rip(global_report_output):
 
     for rip_cis_check in rip_cis_checks:
         compliant = "Not Applicable"
-        current_configuration = "RIP not enabled"
+        current_configuration = "RIPv2 not enabled"
         cis_check = rip_cis_check['CIS Check']
         level = rip_cis_check['Level']
         global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
