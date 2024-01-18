@@ -1,5 +1,3 @@
-from report_modules.main_report import report_cli_output
-from report_modules.html_report import report_html_output_ios15
 from parser_modules.ios15 import aaa_parsers, general_parsers, line_parsers, logging_parsers, ntp_parsers, services_parsers, snmp_parsers, ssh_parsers, users_parsers
 from parser_modules.ios15.routing_module import routing_parsers, routing_check
 
@@ -114,5 +112,4 @@ def run_cis_cisco_ios_15_assessment(connection):
     routing_check.compliance_check_routing(connection, global_report_output)
 
 
-    report_cli_output(global_report_output)
-    report_html_output_ios15(global_report_output)
+    return global_report_output

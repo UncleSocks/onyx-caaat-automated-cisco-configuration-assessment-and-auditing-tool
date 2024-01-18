@@ -1,8 +1,10 @@
 from maskpass import askpass
 from ssh_module import ssh_login
 from version_check import ios_version_check
-from audit_modules.caaat15 import run_cis_cisco_ios_15_assessment
-from logo import logo
+from audit_modules.audit_ios15 import run_cis_cisco_ios_15_assessment
+from report_modules.html_report import report_html_output_ios15
+from report_modules.main_report import report_cli_output
+from strings import logo
 
 
 if __name__ == "__main__":
@@ -28,7 +30,9 @@ if __name__ == "__main__":
     if ios_version == 15:
         print("Ciso IOS version: 15")
         print("Running CIS Ciso IOS 15 Benchmark assessment...\n")
-        run_cis_cisco_ios_15_assessment(connection)
+        cis_ios_15_assessment = run_cis_cisco_ios_15_assessment(connection)
+        report_cli_output(cis_ios_15_assessment)
+        report_html_output_ios15(cis_ios_15_assessment)
     
     elif ios_version == 17:
         print("Running CIS Ciso IOS 17 Benchmark assessment...")

@@ -1,0 +1,58 @@
+
+body {
+    background-color: #fefffb;
+}
+
+#report {
+    font-family: sans-serif;
+    border: 3px solid black;
+    vertical-align: middle;
+    padding: 5px;
+}
+
+#report caption {
+    font-weight: bold;
+    font-size: 24px;
+    text-align: center;
+    padding: 15px;
+    color: #333
+}
+
+#report thead th {
+    background-color: #1d7348;
+    color: whitesmoke;
+    font-size: large;
+    text-align: center;
+    letter-spacing: 2%;
+    padding: 10px;
+}
+
+#report th, #report td {
+    padding: 8px
+}
+
+#report tbody tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+#report tbody tr:nth-child(even) {
+    background-color: #eee;
+}
+
+#report tbody tr:hover {
+    background-color: #ddd;
+}
+
+#section {
+    background-color: #555555;
+    color: #eee;
+    font-size: medium;
+    font-weight: bold;
+    padding: 10px;
+}
+
+#subsection {
+    background-color: darkgrey;
+    font-weight: bold;
+    color: white
+}
