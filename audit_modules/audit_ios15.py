@@ -7,7 +7,7 @@ def run_cis_cisco_ios_15_assessment(connection):
     global_report_output = []
 
     #1 Management Plane CIS Compliance Checks
-    print("Performing CIS Cisco IOS 15 Management Plane Benchmarks assessment...")
+    print("    Performing CIS Cisco IOS 15 Management Plane Benchmarks assessment...")
 
     general_parsers.compliance_check_without_no_prefix(connection, "show running-config | include aaa new-model", "1.1.1 Enable 'aaa new-model'", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include aaa authentication login", "1.1.2 Enable 'aaa authentication login'", 1, global_report_output)
@@ -58,7 +58,7 @@ def run_cis_cisco_ios_15_assessment(connection):
         snmp_parsers.compliance_check_snmp_user(connection, "show snmp user", "1.5.10 Require 'aes 128' as minimum for 'snmp-server user' when using SNMPv3", 2, global_report_output)
     
     #2. Control Plane CIS Compliance Checks
-    print("Performing CIS Cisco IOS 15 Control Plane Benchmarks assessment...")
+    print("    Performing CIS Cisco IOS 15 Control Plane Benchmarks assessment...")
 
     ssh_parsers.compliance_check_hostname(connection, "show running-config | include hostname", "2.1.1.1.1 Set the 'hostname'", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include domain name", "2.1.1.1.2 Set the 'ip domain-name'", 1, global_report_output)
@@ -102,7 +102,7 @@ def run_cis_cisco_ios_15_assessment(connection):
                                                         2, global_report_output)
     
     #3 Data Plane CIS Compliance Checks
-    print("Performing CIS Cisco IOS 15 Data Plane Benchmarks assessment...")
+    print("    Performing CIS Cisco IOS 15 Data Plane Benchmarks assessment...")
 
     routing_parsers.compliance_check_source_route(connection, "show running-config | include ip source-route", "3.1.1 Set 'no ip source-route'", 1, global_report_output)
     routing_parsers.compliance_check_proxy_arp(connection, "show ip interface", "3.1.2 Set 'no ip proxy-arp'", 2, global_report_output)
