@@ -1,6 +1,6 @@
 import re
 from ssh_module import ssh_send
-from report import generate_report
+from report_modules.main_report import generate_report
 
 
 def compliance_check_aaa_auth_line(connection, command, level, global_report_output):
