@@ -1,6 +1,6 @@
 
 
-def report_html_output_ios15(report_output):
+def report_html_output_ios15(report_output, html_filename):
     
     mp_local_aaa_rules = report_output[0:11]
     mp_access_rules = report_output[11:15]
@@ -283,5 +283,5 @@ def report_html_output_ios15(report_output):
         </body>
         </html>
     """
-    with open('./report_modules/cis_checks_report.html', 'w') as file:
+    with open(f'./report_modules/{html_filename}', 'w') as file:
         file.write(html_report)
