@@ -12,6 +12,10 @@ def report_cli_output(report_output, compliance_score):
     total_failed_compliance_score = compliance_score['Failed Management Plane Checks'] + compliance_score['Failed Control Plane Checks'] + compliance_score['Failed Data Plane Checks']
     total_na_compliance_score = compliance_score['NA Management Plane Checks'] + compliance_score['NA Control Plane Checks'] + compliance_score['NA Data Plane Checks']
 
+    management_plane_checks = report_output[0:31]
+    control_plane_checks = report_output[31:60]
+    data_plane_checks = report_output[60:80]
+    
     mp_local_aaa_rules = report_output[0:11]
     mp_access_rules = report_output[11:15]
     mp_banner_rules = report_output[15:18]
@@ -58,7 +62,7 @@ Compliance Score Breakdown
     table.align['Compliant'] = 'c'
     table._min_width = {'CIS Check':90}
 
-    for check in report_output[0:31]:
+    for check in management_plane_checks:
         table.add_row([check['CIS Check'], check['Level'], check['Compliant']])
     
     report_summary += f"""
@@ -66,14 +70,14 @@ Compliance Score Breakdown
 {table}
     """
     table.clear_rows()
-    for check in report_output[31:60]:
+    for check in control_plane_checks:
         table.add_row([check['CIS Check'], check['Level'], check['Compliant']])    
     report_summary += f"""
                                                      CONTROL PLANE
 {table}
     """
     table.clear_rows()
-    for check in report_output[60:80]:
+    for check in data_plane_checks:
         table.add_row([check['CIS Check'], check['Level'], check['Compliant']])    
     report_summary += f"""
                                                        DATA PLANE
