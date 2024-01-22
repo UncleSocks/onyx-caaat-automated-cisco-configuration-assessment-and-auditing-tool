@@ -16,7 +16,7 @@ if __name__ == "__main__":
         connection = ssh_login(connect['IP Address'], connect['Username'], 
                                connect['Password'], connect['Enable Password'])
     except:
-        print("Error 0001 - Unable to login to the target router, check IP address and login credentials.")
+        print("Error 0001 - Unable to login to the target router, check IP address, login credentials, and connectivity.")
         print("Exiting the Onyx: CAAAT...")
         exit()
 
@@ -35,9 +35,9 @@ if __name__ == "__main__":
         cis_ios_15_compliance_score = score_compute_ios15(cis_ios_15_assessment)
 
         if arguments().output is None:
-            report_cli_output(cis_ios_15_assessment, cis_ios_15_compliance_score)
+            report_cli_output(cis_ios_15_assessment, cis_ios_15_compliance_score, connect['IP Address'])
         else:
-            report_cli_output(cis_ios_15_assessment, cis_ios_15_compliance_score)
+            report_cli_output(cis_ios_15_assessment, cis_ios_15_compliance_score, connect['IP Address'])
 
             print("Exporting to an HTML output...")
             report_html_output_ios15(cis_ios_15_assessment, arguments().output)

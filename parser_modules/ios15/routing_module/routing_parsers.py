@@ -305,9 +305,9 @@ def compliance_check_eigrp(connection, command_one, command_two, level, global_r
 
     complaince_check_eigrp_key(connection, command_one, level, global_report_output)
     compliance_check_eigrp_auth_stager(connection, command_two, level, global_report_output)
-    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include key-chain", 
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include ip authentication key-chain eigrp", 
                                                           "3.3.1.8 Set 'ip authentication key-chain eigrp", 2, global_report_output)
-    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include authentication mode", 
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include ip authentication mode eigrp", 
                                                           "3.3.1.9 Set 'ip authentication mode eigrp'", 2, global_report_output)
     
 
