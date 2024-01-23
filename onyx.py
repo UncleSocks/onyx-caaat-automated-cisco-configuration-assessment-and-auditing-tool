@@ -40,7 +40,7 @@ if __name__ == "__main__":
             report_cli_output(cis_ios_15_assessment, cis_ios_15_compliance_score, connect['IP Address'], ios_version)
 
             print("Exporting to an HTML output...")
-            report_html_output_ios15(cis_ios_15_assessment, arguments().output)
+            report_html_output_ios15(cis_ios_15_assessment, cis_ios_15_compliance_score, arguments().output, connect['IP Address'], ios_version)
     
     elif ios_version == 17:
         print("Running CIS Ciso IOS 17 Benchmark assessment...")
