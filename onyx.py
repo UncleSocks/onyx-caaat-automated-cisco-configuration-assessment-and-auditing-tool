@@ -35,9 +35,9 @@ if __name__ == "__main__":
         cis_ios_15_compliance_score = score_compute_ios15(cis_ios_15_assessment)
 
         if arguments().output is None:
-            report_cli_output(cis_ios_15_assessment, cis_ios_15_compliance_score, connect['IP Address'])
+            report_cli_output(cis_ios_15_assessment, cis_ios_15_compliance_score, connect['IP Address'], ios_version)
         else:
-            report_cli_output(cis_ios_15_assessment, cis_ios_15_compliance_score, connect['IP Address'])
+            report_cli_output(cis_ios_15_assessment, cis_ios_15_compliance_score, connect['IP Address'], ios_version)
 
             print("Exporting to an HTML output...")
             report_html_output_ios15(cis_ios_15_assessment, arguments().output)

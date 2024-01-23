@@ -1,6 +1,232 @@
 
 body {
-    background-color: #fefffb;
+    background-color: #fdfff7;
+}
+
+.summary{
+    background-color: #dddcd1;
+    padding: 15px;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.summary-title {
+    display: flex;
+    font-family: Arial, Helvetica, sans-serif;
+    padding-left: 20px;
+    padding-bottom: 20px;
+    color: #4e4e4e;
+}
+
+.summary-font {
+    flex: 1;
+    font-size: 50px;
+    padding-left: 10px;
+}
+
+.date {
+    flex: 1;
+    padding-right: 10px;
+    font-size: 15px;
+    text-align: right;
+}
+
+.summary-body {
+    display: flex;
+    background-color: #eeede2;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 18px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333;
+}
+
+.summary-bar {
+    margin-top: 5px;
+    height: 1px;
+    width: 90%;
+    background-color: #dddcd1;
+}
+
+.target, .passed, .failed, .na {
+    padding-left: 35px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);;
+    margin: 12px;
+}
+
+.target {
+    flex: 1;
+    background-color: #1d1d1d;  
+    color: whitesmoke;
+}
+
+#target-font {
+    font-size: 50px;
+    font-weight: bold;
+    padding: 0;
+    margin: 0;
+    margin-top: 12px;
+    padding-bottom: 10px;
+}
+
+#summary-font {
+    font-size: 50px;
+    font-weight: bold;
+    padding: 0;
+    padding-top: 25px;
+    margin: 0;
+}
+
+.na {
+    flex: 1;
+    font-size: larger;
+    font-weight: light;
+    background-color: #cfaa06;
+    color: whitesmoke
+}
+
+.failed {
+    flex: 1;
+    font-size: larger;
+    font-weight: light;
+    background-color: #5e0000;
+    color: whitesmoke
+}
+
+.passed {
+    flex: 1;
+    font-size: larger;
+    font-weight: light;
+    background-color: #094b02;
+    color: whitesmoke
+}
+
+#score-font {
+    font-weight: bold;
+    font-size: 22px;
+    color:#fffef7;
+    margin: 0;
+    padding: 0;
+    margin-top: 20px;
+}
+
+#score-value {
+    font-size: 100px;
+    font-weight: bold;
+    color: #f9ffec;
+    text-align: left;
+    margin: 0px;
+    padding: 0px;
+}
+
+.plane{
+    display: flex;
+    background-color: #dddcd3;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 18px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    color: #333;
+}
+
+.management, .control, .data {
+    padding-left: 35px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);;
+    margin: 12px;
+}
+
+.management {
+    flex: 1;
+    margin: 10px;
+    background-color: #f7f7e5;  
+}
+
+.control {
+    flex: 1;
+    margin: 10px;
+    background-color: #f7f7e5;
+}
+
+.data {
+    flex: 1;
+    margin: 10px;
+    background-color: #f7f7e5;
+}
+
+#plane-font{
+    font-weight: bold;
+    font-size: 25px;
+    color:#353535;
+    margin: 0;
+    padding: 0;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+#plane-value-passed{
+    font-weight: bold;
+    font-size: 50px;
+    color:#094b02;
+    margin: 0;
+    padding: 0;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+#plane-value-failed{
+    font-weight: bold;
+    font-size: 50px;
+    color:#5e0000;
+    margin: 0;
+    padding: 0;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+#plane-value-na{
+    font-weight: bold;
+    font-size: 50px;
+    color:#cfaa06;
+    margin: 0;
+    padding: 0;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+}
+.logo {
+    padding: 10px;
+    min-width: 35px;
+    height: 35px;
+    background-image: url(./assets/logo.png);
+    background-size: contain;
+    background-position: left;
+    background-repeat: no-repeat;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #555555;
+    font-size: larger;
+    text-align: left;
+    flex-grow: 1;
+    margin-left: -20px;
+}
+
+.bar {
+    height: 3px;
+    width: 79%;
+    background-color: #e5b60b;
 }
 
 #report {
@@ -19,7 +245,7 @@ body {
 }
 
 #report thead th {
-    background-color: #1d7348;
+    background-color: #000000;
     color: whitesmoke;
     font-size: large;
     text-align: center;

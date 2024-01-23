@@ -13,7 +13,7 @@ def configuration_tab_replace(current_configuration):
         return current_configuration
 
 
-def report_cli_output(report_output, compliance_score, target_ip_address):
+def report_cli_output(report_output, compliance_score, target_ip_address, ios_version):
     
     total_passed_compliance_score = compliance_score['Passed Management Plane Checks'] + compliance_score['Passed Control Plane Checks'] + compliance_score['Passed Data Plane Checks']
     total_failed_compliance_score = compliance_score['Failed Management Plane Checks'] + compliance_score['Failed Control Plane Checks'] + compliance_score['Failed Data Plane Checks']
@@ -51,7 +51,8 @@ def report_cli_output(report_output, compliance_score, target_ip_address):
                                                                 REPORT SUMMARY
                                                 ------------------------------------------------
 
-Target: {target_ip_address}                                                
+Target: {target_ip_address}
+Version: {ios_version}                                                
 
 + Passed Compliance Checks: {total_passed_compliance_score}
 + Failed Compliance Checks: {total_failed_compliance_score}
