@@ -1,7 +1,7 @@
 from ssh_module import ssh_login
 from init import ios_version_check, arguments, argument_checks, user_input
-from audit_modules.audit_ios15 import run_cis_cisco_ios_15_assessment
-from score import score_compute_ios15
+from audit_modules.audit_ios15 import run_cis_cisco_ios_15_assessment, parsed_output_ios15
+from report_modules.score import score_ios15
 from report_modules.html_report import report_html_output_ios15
 from report_modules.main_report import report_cli_output
 
@@ -30,14 +30,15 @@ if __name__ == "__main__":
         print(f"Ciso IOS version: {ios_version}")
         print("Running CIS Ciso IOS 15 Benchmark assessment...\n")
         cis_ios_15_assessment = run_cis_cisco_ios_15_assessment(connection)
+        parsed_cis_ios_15_assessment = parsed_output_ios15(cis_ios_15_assessment)
 
         print("Generating assessment report...\n")
-        cis_ios_15_compliance_score = score_compute_ios15(cis_ios_15_assessment)
+        cis_ios_15_compliance_score = score_ios15(parsed_cis_ios_15_assessment)
 
         if arguments().output is None:
-            report_cli_output(cis_ios_15_assessment, cis_ios_15_compliance_score, connect['IP Address'], ios_version)
+            report_cli_output(parsed_cis_ios_15_assessment, cis_ios_15_compliance_score, connect['IP Address'], ios_version)
         else:
-            report_cli_output(cis_ios_15_assessment, cis_ios_15_compliance_score, connect['IP Address'], ios_version)
+            report_cli_output(parsed_cis_ios_15_assessment, cis_ios_15_compliance_score, connect['IP Address'], ios_version)
 
             print("Exporting to an HTML output...")
             report_html_output_ios15(cis_ios_15_assessment, cis_ios_15_compliance_score, arguments().output, connect['IP Address'], ios_version)

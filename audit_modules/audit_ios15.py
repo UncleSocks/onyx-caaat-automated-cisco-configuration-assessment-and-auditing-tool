@@ -113,3 +113,16 @@ def run_cis_cisco_ios_15_assessment(connection):
 
 
     return global_report_output
+
+
+def parsed_output_ios15(report_output):
+    
+    parsed_output_dict = {'Management Plane Checks':report_output[0:31], 'Control Plane Checks':report_output[31:60], 'Data Plane Checks':report_output[60:80], 
+                          'MP Local AAA Rules':report_output[0:11], 'MP Access Rules':report_output[11:15], 'MP Banner Rules':report_output[15:18], 
+                          'MP Password Rules':report_output[18:21], 'MP SNMP Rules':report_output[21:31],
+                          'CP Global Services SSH Rules':report_output[31:37], 'CP Global Services Rules':report_output[37:44], 'CP Logging Rules':report_output[44:51],
+                          'CP NTP Rules':report_output[51:56], 'CP Loopback Rules':report_output[56:60], 
+                          'DP Routing Rules':report_output[60:64], 'DP Neighbor Auth EIGRP':report_output[64:73], 'DP Neighbor Auth OSPF':report_output[73:75],
+                          'DP Neighbor Auth RIP':report_output[75:80], 'DP Neighbor Auth BGP':report_output[80]}
+    
+    return parsed_output_dict

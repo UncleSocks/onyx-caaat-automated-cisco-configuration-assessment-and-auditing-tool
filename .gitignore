@@ -33,3 +33,5 @@ __pycache__/checks.cpython-310.pyc
 __pycache__/init.cpython-310.pyc
 parser_modules/ios15/routing_module/__pycache__/routing_parsers.cpython-310.pyc
 parser_modules/ios15/routing_module/__pycache__/routing_check.cpython-310.pyc
+report_modules/__pycache__/score.cpython-310.pyc
+parser_modules/ios15/routing_module/__pycache__/routing_parsers.cpython-310.pyc
