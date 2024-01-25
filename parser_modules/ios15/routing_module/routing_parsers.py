@@ -1,5 +1,5 @@
 import re
-from ssh_module import ssh_send
+from ssh import ssh_send
 from report_modules.main_report import generate_report
 from parser_modules.ios15 import general_parsers
 

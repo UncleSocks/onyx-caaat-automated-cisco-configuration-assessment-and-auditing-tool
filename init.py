@@ -2,7 +2,7 @@ import re
 import os
 from argparse import ArgumentParser
 from maskpass import askpass
-from ssh_module import ssh_send
+from ssh import ssh_send
 from strings import logo, onyx_description, onyx_epilog
 
 

@@ -1,4 +1,4 @@
-from ssh_module import ssh_login
+from ssh import ssh_login
 from init import ios_version_check, arguments, argument_checks, user_input
 from audit_modules.audit_ios15 import run_cis_cisco_ios_15_assessment, parsed_output_ios15
 from report_modules.score import score_ios15
