@@ -3,6 +3,36 @@ body {
     background-color: #fdfff7;
 }
 
+.header {
+    display: flex;
+    align-items: center;
+}
+.logo {
+    padding: 10px;
+    min-width: 35px;
+    height: 35px;
+    background-image: url(./assets/logo.png);
+    background-size: contain;
+    background-position: left;
+    background-repeat: no-repeat;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #555555;
+    font-size: larger;
+    text-align: left;
+    flex-grow: 1;
+    margin-left: -20px;
+}
+
+.bar {
+    height: 3px;
+    width: 79%;
+    background-color: #e5b60b;
+}
+
 .summary-container{
     background-color: #dddcd1;
     padding: 15px;
@@ -198,94 +228,114 @@ body {
     margin-bottom: 10px;
 }
 
-.header {
-    display: flex;
-    align-items: center;
-}
-.logo {
-    padding: 10px;
-    min-width: 35px;
-    height: 35px;
-    background-image: url(./assets/logo.png);
-    background-size: contain;
-    background-position: left;
-    background-repeat: no-repeat;
-    margin-bottom: 20px;
-}
-
-.title {
-    font-family: Arial, Helvetica, sans-serif;
-    color: #555555;
-    font-size: larger;
-    text-align: left;
-    flex-grow: 1;
-    margin-left: -20px;
-}
-
-.bar {
-    height: 3px;
-    width: 79%;
-    background-color: #e5b60b;
-}
-
 .table-container {
-    background-color: #dddcd1;
+    background-color: #fefff5;
     padding: 15px;
     padding-bottom: 10px;
     margin-bottom: 20px;
     border-radius: 5px;
 }
 
-#report {
-    font-family: sans-serif;
-    border: 3px solid black;
-    vertical-align: middle;
-    padding: 5px;
+.table-header-font {
+    flex-grow: 1;
+    font-size: 50px;
+    padding: 0;
+    padding-top: 25px;
+    margin: 0;
+    display: flex;
+    font-family: Arial, Helvetica, sans-serif;
+    padding-left: 20px;
+    padding-bottom: 20px;
+    color: #4e4e4e;
 }
 
-#report caption {
+.table-bar {
+    height: 2px;
+    width: 100%;
+    margin-top: 2px;
+    margin-bottom: 50px;
+    background-color: #e5b60b;
+    align-self: center;
+}
+
+.table-section {
+    padding-top: 0.5px;
+    padding-bottom: 0.5px;
+    margin-top: 50px;
+    margin-bottom: 5px;
+    background-color: #181818;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#section-font {
+    font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
-    font-size: 24px;
+    font-size: 28px;
+    color:#fefff6;
     text-align: center;
+    margin: 0;
+    padding: 0;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.expandable-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.expandable-table th, .expandable-table td {
+    font-family: Arial, Helvetica, sans-serif;
+    border: 2px solid #161615;
     padding: 15px;
-    color: #333
+    margin: 10px;
+    text-align: left;
 }
 
-#report thead th {
-    background-color: #000000;
-    color: whitesmoke;
-    font-size: large;
+.table-top-font {
+    font-size: 23px;
+    color: #fffffc;
+    background-color: #1d1d1d;
+}
+
+.expandable-row {
+    font-size: 22px;
+    background-color: #ffffff67;
+}
+
+.expandable-row:hover {
+    background-color: #dbb128;
+    cursor: pointer;
+}
+
+.expanded-content {
+    display: none;
+    background-color: #ffffff;
+}
+
+.expanded-content td {
+    font-size: 22px;
+    padding: 15px;
+}
+
+.expanded {
+    background-color: rgb(255, 245, 203);
+    display: table-row;
+}
+
+#current-config-font {
+    font-weight: bold;
+}
+
+.table-subsection {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 22px;
+    color:#fefff6;
     text-align: center;
-    letter-spacing: 2%;
-    padding: 10px;
-}
-
-#report th, #report td {
-    padding: 8px
-}
-
-#report tbody tr:nth-child(odd) {
-    background-color: #fff;
-}
-
-#report tbody tr:nth-child(even) {
-    background-color: #eee;
-}
-
-#report tbody tr:hover {
-    background-color: #ddd;
-}
-
-#section {
+    margin: 0;
+    padding: 0;
+    margin-top: 20px;
+    margin-bottom: 20px;
     background-color: #555555;
-    color: #eee;
-    font-size: medium;
-    font-weight: bold;
-    padding: 10px;
-}
-
-#subsection {
-    background-color: darkgrey;
-    font-weight: bold;
-    color: white
 }
