@@ -9,9 +9,9 @@ def report_html_output_ios15(parsed_report_output, compliance_score_dict, html_f
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width", initial-scale="1.0">
             <title>ONYX: Cisco Another Automated Assessment Tool Report</title>
-            <link rel="icon" href="./assets/icon.png" type="image/x-icon">
-            <link rel="stylesheet" href="html_report_styles.css">
-            <script src="html_report_script.js"></script>
+            <link rel="icon" href="../assets/icon.png" type="image/x-icon">
+            <link rel="stylesheet" href="../html_report_styles.css">
+            <script src="../html_report_script.js"></script>
         </head>
         <body>
             <div class="header">
@@ -376,5 +376,5 @@ def report_html_output_ios15(parsed_report_output, compliance_score_dict, html_f
         </body>
         </html>
     """
-    with open(f'./report_modules/{html_filename}', 'w') as file:
+    with open(f'./report_modules/reports/{html_filename}', 'w') as file:
         file.write(html_report)
