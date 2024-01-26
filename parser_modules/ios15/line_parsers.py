@@ -5,14 +5,14 @@ from report_modules.main_report import generate_report
 
 def compliance_check_transport_input(connection, command, cis_check, level, global_report_output):
     command_output = ssh_send(connection, command)
-    regex_pattern = re.compile(r'line vty (?P<start>\d+) (?P<end>\d+)\n(?P<config>.*?)(?=\nline|\Z)', re.MULTILINE | re.DOTALL)
+    regex_pattern = re.compile(r'line vty (?P<start>\d+)(?: (?P<end>\d+))?(\n(?P<config>.*?)(?=\nline vty|\Z))', re.MULTILINE | re.DOTALL)
     parser = regex_pattern.finditer(command_output)
-    non_compliant_transport_inputs = []
-    compliant_transport_inputs = []
+    transport_inputs = []
+    non_compliant_transport_input_counter = 0
 
     for match in parser:
         line_start = match.group('start')
-        line_end = match.group('end')
+        line_end = match.group('end') if match.group('end') else None 
         config = match.group('config')
         config_regex_pattern_search = re.search(r'transport input (?P<input>ssh|telnet|all|none|telnet ssh)(?=\n|\Z)', config)
 
@@ -20,13 +20,14 @@ def compliance_check_transport_input(connection, command, cis_check, level, glob
             transport_input = config_regex_pattern_search.group('input')
             if transport_input == "ssh":
                 compliant_transport_input_info = {'Start':line_start, 'End':line_end, 'Transport Input':transport_input}
-                compliant_transport_inputs.append(compliant_transport_input_info)
+                transport_inputs.append(compliant_transport_input_info)
             else:
                 non_compliant_transport_input_info = {'Start':line_start, 'End':line_end, 'Transport Input':transport_input}
-                non_compliant_transport_inputs.append(non_compliant_transport_input_info)
+                transport_inputs.append(non_compliant_transport_input_info)
+                non_compliant_transport_input_counter += 1
 
-    compliant = not non_compliant_transport_inputs
-    current_configuration = non_compliant_transport_inputs if non_compliant_transport_inputs else compliant_transport_inputs
+    compliant = non_compliant_transport_input_counter == 0
+    current_configuration = transport_inputs
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
 
 
@@ -43,19 +44,19 @@ def compliance_check_vty_acl(connection, command_one, command_two, cis_check_one
         compliant = True
         current_configuration = command_output
         global_report_output.append(generate_report(cis_check_one, level, compliant, current_configuration))
-        return compliance_check_vty_ac(command_two, cis_check_two, global_report_output)
+        return compliance_check_vty_ac(connection, command_two, cis_check_two, level, global_report_output)
     
 
 def compliance_check_vty_ac(connection, command, cis_check, level, global_report_output):
         command_output = ssh_send(connection, command)
-        regex_pattern = re.compile(r'line vty (?P<start>\d+) (?P<end>\d+)\n(?P<config>.*?)(?=\nline|\Z)', re.MULTILINE | re.DOTALL)
+        regex_pattern = re.compile(r'line vty (?P<start>\d+)(?: (?P<end>\d+))?(\n(?P<config>.*?)(?=\nline vty|\Z))', re.MULTILINE | re.DOTALL)
         parser = regex_pattern.finditer(command_output)
         vty_access_classes = []
         no_access_class_counter = 0
 
         for match in parser:
             line_start = match.group('start')
-            line_end = match.group('end')
+            line_end = match.group('end') if match.group('end') else None
             config = match.group('config')
             config_regex_pattern_search = re.search(r'access-class (?P<ac>\d+)\s+(?P<dir>\S+)(?=\n|\Z)', config)
 

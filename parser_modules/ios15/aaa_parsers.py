@@ -5,14 +5,14 @@ from report_modules.main_report import generate_report
 
 def compliance_check_aaa_auth_line(connection, command, level, global_report_output):
     command_output = ssh_send(connection, command)
-    regex_pattern = re.compile(r'line (?P<line_type>con|vty|tty) (?P<channel>\d+(?: \d)?)\n(?P<config>.*?)(?=\nline|\Z)', re.DOTALL)
+    regex_pattern = re.compile(r'line (?P<line_type>con|vty|tty) (?P<channel>\d+(?: \d)?)(?: \n(?P<config>.*?))(?=\nline (?!aux|con|vty|tty)|$)?', re.DOTALL)
     parser = regex_pattern.finditer(command_output)
     expected_lines = [{'line':'con', 'index':4, 'config':None}, {'line':'tty', 'index':5, 'config':None}, {'line':'vty', 'index':6, 'config':None}]
     existing_lines = []
 
     for match in parser:
         line_type = match.group('line_type')
-        config = match.group('config')
+        config = match.group('config') if match.group('config') else None
         existing_lines.append(line_type)
         for line in expected_lines:
             if line['line'] == line_type:
@@ -22,9 +22,9 @@ def compliance_check_aaa_auth_line(connection, command, level, global_report_out
     unique_existing_lines = set(existing_lines)
 
     for line_info in expected_lines:
-        compliant = line_info['line'] in unique_existing_lines
+        compliant = line_info['line'] in unique_existing_lines and config is not None
         cis_check = f"1.1.{line_info['index']} Set 'authentication login' for 'line {line_info['line']}'"
-        current_configuration = line_info['config']
+        current_configuration = {'Line':line_info['line'], 'Config':line_info['config']}
         global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
 
 
