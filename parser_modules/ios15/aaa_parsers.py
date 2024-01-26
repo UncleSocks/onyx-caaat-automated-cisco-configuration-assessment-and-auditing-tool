@@ -3,30 +3,71 @@ from ssh import ssh_send
 from report_modules.main_report import generate_report
 
 
-def compliance_check_aaa_auth_line(connection, command, level, global_report_output):
+def compliance_check_aaa_auth_line_con(connection, command, cis_check, level, global_report_output):
     command_output = ssh_send(connection, command)
-    regex_pattern = re.compile(r'line (?P<line_type>con|vty|tty) (?P<channel>\d+(?: \d)?)(?: \n(?P<config>.*?))(?=\nline (?!aux|con|vty|tty)|$)?', re.DOTALL)
+    regex_pattern = re.compile(r'line con (?P<channel>\d+(?: \d)?)?(\n(?P<config>.*?))?(\nline con|$)', re.DOTALL | re.MULTILINE)
     parser = regex_pattern.finditer(command_output)
-    expected_lines = [{'line':'con', 'index':4, 'config':None}, {'line':'tty', 'index':5, 'config':None}, {'line':'vty', 'index':6, 'config':None}]
-    existing_lines = []
+
+    line_con_list = []
+    non_compliant_con_counter = 0
 
     for match in parser:
-        line_type = match.group('line_type')
-        config = match.group('config') if match.group('config') else None
-        existing_lines.append(line_type)
-        for line in expected_lines:
-            if line['line'] == line_type:
-                line['config'] = config
-                break
+        line_channel = match.group('channel')
+        line_config = match.group('config') if match.group('config') else None
+        current_line_con_info = {'Channel':line_channel, 'Config':line_config}
+        line_con_list.append(current_line_con_info)
 
-    unique_existing_lines = set(existing_lines)
+        if current_line_con_info['Config'] == None:
+            non_compliant_con_counter += 1
+    
+    compliant = bool(line_con_list) and non_compliant_con_counter == 0
+    current_configuration = line_con_list if line_con_list else None
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
 
-    for line_info in expected_lines:
-        compliant = line_info['line'] in unique_existing_lines and config is not None
-        cis_check = f"1.1.{line_info['index']} Set 'authentication login' for 'line {line_info['line']}'"
-        current_configuration = {'Line':line_info['line'], 'Config':line_info['config']}
-        global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
 
+def compliance_check_aaa_auth_line_tty(connection, command, cis_check, level, global_report_output):
+    command_output = ssh_send(connection, command)
+    regex_pattern = re.compile(r'line tty (?P<channel>\d+(?: \d)?)?(\n(?P<config>.*?))?(\nline tty|$)', re.DOTALL | re.MULTILINE)
+    parser = regex_pattern.finditer(command_output)
+
+    line_tty_list = []
+    non_compliant_tty_counter = 0
+
+    for match in parser:
+        line_channel = match.group('channel')
+        line_config = match.group('config') if match.group('config') else None
+        current_line_tty_info = {'Channel':line_channel, 'Config':line_config}
+        line_tty_list.append(current_line_tty_info)
+
+        if current_line_tty_info['Config'] == None:
+            non_compliant_tty_counter += 1
+
+    compliant = bool(line_tty_list) and non_compliant_tty_counter == 0
+    current_configuration = line_tty_list if line_tty_list else None
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+
+def compliance_check_aaa_auth_line_vty(connection, command, cis_check, level, global_report_output):
+    command_output = ssh_send(connection, command)
+    regex_pattern = re.compile(r'line vty (?P<channel>\d+(?: \d)?)?(\n(?P<config>.*?))?(\nline vty|$)', re.DOTALL | re.MULTILINE)
+    parser = regex_pattern.finditer(command_output)
+
+    line_vty_list = []
+    non_compliant_vty_counter = 0
+
+    for match in parser:
+        line_channel = match.group('channel')
+        line_config = match.group('config') if match.group('config') else None
+        current_line_vty_info = {'Channel':line_channel, 'Config':line_config}
+        line_vty_list.append(current_line_vty_info)
+
+        if current_line_vty_info['Config'] == None:
+            non_compliant_vty_counter += 1
+    
+    compliant = bool(line_vty_list) and non_compliant_vty_counter == 0
+    current_configuration = line_vty_list if line_vty_list else None
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+        
 
 def compliance_check_aaa_source_int(connection, command_one, command_two, cis_check, level, global_report_output):
     command_output_one = ssh_send(connection, command_one)
