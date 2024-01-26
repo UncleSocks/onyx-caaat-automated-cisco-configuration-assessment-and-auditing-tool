@@ -18,29 +18,32 @@ def compliance_check_hostname(connection, command, cis_check, level, global_repo
 
 def compliance_check_ssh(connection, command, cis_check_one, cis_check_two, cis_check_three, level, global_report_output):
     command_output = ssh_send(connection, command)
-    regex_pattern = re.search(r'SSH (?P<status>Enabled|Disabled) - version (?P<version>\d+\.\d+)\nAuthentication timeout: (?P<timeout>\d+) secs; Authentication retries: (?P<retries>\d+)',
-                               command_output)
-    
-    if regex_pattern:
-        ssh_status = regex_pattern.group('status')
-        ssh_version = regex_pattern.group('version')
-        auth_timeout = int(regex_pattern.group('timeout'))
-        auth_retries = int(regex_pattern.group('retries'))
-        ssh_info = {'Status':ssh_status, 'Version':ssh_version, 'Authentication Timeout':auth_timeout, 'Authentication Retries':auth_retries}
-    
-    else:
-        raise ValueError("Error P0002 - SSH Info Parser did not match any value.")
-    
+    ssh_info_pattern = re.search(r'SSH (?P<status>Enabled|Disabled) - version (?P<version>\d+\.\d+)', command_output)
+
+    if ssh_info_pattern:
+        ssh_status = ssh_info_pattern.group('status')
+        ssh_version =ssh_info_pattern.group('version')
+
+    auth_timeout_pattern = re.search(r'Authentication timeout: (?P<timeout>\d+) secs', command_output)
+    if auth_timeout_pattern:
+        auth_timeout = int(auth_timeout_pattern.group('timeout'))
+
+    auth_retries_pattern =  re.search(r'Authentication retries: (?P<retries>\d+)', command_output)
+    if auth_retries_pattern:
+        auth_retries = int(auth_retries_pattern.group('retries'))
+
+    ssh_info = {'Status':ssh_status, 'Version':ssh_version, 'Authentication Timeout':auth_timeout, 'Authentication Retries':auth_retries}    
     return compliance_check_ssh_config(ssh_info, cis_check_one, cis_check_two, cis_check_three, level, global_report_output)
     
 
 def compliance_check_ssh_config(ssh_info, cis_check_one, cis_check_two, cis_check_three, level, global_report_output):
+
     compliant = ssh_info["Authentication Timeout"] <= 60
-    current_configuration = f"Authentication Timeout - {ssh_info['Authentication Timeout']}"
+    current_configuration = f"Authentication Timeout: {ssh_info['Authentication Timeout']}"
     global_report_output.append(generate_report(cis_check_one, level, compliant, current_configuration))
 
-    compliant = ssh_info["Authentication Retries"] <= 3
-    current_configuration = f"Authentication Retries - {ssh_info['Authentication Retries']}"
+    compliant = ssh_info["Authentication Retries"] <= 3 and not None
+    current_configuration = f"Authentication Retries: {ssh_info['Authentication Retries']}"
     global_report_output.append(generate_report(cis_check_two, level, compliant, current_configuration))
 
     compliant = ssh_info["Version"] == "2.0"
