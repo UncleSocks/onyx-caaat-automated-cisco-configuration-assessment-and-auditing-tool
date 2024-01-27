@@ -223,7 +223,7 @@ def compliance_check_eigrp(connection, command_one, command_two, level, global_r
 
     def compliance_check_eigrp_auth_stager(connection, command, level, global_report_output):
         command_output = ssh_send(connection, command)
-        regex_pattern = re.compile(r'router eigrp (?P<vrf>[A-Za-z]+\d*[A-Za-z]*)(?:\n.*?address-family ipv4 unicast autonomous-system (?P<as>\d+)\n(?P<af_config>.*?)(?=exit-address-family|\Z))?', 
+        regex_pattern = re.compile(r'router eigrp ((?P<vrf>[A-Za-z]+\d*[A-Za-z]*)|(?P<global_as>\d+))(?:\n.*?address-family ipv4 unicast autonomous-system (?P<as>\d+)\n(?P<af_config>.*?)(?=exit-address-family|\Z))?', 
                                    re.DOTALL)
         parser = regex_pattern.finditer(command_output)
 
@@ -238,65 +238,81 @@ def compliance_check_eigrp(connection, command_one, command_two, level, global_r
         non_compliant_auth_mode_counter = 0
 
         for match in parser:
-            vrf = match.group('vrf')
-            autonomous_system = match.group('as') or None
-            af_config = match.group('af_config')
             
-            if autonomous_system == None:
+            if match.group('global_as'):
 
-                eigrp_as_list.append({'VRF':vrf, 'Autonomous System':None})
-                eirgp_af_list.append({'VRF':vrf, 'AF Interface':None})
-                eigrp_key_chain_list.append({'VRF':vrf, 'Auth Key Chain':None})
-                eirgp_auth_mode_list.append({'VRF':vrf, 'Auth Mode':None})
+                global_as = match.group('global_as')
 
                 non_compliant_as_counter += 1
                 non_compliant_af_interface_counter += 1
                 non_compliant_key_chain_counter += 1
                 non_compliant_auth_mode_counter += 1
+
+                eigrp_as_list.append({'Autonomous System':global_as})
+                eirgp_af_list.append({'Autonomous System':global_as, 'AF Interface':None})
+                eigrp_key_chain_list.append({'Autonomous System':global_as, 'Auth Key Chain':None})
+                eirgp_auth_mode_list.append({'Autonomous System':global_as, 'Auth Mode':None})
             
             else:
-
-                eigrp_as_list.append({'VRF':vrf, 'Autonomous System':autonomous_system})
-                address_family_regex_pattern = re.compile(r'af-interface (?P<interface>\S+)(?:\s+authentication mode (?P<mode>\S+))?(?:\s+authentication key-chain (?P<chain>\S+))?', 
-                                                        re.DOTALL)
+                vrf = match.group('vrf')
+                autonomous_system = match.group('as') or None
+                af_config = match.group('af_config')
                 
-                af_interface_parser = address_family_regex_pattern.findall(af_config)
+                if autonomous_system == None or vrf == None:
 
-                if af_interface_parser:
-
-                    af_interface_list = []
-                    auth_key_chain_list = []
-                    auth_mode_list = []
-
-                    for af_interface_match in af_interface_parser:
-
-                        af_interface = af_interface_match[0]
-                        auth_mode = af_interface_match[1] if af_interface_match[1] else None
-                        auth_key_chain = af_interface_match[2] if af_interface_match[2] else None
-                        
-                        af_interface_list.append(af_interface)
-                        auth_key_chain_list.append(auth_key_chain)
-                        auth_mode_list.append(auth_mode)
-
-                        if af_interface.lower() != "default":
-                            non_compliant_af_interface_counter += 1
-                        elif af_interface.lower() == "default" and auth_key_chain == None:
-                            non_compliant_key_chain_counter += 1
-                        elif af_interface.lower() == "default" and (auth_mode.lower() != "md5" or auth_mode == None):
-                            non_compliant_auth_mode_counter += 1
-                    
-                    eirgp_af_list.append({'VRF':vrf, 'AF Interface': af_interface_list})
-                    eigrp_key_chain_list.append({'VRF':vrf, 'Auth Key Chain': auth_key_chain_list})
-                    eirgp_auth_mode_list.append({'VRF':vrf, 'Auth Mode': auth_mode_list})
-                
-                else:
+                    eigrp_as_list.append({'VRF':vrf, 'Autonomous System':autonomous_system})
                     eirgp_af_list.append({'VRF':vrf, 'AF Interface':None})
                     eigrp_key_chain_list.append({'VRF':vrf, 'Auth Key Chain':None})
                     eirgp_auth_mode_list.append({'VRF':vrf, 'Auth Mode':None})
 
+                    non_compliant_as_counter += 1
                     non_compliant_af_interface_counter += 1
                     non_compliant_key_chain_counter += 1
                     non_compliant_auth_mode_counter += 1
+                
+                else:
+
+                    eigrp_as_list.append({'VRF':vrf, 'Autonomous System':autonomous_system})
+                    address_family_regex_pattern = re.compile(r'af-interface (?P<interface>\S+)(?:\s+authentication mode (?P<mode>\S+))?(?:\s+authentication key-chain (?P<chain>\S+))?', 
+                                                            re.DOTALL)
+                    
+                    af_interface_parser = address_family_regex_pattern.findall(af_config)
+
+                    if af_interface_parser:
+
+                        af_interface_list = []
+                        auth_key_chain_list = []
+                        auth_mode_list = []
+
+                        for af_interface_match in af_interface_parser:
+
+                            af_interface = af_interface_match[0]
+                            auth_mode = af_interface_match[1] if af_interface_match[1] else None
+                            auth_key_chain = af_interface_match[2] if af_interface_match[2] else None
+                            
+                            af_interface_list.append(af_interface)
+                            auth_key_chain_list.append(auth_key_chain)
+                            auth_mode_list.append(auth_mode)
+
+                            if af_interface.lower() != "default":
+                                non_compliant_af_interface_counter += 1
+                            elif af_interface.lower() == "default" and auth_key_chain == None:
+                                non_compliant_key_chain_counter += 1
+                            elif af_interface.lower() == "default" and (auth_mode.lower() != "md5" or auth_mode == None):
+                                non_compliant_auth_mode_counter += 1
+                        
+                        eirgp_af_list.append({'VRF':vrf, 'AF Interface': af_interface_list})
+                        eigrp_key_chain_list.append({'VRF':vrf, 'Auth Key Chain': auth_key_chain_list})
+                        eirgp_auth_mode_list.append({'VRF':vrf, 'Auth Mode': auth_mode_list})
+                    
+                    else:
+                        eirgp_af_list.append({'VRF':vrf, 'AF Interface':None})
+                        eigrp_key_chain_list.append({'VRF':vrf, 'Auth Key Chain':None})
+                        eirgp_auth_mode_list.append({'VRF':vrf, 'Auth Mode':None})
+
+                        non_compliant_af_interface_counter += 1
+                        non_compliant_key_chain_counter += 1
+                        non_compliant_auth_mode_counter += 1
 
         return compliance_check_eigrp_auth(non_compliant_as_counter, non_compliant_af_interface_counter, 
                                            non_compliant_key_chain_counter, non_compliant_auth_mode_counter,
