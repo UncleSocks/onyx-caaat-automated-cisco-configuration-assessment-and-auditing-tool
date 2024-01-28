@@ -56,8 +56,11 @@ def run_cis_cisco_ios_15_assessment(connection):
         general_parsers.compliance_check_with_expected_output(connection, "show running-config | include snmp-server host", "1.5.7 Set 'snmp-server host' when using SNMP", 1, global_report_output)
         general_parsers.compliance_check_with_expected_output(connection, "show running-config | include snmp-server enable traps snmp", "1.5.8 Set 'snmp-server enable traps snmp'", 1, global_report_output)
 
-        snmp_parsers.compliance_check_snmp_group(connection, "show snmp group | include groupname", "1.5.9 Set 'priv' for each 'snmp-server group' using SNMPv3", 2, global_report_output)
-        snmp_parsers.compliance_check_snmp_user(connection, "show snmp user", "1.5.10 Require 'aes 128' as minimum for 'snmp-server user' when using SNMPv3", 2, global_report_output)
+        snmp_parsers.compliance_check_snmp_v3(connection, "show snmp group | include groupname", "show snmp user", 
+                                              "1.5.9 Set 'priv' for each 'snmp-server group' using SNMPv3", 
+                                              "1.5.10 Require 'aes 128' as minimum for 'snmp-server user' when using SNMPv3", 
+                                              2, global_report_output)
+        
     
     #2. Control Plane CIS Compliance Checks
     print("Performing CIS Cisco IOS 15 Control Plane Benchmarks assessment...")
