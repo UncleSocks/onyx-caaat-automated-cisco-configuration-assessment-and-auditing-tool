@@ -258,7 +258,7 @@ def compliance_check_eigrp(connection, command_one, command_two, level, global_r
                 autonomous_system = match.group('as') or None
                 af_config = match.group('af_config')
                 
-                if autonomous_system == None or vrf == None:
+                if autonomous_system == None:
 
                     eigrp_as_list.append({'VRF':vrf, 'Autonomous System':autonomous_system})
                     eirgp_af_list.append({'VRF':vrf, 'AF Interface':None})
@@ -294,12 +294,14 @@ def compliance_check_eigrp(connection, command_one, command_two, level, global_r
                             auth_key_chain_list.append(auth_key_chain)
                             auth_mode_list.append(auth_mode)
 
-                            if af_interface.lower() != "default":
-                                non_compliant_af_interface_counter += 1
-                            elif af_interface.lower() == "default" and auth_key_chain == None:
-                                non_compliant_key_chain_counter += 1
-                            elif af_interface.lower() == "default" and (auth_mode.lower() != "md5" or auth_mode == None):
-                                non_compliant_auth_mode_counter += 1
+                            if af_interface.lower() == "default":
+                                if auth_key_chain == None:
+                                    non_compliant_key_chain_counter += 1
+                                elif auth_mode == None:
+                                    non_compliant_auth_mode_counter += 1
+                        
+                        if "default" not in af_interface_list:
+                            non_compliant_af_interface_counter += 1
                         
                         eirgp_af_list.append({'VRF':vrf, 'AF Interface': af_interface_list})
                         eigrp_key_chain_list.append({'VRF':vrf, 'Auth Key Chain': auth_key_chain_list})
