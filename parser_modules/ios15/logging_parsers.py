@@ -5,7 +5,7 @@ from report_modules.main_report import generate_report
 
 def compliance_check_logging_trap(connection, command, cis_check, level, global_report_output):
     command_output = ssh_send(connection, command)
-    regex_pattern = re.search(r'Trap logging:\s*(?:level\s+)?(?P<status>\w+)', command_output)
+    regex_pattern = re.search(r'Trap logging:\s*(?:level\s+)?(?P<status>emergencies|alerts|critical|errors|warnings|notifications|informational|debugging)', command_output, re.IGNORECASE)
 
     if regex_pattern:
         trap_status = regex_pattern.group('status')
