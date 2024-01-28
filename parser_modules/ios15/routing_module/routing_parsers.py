@@ -243,15 +243,27 @@ def compliance_check_eigrp(connection, command_one, command_two, level, global_r
 
                 global_as = match.group('global_as')
 
-                non_compliant_as_counter += 1
-                non_compliant_af_interface_counter += 1
-                non_compliant_key_chain_counter += 1
-                non_compliant_auth_mode_counter += 1
+                global_as_chain = ssh_send(connection, f"show running-config | include ip authentication key-chain eigrp {global_as}")
+                if not global_as_chain:
+                    auth_key_chain = None
+                    non_compliant_key_chain_counter += 1
+                else:
+                    global_as_chain_parsed = global_as_chain.split()
+                    auth_key_chain = global_as_chain_parsed[5]
 
-                eigrp_as_list.append({'Autonomous System':global_as})
-                eirgp_af_list.append({'Autonomous System':global_as, 'AF Interface':None})
-                eigrp_key_chain_list.append({'Autonomous System':global_as, 'Auth Key Chain':None})
-                eirgp_auth_mode_list.append({'Autonomous System':global_as, 'Auth Mode':None})
+                global_as_mode = ssh_send(connection, f"show running-config | include ip authentication mode eigrp {global_as}")
+                if not global_as_mode:
+                    auth_mode = None
+                    non_compliant_auth_mode_counter += 1
+                else:
+                    global_as_mode_parsed = global_as_mode.split()
+                    auth_mode = global_as_mode_parsed[5]
+                
+                eigrp_as_list.append({'VRF':'Not Applicable', 'Autonomous System':global_as})
+                eirgp_af_list.append({'Autonomous System':global_as, 'AF Interface':'Not Applicable'})
+                eigrp_key_chain_list.append({'Autonomous System':global_as, 'Auth Key Chain':auth_key_chain})
+                eirgp_auth_mode_list.append({'Autonomous System':global_as, 'Auth Mode':auth_mode})
+
             
             else:
                 vrf = match.group('vrf')
