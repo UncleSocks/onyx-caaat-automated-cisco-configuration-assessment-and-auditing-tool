@@ -35,6 +35,7 @@ def report_html_output_ios15(parsed_report_output, compliance_score_dict, html_f
                         <p id="target-font">Target Details</p>
                         <p>Target: {target_ip_address}
                         <p>IOS Version: {ios_version}
+                        <p>Check: CIS Cisco IOS {ios_version} Benchmark</p>
                     </div>
                     <div class="passed">
                         <p id="score-font">Passed Checks</p>
