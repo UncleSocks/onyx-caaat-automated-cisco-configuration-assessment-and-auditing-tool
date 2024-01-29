@@ -39,7 +39,7 @@ def compliance_check_ssh(connection, command, cis_check_one, cis_check_two, cis_
 def compliance_check_ssh_config(ssh_info, cis_check_one, cis_check_two, cis_check_three, level, global_report_output):
 
     compliant = ssh_info["Authentication Timeout"] <= 60
-    current_configuration = f"Authentication Timeout: {ssh_info['Authentication Timeout']}"
+    current_configuration = f"Authentication Timeout: {ssh_info['Authentication Timeout']} secs"
     global_report_output.append(generate_report(cis_check_one, level, compliant, current_configuration))
 
     compliant = ssh_info["Authentication Retries"] <= 3

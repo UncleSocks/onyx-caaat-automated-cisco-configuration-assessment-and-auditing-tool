@@ -573,7 +573,7 @@ def compliance_check_ospf(connection, command_one, command_two, level, global_re
 
 
 
-def compliance_check_rip(connection, command, level, global_report_output):
+def compliance_check_rip(connection, command_one, command_two, level, global_report_output):
 
     def compliance_check_rip_key(connection, command, level, global_report_output):
         command_output = ssh_send(connection, command)
@@ -624,11 +624,58 @@ def compliance_check_rip(connection, command, level, global_report_output):
                     current_configuration = rip_key_list
                     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
     
-    compliance_check_rip_key(connection, command, level, global_report_output)
-    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include rip authentication key-chain", 
-                                                          "3.3.3.4 Set 'ip rip authentication key-chain", 2, global_report_output)
-    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include rip authentication mode",
-                                                          "3.3.3.5 Set 'rip ip authentication mode'", 2, global_report_output)
+    
+    def compliance_check_rip_key_chain(connection, command, level, global_report_output):
+        command_output = ssh_send(connection, command)
+        regex_pattern = re.compile(r'interface (?P<interface>\S+).*?ip rip authentication key-chain (?P<key_chain>\S+)', re.DOTALL)
+        parser = regex_pattern.findall(command_output)
+
+        rip_int_list = []
+        non_compliant_rip_int_counter = 0
+
+        if not parser:
+            non_compliant_rip_int_counter += 1
+        
+        else:
+            for match in parser:
+                interface, key_chain = match
+                current_rip_int_info = {'Interface':interface, 'Key Chain':key_chain}
+
+                rip_int_list.append(current_rip_int_info)
+        
+        compliant = non_compliant_rip_int_counter == 0
+        cis_check = "3.3.3.4 Set 'ip rip authentication key-chain'"
+        current_configuration = rip_int_list if rip_int_list else None
+        global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+
+    def compliance_check_rip_mode(connection, command, level, global_report_output):
+        command_output = ssh_send(connection, command)
+        regex_pattern = re.compile(r'interface (?P<interface>\S+).*?ip rip authentication mode (?P<mode>\S+)', re.DOTALL)
+        parser = regex_pattern.findall(command_output)
+
+        rip_int_list = []
+        non_compliant_rip_int_counter = 0
+
+        if not parser:
+            non_compliant_rip_int_counter += 1
+        
+        else:
+            for match in parser:
+                interface, mode = match
+                current_rip_int_info = {'Interface':interface, 'Mode':mode}
+
+                rip_int_list.append(current_rip_int_info)
+        
+        compliant = non_compliant_rip_int_counter == 0
+        cis_check = "3.3.3.5 Set 'ip rip authentication mode'"
+        current_configuration = rip_int_list if rip_int_list else None
+        global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+
+    compliance_check_rip_key(connection, command_one, level, global_report_output)
+    compliance_check_rip_key_chain(connection, command_two, level, global_report_output)
+    compliance_check_rip_mode(connection, command_two, level, global_report_output)
 
 
 def compliance_check_bgp(connection, command, cis_check, level, global_report_output):

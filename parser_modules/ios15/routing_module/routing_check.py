@@ -21,13 +21,15 @@ def compliance_check_routing(connection, global_report_output):
         case {'EIGRP':False, 'OSPF':False, 'RIP':True, 'BGP':False}:
             routing_parsers.compliance_check_no_eigrp(global_report_output)
             routing_parsers.compliance_check_no_ospf(global_report_output)
-            routing_parsers.compliance_check_rip(connection, "show running-config | section key chain", 2, global_report_output)
+            routing_parsers.compliance_check_rip(connection, "show running-config | section key chain", 
+                                                 "show running-config | section interface", 2, global_report_output)
             routing_parsers.compliance_check_no_bgp(global_report_output)   
             
         case {'EIGRP':False, 'OSPF':False, 'RIP':True, 'BGP':True}:
             routing_parsers.compliance_check_no_eigrp(global_report_output)
             routing_parsers.compliance_check_no_ospf(global_report_output)
-            routing_parsers.compliance_check_rip(connection, "show running-config | section key chain", 2, global_report_output)
+            routing_parsers.compliance_check_rip(connection, "show running-config | section key chain", 
+                                                 "show running-config | section interface", 2, global_report_output)
             routing_parsers.compliance_check_bgp(connection, "show running-config | section router bgp", 
                                                 "3.3.4.1 Set 'neighbor password'", 2, global_report_output)
             
@@ -50,14 +52,16 @@ def compliance_check_routing(connection, global_report_output):
             routing_parsers.compliance_check_no_eigrp(global_report_output)
             routing_parsers.compliance_check_ospf(connection, "show running-config | section router ospf", 
                                                   "show running-config | section interface",2, global_report_output)
-            routing_parsers.compliance_check_rip(connection, "show running-config | section key chain", 2, global_report_output)
+            routing_parsers.compliance_check_rip(connection, "show running-config | section key chain", 
+                                                 "show running-config | section interface", 2, global_report_output)
             routing_parsers.compliance_check_no_bgp(global_report_output)
 
         case {'EIGRP':False, 'OSPF':True, 'RIP':True, 'BGP':True}:
             routing_parsers.compliance_check_no_eigrp(global_report_output)
             routing_parsers.compliance_check_ospf(connection, "show running-config | section router ospf", 
                                                   "show running-config | section interface",2, global_report_output)
-            routing_parsers.compliance_check_rip(connection, "show running-config | section key chain", 2, global_report_output)
+            routing_parsers.compliance_check_rip(connection, "show running-config | section key chain", 
+                                                 "show running-config | section interface", 2, global_report_output)
             routing_parsers.compliance_check_bgp(connection, "show running-config | section router bgp", 
                                                 "3.3.4.1 Set 'neighbor password'", 2, global_report_output)
 
@@ -80,14 +84,16 @@ def compliance_check_routing(connection, global_report_output):
             routing_parsers.compliance_check_eigrp(connection, "show running-config | section key chain", 
                                                     "show running-config | section router eigrp", 2, global_report_output)
             routing_parsers.compliance_check_no_ospf(global_report_output)
-            routing_parsers.compliance_check_rip(connection, "show running-config | section key chain", 2, global_report_output)
+            routing_parsers.compliance_check_rip(connection, "show running-config | section key chain", 
+                                                 "show running-config | section interface", 2, global_report_output)
             routing_parsers.compliance_check_no_bgp(global_report_output)
 
         case {'EIGRP':True, 'OSPF':False, 'RIP':True, 'BGP':True}:
             routing_parsers.compliance_check_eigrp(connection, "show running-config | section key chain", 
                                                     "show running-config | section router eigrp", 2, global_report_output)
             routing_parsers.compliance_check_no_ospf(global_report_output)
-            routing_parsers.compliance_check_rip(connection, "show running-config | section key chain", 2, global_report_output)
+            routing_parsers.compliance_check_rip(connection, "show running-config | section key chain", 
+                                                 "show running-config | section interface", 2, global_report_output)
             routing_parsers.compliance_check_bgp(connection, "show running-config | section router bgp", 
                                                 "3.3.4.1 Set 'neighbor password'", 2, global_report_output)
         
@@ -113,7 +119,8 @@ def compliance_check_routing(connection, global_report_output):
                                                 "show running-config | section router eigrp", 2, global_report_output)
             routing_parsers.compliance_check_ospf(connection, "show running-config | section router ospf", 
                                                   "show running-config | section interface",2, global_report_output)
-            routing_parsers.compliance_check_rip(connection, "show running-config | section key chain", 2, global_report_output)
+            routing_parsers.compliance_check_rip(connection, "show running-config | section key chain", 
+                                                 "show running-config | section interface", 2, global_report_output)
             routing_parsers.compliance_check_no_bgp(global_report_output)
 
         case {'EIGRP':True, 'OSPF':True, 'RIP':True, 'BGP':True}:
@@ -121,6 +128,7 @@ def compliance_check_routing(connection, global_report_output):
                                                     "show running-config | section router eigrp", 2, global_report_output)
             routing_parsers.compliance_check_ospf(connection, "show running-config | section router ospf", 
                                                   "show running-config | section interface",2, global_report_output)
-            routing_parsers.compliance_check_rip(connection, "show running-config | section key chain", 2, global_report_output)
+            routing_parsers.compliance_check_rip(connection, "show running-config | section key chain", 
+                                                 "show running-config | section interface", 2, global_report_output)
             routing_parsers.compliance_check_bgp(connection, "show running-config | section router bgp", 
                                                 "3.3.4.1 Set 'neighbor password'", 2, global_report_output)
