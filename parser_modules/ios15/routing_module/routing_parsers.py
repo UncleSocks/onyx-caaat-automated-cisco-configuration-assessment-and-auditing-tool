@@ -206,7 +206,7 @@ def compliance_check_eigrp(connection, command_one, command_two, level, global_r
                     current_configuration = eigrp_cis_check['Current Configuration']
                 else:
                     compliant = "Not Applicable"
-                    current_configuration = "No EIGRP VRF Configured"
+                    current_configuration = "No Named EIGRP Configured"
                 global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
             
             elif eigrp_cis_check['CIS Check'] == "3.3.1.5 Set 'af-interface default'":
@@ -216,7 +216,7 @@ def compliance_check_eigrp(connection, command_one, command_two, level, global_r
                     current_configuration = eigrp_cis_check['Current Configuration']
                 else:
                     compliant = "Not Applicable"
-                    current_configuration = "No EIGRP VRF Configured"
+                    current_configuration = "No Named EIGRP Configured"
                 global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
             
             elif eigrp_cis_check['CIS Check'] == "3.3.1.6 Set 'authentication key-chain":
@@ -226,7 +226,7 @@ def compliance_check_eigrp(connection, command_one, command_two, level, global_r
                     current_configuration = eigrp_cis_check['Current Configuration']
                 else:
                     compliant = "Not Applicable"
-                    current_configuration = "No EIGRP VRF Configured"
+                    current_configuration = "No Named EIGRP Configured"
                 global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
             
             else:
@@ -236,7 +236,7 @@ def compliance_check_eigrp(connection, command_one, command_two, level, global_r
                     current_configuration = eigrp_cis_check['Current Configuration']
                 else:
                     compliant = "Not Applicable"
-                    current_configuration = "No EIGRP VRF Configured"
+                    current_configuration = "No Named EIGRP Configured"
                 global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))                
 
     def compliance_check_eigrp_auth_stager(connection, command, level, global_report_output):
@@ -353,7 +353,7 @@ def compliance_check_eigrp(connection, command_one, command_two, level, global_r
                     current_configuration = eigrp_cis_check['Current Configuration']
                 else:
                     compliant = "Not Applicable"
-                    current_configuration = "No EIGRP AS Configured"
+                    current_configuration = "No Classic EIGRP Configured"
                 global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
             
             else:
@@ -363,7 +363,7 @@ def compliance_check_eigrp(connection, command_one, command_two, level, global_r
                     current_configuration = eigrp_cis_check['Current Configuration'] 
                 else:
                     compliant = "Not Applicable"
-                    current_configuration = "No EIGRP AS Configured"
+                    current_configuration = "No Classic EIGRP Configured"
                 global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
     
     def compliance_check_eigrp_auth_global_stager(connection, command_two, level, global_report_output):

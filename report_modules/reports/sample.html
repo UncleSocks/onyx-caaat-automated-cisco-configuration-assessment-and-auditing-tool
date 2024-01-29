@@ -23,7 +23,7 @@
                         Report Summary
                     </div>
                     <div class="date">
-                        <p>Report Generated: 2024-01-25 22:39:25.765126</p>
+                        <p>Report Generated: 2024-01-29 23:51:59.357565</p>
                     </div>
                 </div>
                 <div class="summary-body">
@@ -31,21 +31,22 @@
                         <p id="target-font">Target Details</p>
                         <p>Target: 192.168.157.201
                         <p>IOS Version: 15
+                        <p>Check: CIS Cisco IOS 15 Benchmark</p>
                     </div>
                     <div class="passed">
                         <p id="score-font">Passed Checks</p>
                         <div class="summary-bar"></div>
-                        <p><span id="score-value">32</span> out of 80 total assessment checks</p>
+                        <p><span id="score-value">33</span> out of 78 total assessment checks</p>
                     </div>
                     <div class="failed">
                         <p id="score-font">Failed Checks</p>
                         <div class="summary-bar"></div>
-                        <p><span id="score-value">48</span> out of 80 total assessment checks</p>
+                        <p><span id="score-value">45</span> out of 78 total assessment checks</p>
                     </div>
                     <div class="na">
                         <p id="score-font">Not Applicable</p>
                         <div class="summary-bar"></div>
-                        <p><span id="score-value">0</span> checks were not applicable</p>
+                        <p><span id="score-value">2</span> checks were not applicable</p>
                     </div>
                 </div>
             <div class="plane">
@@ -55,11 +56,11 @@
                 </div>
                 <div class="control">
                     <p id="plane-font">Control Plane</p>
-                    <p><span id="plane-value-passed">9</span> checks passed; <span id="plane-value-failed">20</span> checks failed; <span id="plane-value-na">0</span> not applicable checks</p>
+                    <p><span id="plane-value-passed">10</span> checks passed; <span id="plane-value-failed">19</span> checks failed; <span id="plane-value-na">0</span> not applicable checks</p>
                 </div>
                 <div class="data">
                     <p id="plane-font">Data Plane</p>
-                    <p><span id="plane-value-passed">15</span> checks passed; <span id="plane-value-failed">5</span> checks failed; <span id="plane-value-na">0</span> not applicable checks</p>
+                    <p><span id="plane-value-passed">15</span> checks passed; <span id="plane-value-failed">3</span> checks failed; <span id="plane-value-na">2</span> not applicable checks</p>
                 </div>
             </div>
             </div>
@@ -115,21 +116,18 @@
                     </tr>
                 
                     <tr class="expandable-row">
-                        <td class="toggle-btn">1.1.4 Set 'authentication login' for 'line con'</td>
+                        <td class="toggle-btn">1.1.4 Set 'login authentication for 'line con 0'</td>
                         <td class="toggle-btn">1</td>
                         <td class="toggle-btn">True</td>
                     </tr>
                     <tr class="expanded-content">
                         <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
-                            <p> exec-timeout 0 0
- privilege level 15
- logging synchronous
- stopbits 1
+                            <p>[{'Channel': '0', 'Config': ' exec-timeout 0 0'}]
                         </td>
                     </tr>
                 
                     <tr class="expandable-row">
-                        <td class="toggle-btn">1.1.5 Set 'authentication login' for 'line tty'</td>
+                        <td class="toggle-btn">1.1.5 Set 'login authentication for 'line tty'</td>
                         <td class="toggle-btn">1</td>
                         <td class="toggle-btn">False</td>
                     </tr>
@@ -140,14 +138,13 @@
                     </tr>
                 
                     <tr class="expandable-row">
-                        <td class="toggle-btn">1.1.6 Set 'authentication login' for 'line vty'</td>
+                        <td class="toggle-btn">1.1.6 Set 'login authentication for 'line vty'</td>
                         <td class="toggle-btn">1</td>
                         <td class="toggle-btn">True</td>
                     </tr>
                     <tr class="expanded-content">
                         <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
-                            <p> login local
- transport input ssh
+                            <p>[{'Channel': '0 4', 'Config': ' login local'}]
                         </td>
                     </tr>
                 
@@ -507,17 +504,17 @@ Key type: RSA KEYS
   3C74FEDF B303B010 4497A197 B5A9E1C4 9226982E 79F8419A 62F5B2C0 CD243DC5 
   BE9C7124 6563C7D4 22E32AE2 5DA3B90D 348401DD 5952423A A19B8AB9 5884058B 
   31020301 0001
-% Key pair was generated at: 14:04:38 UTC Jan 25 2024
+% Key pair was generated at: 15:47:49 UTC Jan 29 2024
 Key name: R1.dlsu.local.server
 Key type: RSA KEYS
 Temporary key
  Usage: Encryption Key
  Key is not exportable.
  Key Data:
-  307C300D 06092A86 4886F70D 01010105 00036B00 30680261 00D15E20 D41A0BBE 
-  5C365936 7818A3E9 6CDBC126 9196E861 4C054B17 7F0E2CF9 4558FCC2 7C91F2C6 
-  89AD4E05 64067796 3F1A62A7 45D197A4 BCB4C828 B9FDF055 649D1BAA 11A8757A 
-  D5C17990 9B763CEE B910E0D7 E86ABB2F E58ABC18 C47B9E59 5B020301 0001
+  307C300D 06092A86 4886F70D 01010105 00036B00 30680261 00A10DDC 726BDB2F 
+  21B8E91D 662BF854 211BD5ED 4C5F23FF 7603CF0E 92F878C4 DE64AA29 BF16D2EC 
+  A2A63790 9F3FDC0E CB415F4E F3702C7E FE065613 648815D0 84444D71 422744C9 
+  A99F49AB 80589BDA EB028DB3 DA6462ED 61A6B1C4 98D6A3E4 59020301 0001
                         </td>
                     </tr>
                 
@@ -528,7 +525,7 @@ Temporary key
                     </tr>
                     <tr class="expanded-content">
                         <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
-                            <p>Authentication Timeout - 120
+                            <p>Authentication Timeout: 120 secs
                         </td>
                     </tr>
                 
@@ -539,7 +536,7 @@ Temporary key
                     </tr>
                     <tr class="expanded-content">
                         <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
-                            <p>Authentication Retries - 3
+                            <p>Authentication Retries: 3
                         </td>
                     </tr>
                 
@@ -685,11 +682,11 @@ Temporary key
                     <tr class="expandable-row">
                         <td class="toggle-btn">2.2.5 Set 'logging trap informational'</td>
                         <td class="toggle-btn">1</td>
-                        <td class="toggle-btn">False</td>
+                        <td class="toggle-btn">True</td>
                     </tr>
                     <tr class="expanded-content">
                         <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
-                            <p>Trap logging: level informational, 14 message lines logged
+                            <p>{'Trap Logging Level': 'informational'}
                         </td>
                     </tr>
                 
@@ -965,24 +962,24 @@ Temporary key
                     </tr>
                 
                     <tr class="expandable-row">
-                        <td class="toggle-btn">3.3.1.8 Set 'ip authentication key-chain eigrp</td>
+                        <td class="toggle-btn">3.3.1.8 Set 'ip authentication key-chain eigrp'</td>
                         <td class="toggle-btn">2</td>
-                        <td class="toggle-btn">False</td>
+                        <td class="toggle-btn">Not Applicable</td>
                     </tr>
                     <tr class="expanded-content">
                         <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
-                            <p>None
+                            <p>No Classic EIGRP Configured
                         </td>
                     </tr>
                 
                     <tr class="expandable-row">
                         <td class="toggle-btn">3.3.1.9 Set 'ip authentication mode eigrp'</td>
                         <td class="toggle-btn">2</td>
-                        <td class="toggle-btn">False</td>
+                        <td class="toggle-btn">Not Applicable</td>
                     </tr>
                     <tr class="expanded-content">
                         <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
-                            <p>None
+                            <p>No Classic EIGRP Configured
                         </td>
                     </tr>
                 
@@ -997,7 +994,7 @@ Temporary key
                     </tr>
                     <tr class="expanded-content">
                         <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
-                            <p>[{'Process ID': '10', 'Area Number': '100', 'Authentication': 'message-digest'}]
+                            <p>[{'Process ID': '10', 'Area Number': ['100'], 'Authentication': ['message-digest']}]
                         </td>
                     </tr>
                 
@@ -1050,24 +1047,24 @@ Temporary key
                     </tr>
                 
                     <tr class="expandable-row">
-                        <td class="toggle-btn">3.3.3.4 Set 'ip rip authentication key-chain</td>
+                        <td class="toggle-btn">3.3.3.4 Set 'ip rip authentication key-chain'</td>
                         <td class="toggle-btn">2</td>
                         <td class="toggle-btn">True</td>
                     </tr>
                     <tr class="expanded-content">
                         <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
-                            <p> ip rip authentication key-chain MYCHAIN
+                            <p>[{'Interface': 'FastEthernet0/0', 'Key Chain': 'MYCHAIN'}]
                         </td>
                     </tr>
                 
                     <tr class="expandable-row">
-                        <td class="toggle-btn">3.3.3.5 Set 'rip ip authentication mode'</td>
+                        <td class="toggle-btn">3.3.3.5 Set 'ip rip authentication mode'</td>
                         <td class="toggle-btn">2</td>
                         <td class="toggle-btn">True</td>
                     </tr>
                     <tr class="expanded-content">
                         <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
-                            <p> ip rip authentication mode md5
+                            <p>[{'Interface': 'FastEthernet0/0', 'Mode': 'md5'}]
                         </td>
                     </tr>
                 
