@@ -379,3 +379,5 @@ def report_html_output_ios15(parsed_report_output, compliance_score_dict, html_f
     """
     with open(f'./report_modules/reports/{html_filename}', 'w') as file:
         file.write(html_report)
+    
+    print(f"HTML report has been successfully exported as {html_filename}")
