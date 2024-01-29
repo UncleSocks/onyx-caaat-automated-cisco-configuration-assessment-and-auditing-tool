@@ -219,7 +219,8 @@ Compliance Score Breakdown
 3.3.4 Require BGP Authentication if Protocol is Used
     """
     table.clear_rows()
-    table.add_row([parsed_report_output['DP Neighbor Auth BGP']['CIS Check'], parsed_report_output['DP Neighbor Auth BGP']['Level'], check['Compliant'], 
+    table.add_row([parsed_report_output['DP Neighbor Auth BGP']['CIS Check'], parsed_report_output['DP Neighbor Auth BGP']['Level'], 
+                   parsed_report_output['DP Neighbor Auth BGP']['Compliant'], 
                    configuration_tab_replace(parsed_report_output['DP Neighbor Auth BGP']['Current Configuration'])])
     report_body += f"""
 {table}
