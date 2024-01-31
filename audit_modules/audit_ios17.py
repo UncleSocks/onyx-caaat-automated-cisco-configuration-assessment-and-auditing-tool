@@ -1,4 +1,4 @@
-from parser_modules.ios17 import general_parsers, aaa_parsers
+from parser_modules.ios17 import general_parsers, aaa_parsers, users_parsers, line_parsers
 
 
 def run_cis_cisco_ios_17_assessment(connection):
@@ -23,5 +23,17 @@ def run_cis_cisco_ios_17_assessment(connection):
         else:
             general_parsers.compliance_check_with_expected_output(connection, f"show running-config | include aaa accounting {aaa_accounting_command}", 
                                                f"1.1.{index} Set 'aaa accounting {aaa_accounting_command}'", 2, global_report_output)
+    
+    users_parsers.compliance_check_acl_privilege(connection, "show running-config | include privilege", "1.2.1 Set 'privilege 1' for local users", 1, global_report_output)
+    line_parsers.compliance_check_transport_input(connection, "show running-config | section vty", "1.2.2 Set 'transport input ssh' for 'line vty' connections", 1, global_report_output)
+    line_parsers.compliance_check_aux_exec(connection, "show running-config | section line aux 0", "1.2.3 Set 'no exec' for 'line aux 0'", 1, global_report_output)
+    line_parsers.compliance_check_vty_acl(connection, "show ip access-list", "show running-config | section vty", "1.2.4 Create 'access-list' for use with 'line vty'", 
+                             "1.2.5 Set 'access-class' for 'line vty'", 1, global_report_output)
+
+    exec_timeout_line_commands = ["line aux 0", "line con 0"]
+    for index, exec_timeout_line_command in enumerate(exec_timeout_line_commands, start = 6):
+        line_parsers.compliance_check_exec_timeout(connection, f"show running-config | section {exec_timeout_line_command}", 
+                                                   f"1.2.{index} Set 'exec-timeout' to less than or equal to 10 minutes for '{exec_timeout_line_command}'", 
+                                                   1, global_report_output)
     
     return global_report_output

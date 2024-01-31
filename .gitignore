@@ -39,3 +39,6 @@ __pycache__/ssh.cpython-310.pyc
 audit_modules/__pycache__/audit_ios17.cpython-310.pyc
 parser_modules/ios17/__pycache__/aaa_parsers.cpython-310.pyc
 parser_modules/ios17/__pycache__/general_parsers.cpython-310.pyc
+parser_modules/ios15/routing_module/__pycache__/routing_check.cpython-310.pyc
+parser_modules/ios17/__pycache__/line_parsers.cpython-310.pyc
+parser_modules/ios17/__pycache__/users_parsers.cpython-310.pyc

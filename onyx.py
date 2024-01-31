@@ -48,7 +48,8 @@ if __name__ == "__main__":
         print(f"Cisco IOS Version: {ios_version}")
         print("Running CIS Ciso IOS 17 Benchmark assessment...")
         cis_ios_17_assessment = run_cis_cisco_ios_17_assessment(connection)
-        print(cis_ios_17_assessment)
+        for assess in cis_ios_17_assessment:
+            print(assess)
     
     else:
         print("Error 0002 - Unable to identify Cisco IOS version.")
