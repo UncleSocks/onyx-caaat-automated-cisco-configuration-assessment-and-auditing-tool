@@ -39,7 +39,7 @@ def compliance_check_snmp_community(connection, command, cis_check, level, globa
 
 def compliance_check_snmp_rw(connection, command, cis_check_1, cis_check_2, level, global_report_output):
     command_output = ssh_send(connection, command)
-    regex_pattern = re.compile(r'snmp-server community (?P<string>\S+) (?P<access>\S+)(?: (?P<acl>\S+))?(\n|$)')
+    regex_pattern = re.compile(r'snmp-server\s+community\s*(?:(?P<encryption>\d*))?\s*(?P<string>\S+)\s+(?P<access>\S+)(?:\s+(?P<acl>\S+))?(?=\n|$)')
     parser = regex_pattern.finditer(command_output)
     snmp_community_list = []
     snmp_acl_list = []
@@ -47,9 +47,10 @@ def compliance_check_snmp_rw(connection, command, cis_check_1, cis_check_2, leve
 
     for match in parser:
         community_string = match.group('string')
+        community_string_encryption = match.group('encryption') or None
         access = match.group('access')
         acl = match.group('acl') or None
-        current_snmp_info = {"String":community_string, "Access":access}
+        current_snmp_info = {"String":community_string, "Encryption":community_string_encryption, "Access":access}
         snmp_community_list.append(current_snmp_info)
         if access.lower() == "rw":
             non_compliant_snmp_counter += 1
