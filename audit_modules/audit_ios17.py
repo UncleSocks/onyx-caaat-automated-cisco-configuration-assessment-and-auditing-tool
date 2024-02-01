@@ -1,4 +1,4 @@
-from parser_modules.ios17 import general_parsers, aaa_parsers, users_parsers, line_parsers
+from parser_modules.ios17 import general_parsers, aaa_parsers, users_parsers, line_parsers, snmp_parsers
 
 
 def run_cis_cisco_ios_17_assessment(connection):
@@ -55,6 +55,27 @@ def run_cis_cisco_ios_17_assessment(connection):
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include enable secret", "1.4.1 Set 'password' for 'enable secret'", 1, global_report_output)
     general_parsers.compliance_check_without_no_prefix(connection, "show running-config | include service password-encryption", "1.4.2 Enable 'service password-encryption'", 1, global_report_output)
     users_parsers.compliance_check_user_secret(connection, "show running-config | include username", "1.4.3 Set 'username secret' for all local users", 1, global_report_output)
+
+    if snmp_parsers.complaince_check_snmp_enabled(connection, "show snmp community", "1.5.1 Set 'no snmp-server' to disable SNMP when unused", 1, global_report_output) == True:
+        snmp_parsers.compliance_check_no_snmp(global_report_output)
+
+    else:
+        snmp_community_commands = ["private", "public"]
+        for index, snmp_community_command in enumerate(snmp_community_commands, start = 2):
+            snmp_parsers.compliance_check_snmp_community(connection, f"show snmp community | include {snmp_community_command}", 
+                                            f"1.5.{index} Unset {snmp_community_command} for 'snmp-server community'", 1, global_report_output)
+        
+        snmp_parsers.compliance_check_snmp_rw(connection, "show running-config | include snmp-server community", "1.5.4 Do not set 'RW' for any 'snmp-server community'", 
+                                 "1.5.5 Set the ACL for each 'snmp-server community'", 1, global_report_output)
+        
+        general_parsers.compliance_check_with_expected_output(connection, "show ip access-list", "1.5.6 Create an 'access-list' for use with SNMP", 1, global_report_output)
+        general_parsers.compliance_check_with_expected_output(connection, "show running-config | include snmp-server host", "1.5.7 Set 'snmp-server host' when using SNMP", 1, global_report_output)
+        general_parsers.compliance_check_with_expected_output(connection, "show running-config | include snmp-server enable traps snmp", "1.5.8 Set 'snmp-server enable traps snmp'", 1, global_report_output)
+
+        snmp_parsers.compliance_check_snmp_v3(connection, "show snmp group | include groupname", "show snmp user", 
+                                              "1.5.9 Set 'priv' for each 'snmp-server group' using SNMPv3", 
+                                              "1.5.10 Require 'aes 128' as minimum for 'snmp-server user' when using SNMPv3", 
+                                              2, global_report_output)
 
     
     return global_report_output
