@@ -7,7 +7,7 @@ def run_cis_cisco_ios_15_assessment(connection):
     global_report_output = []
 
     #1 Management Plane CIS Compliance Checks
-    print("Performing CIS Cisco IOS 15 Management Plane Benchmarks assessment...")
+    print("Performing CIS Cisco IOS 15 Management Plane Benchmarks assessment.")
 
     general_parsers.compliance_check_without_no_prefix(connection, "show running-config | include aaa new-model", "1.1.1 Enable 'aaa new-model'", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include aaa authentication login", "1.1.2 Enable 'aaa authentication login'", 1, global_report_output)
@@ -33,7 +33,7 @@ def run_cis_cisco_ios_15_assessment(connection):
 
     banner_commands = ["exec", "login", "motd"]
     for index, banner_command in enumerate(banner_commands, start = 1):
-        general_parsers.compliance_check_with_expected_output(connection, f"show running-config | begin banner {banner_command}",
+        general_parsers.compliance_check_banner(connection, f"show running-config | begin banner {banner_command}",
                                             f"1.3.{index} Set the 'banner-text' for 'banner {banner_command}'", 1, global_report_output)
 
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include enable secret", "1.4.1 Set 'password' for 'enable secret'", 1, global_report_output)
@@ -63,7 +63,7 @@ def run_cis_cisco_ios_15_assessment(connection):
         
     
     #2. Control Plane CIS Compliance Checks
-    print("Performing CIS Cisco IOS 15 Control Plane Benchmarks assessment...")
+    print("Performing CIS Cisco IOS 15 Control Plane Benchmarks assessment.")
 
     ssh_parsers.compliance_check_hostname(connection, "show running-config | include hostname", "2.1.1.1.1 Set the 'hostname'", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include domain name", "2.1.1.1.2 Set the 'ip domain-name'", 1, global_report_output)
@@ -107,7 +107,7 @@ def run_cis_cisco_ios_15_assessment(connection):
                                                         2, global_report_output)
     
     #3 Data Plane CIS Compliance Checks
-    print("Performing CIS Cisco IOS 15 Data Plane Benchmarks assessment...")
+    print("Performing CIS Cisco IOS 15 Data Plane Benchmarks assessment.")
 
     routing_parsers.compliance_check_source_route(connection, "show running-config | include ip source-route", "3.1.1 Set 'no ip source-route'", 1, global_report_output)
     routing_parsers.compliance_check_proxy_arp(connection, "show ip interface", "3.1.2 Set 'no ip proxy-arp'", 2, global_report_output)

@@ -6,7 +6,7 @@ def run_cis_cisco_ios_17_assessment(connection):
     global_report_output = []
 
     #1 Management Plane CIS Compliance Checks
-    print("Performing CIS Cisco IOS 15 Management Plane Benchmarks assessment...")
+    print("Performing CIS Cisco IOS 15 Management Plane Benchmarks assessment.")
 
     general_parsers.compliance_check_without_no_prefix(connection, "show running-config | include aaa new-model", "1.1.1 Enable 'aaa new-model'", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include aaa authentication login", "1.1.2 Enable 'aaa authentication login'", 1, global_report_output)
@@ -35,5 +35,21 @@ def run_cis_cisco_ios_17_assessment(connection):
         line_parsers.compliance_check_exec_timeout(connection, f"show running-config | section {exec_timeout_line_command}", 
                                                    f"1.2.{index} Set 'exec-timeout' to less than or equal to 10 minutes for '{exec_timeout_line_command}'", 
                                                    1, global_report_output)
+    
+    line_parsers.compliance_check_exec_timeout_vty(connection, "show running-config | section vty", "1.2.8 Set 'exec-timeout' to less than or equal to 10 minutes 'line vty'", 
+                                                   1, global_report_output)
+    
+    line_parsers.compliance_check_aux_transport(connection, "show line aux 0 | include input transports", "1.2.9 Set 'transport input none' for 'line aux 0'", 1, global_report_output)
+    line_parsers.compliance_check_http(connection, "show running-config | section ip http", "1.2.10 Set 'http Secure-Server' limit", 
+                                       "1.2.11 Set 'exec-timeout' to less than or equal to 10 min on 'ip http'", 1, global_report_output)
+    
+    banner_commands = ["banner exec", "banner login", "banner motd", "auth-proxy-banner http"]
+    for index, banner_command in enumerate(banner_commands, start = 1):
+        if banner_command == "auth-proxy-banner http":
+            general_parsers.compliance_check_banner(connection, f"show running-config | begin {banner_command}", 
+                                                    f"1.3.{index} Set the 'banner-text' for 'webauth banner'", 1, global_report_output)
+        else:
+            general_parsers.compliance_check_banner(connection, f"show running-config | begin {banner_command}",
+                                                f"1.3.{index} Set the 'banner-text' for '{banner_command}'", 1, global_report_output)
     
     return global_report_output

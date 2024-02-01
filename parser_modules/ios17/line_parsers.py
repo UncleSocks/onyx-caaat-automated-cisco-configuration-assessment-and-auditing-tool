@@ -102,3 +102,72 @@ def compliance_check_exec_timeout(connection, command, cis_check, level, global_
         current_configuration = {'Exec-Timeout Minute':10, 'Exec-Timeout Second':0}
 
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+
+def compliance_check_exec_timeout_vty(connection, command, cis_check, level, global_report_output):
+    command_output = ssh_send(connection, command)
+    regex_pattern = re.compile(r'line vty (?P<start>\d+)(?: (?P<end>\d+))?(\n(?P<config>.*?)(?=\nline vty|\Z))', re.MULTILINE | re.DOTALL)
+    parser = regex_pattern.finditer(command_output)
+
+    line_vty_list = []
+    non_compliant_vty_counter = 0
+
+    for match in parser:
+        line_start = match.group('start')
+        line_end = match.group('end') if match.group('end') else None 
+        config = match.group('config')
+
+        exec_timeout_search = re.search(r'exec-timeout (?P<min>\d+)\s+(?P<sec>\d+)', config)
+        if  exec_timeout_search:
+            exec_timeout_min = int(exec_timeout_search.group('min'))
+            exec_timeout_sec = int(exec_timeout_search.group('sec'))
+
+            if exec_timeout_min > 9:
+                non_compliant_vty_counter += 1
+
+            current_vty_info = {'Start':line_start, 'End':line_end, 'Exec-Timeout Minute':exec_timeout_min, 'Exec-Timeout Second':exec_timeout_sec}
+            line_vty_list.append(current_vty_info)
+        
+        else:
+            current_vty_info = {'Start':line_start, 'End':line_end, 'Exec-Timeout Minute':10, 'Exec-Timeout Second':0}
+            line_vty_list.append(current_vty_info)
+
+    compliant = non_compliant_vty_counter == 0
+    current_configuration = line_vty_list
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+
+def compliance_check_aux_transport(connection, command, cis_check, level, global_report_output):
+    command_output = ssh_send(connection, command)
+    aux_transport_match = re.match(r'Allowed input transports are (?P<transport>[^.]+)', command_output)
+    transport = aux_transport_match.group('transport')
+
+    compliant = transport.lower() == "none"
+    current_configuration = transport
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+
+def compliance_check_http(connection, command, cis_check_one, cis_check_two, level, global_report_output):
+
+    command_output = ssh_send(connection, command)
+    
+    def compliance_check_http_secure_server(command_output, cis_check, level, global_report_output):
+        http_secure_server_search = re.search(r'ip http max-connections (?P<connections>\d+)', command_output)
+
+        compliant = bool(http_secure_server_search)
+        current_configuration = {'HTTP Max Connections':http_secure_server_search.group('connections') if http_secure_server_search else None}
+        global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+    
+    def compliance_check_http_exec_timeout(command_output, cis_check, level, global_report_output):
+        http_timeout_search = re.search(r'ip http timeout-policy idle (?P<idle>\d+) life (?P<life>\d+) requests (?P<request>\d+)', command_output)
+
+        compliant = bool(http_timeout_search)
+        current_configuration = {'Idle Timeout':f"{http_timeout_search.group('idle')} secs" if http_timeout_search else None, 
+                                 'Life Timeout':f"{http_timeout_search.group('life')} secs" if http_timeout_search else None, 
+                                 'Request Timeout':f"{http_timeout_search.group('request')} requests" if http_timeout_search else None}
+        
+        global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+    compliance_check_http_secure_server(command_output, cis_check_one, level, global_report_output)
+    compliance_check_http_exec_timeout(command_output, cis_check_two, level, global_report_output)
+
