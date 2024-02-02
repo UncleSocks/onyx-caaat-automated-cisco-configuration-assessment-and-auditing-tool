@@ -6,7 +6,7 @@ def run_cis_cisco_ios_17_assessment(connection):
     global_report_output = []
 
     #1 Management Plane CIS Compliance Checks
-    print("Performing CIS Cisco IOS 15 Management Plane Benchmarks assessment.")
+    print("Performing CIS Cisco IOS 17 Management Plane Benchmarks assessment.")
 
     general_parsers.compliance_check_without_no_prefix(connection, "show running-config | include aaa new-model", "1.1.1 Enable 'aaa new-model'", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include aaa authentication login", "1.1.2 Enable 'aaa authentication login'", 1, global_report_output)
