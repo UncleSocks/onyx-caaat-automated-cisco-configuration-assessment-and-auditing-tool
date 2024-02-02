@@ -1,4 +1,4 @@
-from parser_modules.ios17 import general_parsers, aaa_parsers, users_parsers, line_parsers, snmp_parsers
+from parser_modules.ios17 import general_parsers, aaa_parsers, users_parsers, line_parsers, snmp_parsers, login_parsers
 
 
 def run_cis_cisco_ios_17_assessment(connection):
@@ -77,5 +77,8 @@ def run_cis_cisco_ios_17_assessment(connection):
                                               "1.5.10 Require 'aes 128' as minimum for 'snmp-server user' when using SNMPv3", 
                                               2, global_report_output)
 
-    
+    login_parsers.compliance_check_login_block(connection, "show running-config | include login block", "1.6.1 Configure Login Block", 2, global_report_output)
+    login_parsers.compliance_check_auto_secure(connection, "show auto secure config", "1.6.2 AutoSecure", 2, global_report_output)
+    login_parsers.compliance_check_kerberos(connection, "show kerberos creds", "show running-config | include kerberos", "1.6.3 Configuring Kerberos", 2, global_report_output)
+
     return global_report_output
