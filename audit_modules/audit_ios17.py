@@ -80,5 +80,7 @@ def run_cis_cisco_ios_17_assessment(connection):
     login_parsers.compliance_check_login_block(connection, "show running-config | include login block", "1.6.1 Configure Login Block", 2, global_report_output)
     login_parsers.compliance_check_auto_secure(connection, "show auto secure config", "1.6.2 AutoSecure", 2, global_report_output)
     login_parsers.compliance_check_kerberos(connection, "show kerberos creds", "show running-config | include kerberos", "1.6.3 Configuring Kerberos", 2, global_report_output)
+    login_parsers.compliance_check_web_interface(connection, "show running-config | include ip admission", "show running-config | section interface", 
+                                                 "1.6.4 Configure Web Interface", 2, global_report_output)
 
     return global_report_output

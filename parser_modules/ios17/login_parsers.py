@@ -60,3 +60,52 @@ def compliance_check_kerberos(connection, command_one, command_two, cis_check, l
     
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
 
+
+def compliance_check_web_interface(connection, command_one, command_two, cis_check, level, global_report_output):
+
+    def compliance_check_ip_admission(connection, command_one, command_two, cis_check, level, global_report_output):
+        command_output = ssh_send(connection, command_one)
+        regex_pattern = re.compile(r'ip\s+admission\s+name\s+(?P<ip_admission>\S+)\s+proxy\s+http')
+        parser = regex_pattern.findall(command_output)
+
+        ip_admission_list = []
+
+        if not parser:
+            compliant = False
+            current_configuration = None
+            global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+            return
+        
+        else:
+            for match in parser:
+                ip_admission = match
+                ip_admission_list.append(ip_admission)
+
+        return compliance_check_interface(ip_admission_list, connection, command_two, cis_check, level, global_report_output)
+    
+    def compliance_check_interface(ip_admission_list, connection, command, cis_check, level, global_report_output):
+        command_output = ssh_send(connection, command)
+        
+        web_interface_ip_admission_list = []
+        int_with_nac_counter = 0
+
+        for ip_admission in ip_admission_list:
+            ip_admission_int_search = re.search(rf'interface\s+(?P<interface>\S+).*?ip\s+admission\s+({ip_admission})', command_output, re.DOTALL)
+            if ip_admission_int_search:
+
+                int_with_nac_counter += 1
+
+                interface = ip_admission_int_search.group('interface')
+                current_ip_admission_info = {'Interface':interface, 'NAC':ip_admission}
+
+                web_interface_ip_admission_list.append(current_ip_admission_info)
+
+            else:
+                current_ip_admission_info = {'Interface':None, 'NAC':ip_admission}
+                web_interface_ip_admission_list.append(current_ip_admission_info)
+
+        compliant = int_with_nac_counter != 0
+        current_configuration = web_interface_ip_admission_list if web_interface_ip_admission_list else None
+        global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+    compliance_check_ip_admission(connection, command_one, command_two, cis_check, level, global_report_output)

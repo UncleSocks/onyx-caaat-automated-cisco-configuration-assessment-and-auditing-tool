@@ -170,4 +170,3 @@ def compliance_check_http(connection, command, cis_check_one, cis_check_two, lev
 
     compliance_check_http_secure_server(command_output, cis_check_one, level, global_report_output)
     compliance_check_http_exec_timeout(command_output, cis_check_two, level, global_report_output)
-
