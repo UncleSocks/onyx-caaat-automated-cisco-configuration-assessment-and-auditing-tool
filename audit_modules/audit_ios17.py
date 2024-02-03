@@ -1,4 +1,5 @@
 from parser_modules.ios17 import general_parsers, aaa_parsers, users_parsers, line_parsers, login_parsers, snmp_parsers, ssh_parsers, services_parsers, logging_parsers, ntp_parsers
+from parser_modules.ios17.routing_module import border_parsers, routing_parsers, routing_check
 
 
 def run_cis_cisco_ios_17_assessment(connection):
@@ -128,7 +129,18 @@ def run_cis_cisco_ios_17_assessment(connection):
     
 
     #3 Data Plane CIS Compliance Checks
-    print("Performing CIS Cisco IOS 15 Data Plane Benchmarks assessment.")
+    print("Performing CIS Cisco IOS 17 Data Plane Benchmarks assessment.")
+
+    routing_parsers.compliance_check_source_route(connection, "show running-config | include ip source-route", "3.1.1 Set 'no ip source-route'", 1, global_report_output)
+    routing_parsers.compliance_check_proxy_arp(connection, "show ip interface", "3.1.2 Set 'no ip proxy-arp'", 2, global_report_output)
+    general_parsers.compliance_check_with_expected_empty_output(connection, "show ip interface brief | include Tunnel", "3.1.3 Set 'no interface tunnel;", 2, global_report_output)
+    routing_parsers.compliance_check_urpf(connection, "show ip interface", "3.1.4 Set 'ip verify unicast source reachable-via'", 2, global_report_output)
+
+    border_parsers.compliance_check_border_router_filtering(connection, "show ip access-list", "show running-config | section interface", 
+                                                            "3.2.1 Set 'ip access-list extended' to Forbid Private Source Addresses frrom External Networks", 
+                                                            "3.2.2 Set inbound 'ip access-group' on the External Interface", 2, global_report_output)
+    
+    routing_check.compliance_check_routing(connection, global_report_output)
 
 
     return global_report_output
