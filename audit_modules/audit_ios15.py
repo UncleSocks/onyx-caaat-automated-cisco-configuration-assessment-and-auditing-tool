@@ -86,11 +86,8 @@ def run_cis_cisco_ios_15_assessment(connection):
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include logging console critical", "2.2.3 Set 'logging console critical'", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include logging host", "2.2.4 Set IP address for 'logging host'", 1, global_report_output)
     logging_parsers.compliance_check_logging_trap(connection, "show logging | include Trap logging", "2.2.5 Set 'logging trap informational'", 1, global_report_output)
-    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include service timestamps debug datetime", 
-                                          "2.2.6 Set 'service timestamps debug datetime'", 1, global_report_output)
-    
-    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include source-interface Loopback",
-                                          "2.2.7 Set 'logging source interface", 1, global_report_output)
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include service timestamps debug datetime", "2.2.6 Set 'service timestamps debug datetime'", 1, global_report_output)
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include source-interface Loopback", "2.2.7 Set 'logging source interface", 1, global_report_output)
     
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include ntp authenticate", "2.3.1.1 Set 'ntp authenticate'", 2, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include ntp authentication-key", "2.3.1.2 Set 'ntp authentication-key'", 2, global_report_output)
@@ -105,6 +102,7 @@ def run_cis_cisco_ios_15_assessment(connection):
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include ntp source Loopback", "2.4.3 Set 'ntp source' to Loopback Interface", 2, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include tftp source-interface Loopback", "2.4.4 Set 'ip tftp source-interface' to the Loopback Interface",
                                                         2, global_report_output)
+    
     
     #3 Data Plane CIS Compliance Checks
     print("Performing CIS Cisco IOS 15 Data Plane Benchmarks assessment.")

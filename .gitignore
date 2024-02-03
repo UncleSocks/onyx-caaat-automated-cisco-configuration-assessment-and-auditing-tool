@@ -45,3 +45,7 @@ parser_modules/ios17/__pycache__/users_parsers.cpython-310.pyc
 parser_modules/ios17/__pycache__/snmp_parsers.cpython-310.pyc
 parser_modules/ios17/__pycache__/login_parsers.cpython-310.pyc
 .vscode/settings.json
+parser_modules/ios17/__pycache__/logging_parsers.cpython-310.pyc
+parser_modules/ios17/__pycache__/ntp_parsers.cpython-310.pyc
+parser_modules/ios17/__pycache__/services_parsers.cpython-310.pyc
+parser_modules/ios17/__pycache__/ssh_parsers.cpython-310.pyc

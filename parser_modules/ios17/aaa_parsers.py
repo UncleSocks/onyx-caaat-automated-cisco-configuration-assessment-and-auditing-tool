@@ -23,3 +23,16 @@ def compliance_check_aaa_auth_line_vty(connection, command, cis_check, level, gl
     compliant = bool(line_vty_list) and non_compliant_vty_counter == 0
     current_configuration = line_vty_list if line_vty_list else None
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+
+def compliance_check_aaa_source_int(connection, command_one, command_two, cis_check, level, global_report_output):
+    command_output_one = ssh_send(connection, command_one)
+    command_output_two = ssh_send(connection, command_two)
+    if not command_output_one and not command_output_two:
+        compliant = False
+        current_configuration = None
+        global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+    else:
+        compliant = True
+        current_configuration = f"TACACS+:{command_output_one if command_output_one else None}, RADIUS:{command_output_two if command_output_two else None}"
+        global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
