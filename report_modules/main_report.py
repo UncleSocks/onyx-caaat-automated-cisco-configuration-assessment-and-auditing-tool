@@ -129,7 +129,18 @@ Compliance Score Breakdown
         table.add_row([check['CIS Check'], check['Level'], check['Compliant'], configuration_tab_replace(check['Current Configuration'])])
     report_body += f"""
 {table}
-
+    """
+    if ios_version == 17:
+        report_body += f"""
+1.6 Login Enhancements    
+        """
+        table.clear_rows()
+        for check in parsed_report_output['MP Login Enhancements']:
+            table.add_row([check['CIS Check'], check['Level'], check['Compliant'], configuration_tab_replace(check['Current Configuration'])])
+        report_body += f"""
+{table}
+        """
+    report_body += f"""
 --------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -186,6 +197,14 @@ Compliance Score Breakdown
     """
     table.clear_rows()
     for check in parsed_report_output['DP Routing Rules']:
+        table.add_row([check['CIS Check'], check['Level'], check['Compliant'], configuration_tab_replace(check['Current Configuration'])])
+    report_body += f"""
+{table}
+
+3.2 Border Router Filtering
+    """
+    table.clear_rows()
+    for check in parsed_report_output['DP Border Router Filtering']:
         table.add_row([check['CIS Check'], check['Level'], check['Compliant'], configuration_tab_replace(check['Current Configuration'])])
     report_body += f"""
 {table}

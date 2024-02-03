@@ -1,5 +1,5 @@
 from parser_modules.ios15 import aaa_parsers, general_parsers, line_parsers, logging_parsers, ntp_parsers, services_parsers, snmp_parsers, ssh_parsers, users_parsers
-from parser_modules.ios15.routing_module import routing_parsers, routing_check
+from parser_modules.ios15.routing_module import border_parsers, routing_parsers, routing_check
 
 
 def run_cis_cisco_ios_15_assessment(connection):
@@ -110,7 +110,11 @@ def run_cis_cisco_ios_15_assessment(connection):
     routing_parsers.compliance_check_source_route(connection, "show running-config | include ip source-route", "3.1.1 Set 'no ip source-route'", 1, global_report_output)
     routing_parsers.compliance_check_proxy_arp(connection, "show ip interface", "3.1.2 Set 'no ip proxy-arp'", 2, global_report_output)
     general_parsers.compliance_check_with_expected_empty_output(connection, "show ip interface brief | include Tunnel", "3.1.3 Set 'no interface tunnel;", 2, global_report_output)
-    routing_parsers.compliance_check_urpf(connection, "show ip interface", "3.1.4 Set 'ip verify unicast source reachable-via'", 2, global_report_output)
+    routing_parsers.compliance_check_urpf(connection, "show running-config | section interface", "3.1.4 Set 'ip verify unicast source reachable-via'", 2, global_report_output)
+
+    border_parsers.compliance_check_border_router_filtering(connection, "show ip access-list", "show running-config | section interface", 
+                                                            "3.2.1 Set 'ip access-list extended' to Forbid Private Source Addresses frrom External Networks", 
+                                                            "3.2.2 Set inbound 'ip access-group' on the External Interface", 2, global_report_output)
 
     routing_check.compliance_check_routing(connection, global_report_output)
 
@@ -125,7 +129,8 @@ def parsed_output_ios15(report_output):
                           'MP Password Rules':report_output[18:21], 'MP SNMP Rules':report_output[21:31],
                           'CP Global Services SSH Rules':report_output[31:37], 'CP Global Services Rules':report_output[37:44], 'CP Logging Rules':report_output[44:51],
                           'CP NTP Rules':report_output[51:56], 'CP Loopback Rules':report_output[56:60], 
-                          'DP Routing Rules':report_output[60:64], 'DP Neighbor Auth EIGRP':report_output[64:73], 'DP Neighbor Auth OSPF':report_output[73:75],
-                          'DP Neighbor Auth RIP':report_output[75:80], 'DP Neighbor Auth BGP':report_output[80]}
+                          'DP Routing Rules':report_output[60:64], 'DP Border Router Filtering':report_output[64:66],
+                          'DP Neighbor Auth EIGRP':report_output[66:75], 'DP Neighbor Auth OSPF':report_output[75:77],
+                          'DP Neighbor Auth RIP':report_output[77:82], 'DP Neighbor Auth BGP':report_output[82]}
     
     return parsed_output_dict

@@ -171,6 +171,25 @@ def report_html_output_ios15(parsed_report_output, compliance_score_dict, html_f
                         </td>
                     </tr>
                 """
+    if ios_version == 17:
+        html_report += """
+                    <thead class="table-subsection">
+                        <th colspan="3">1.6 Login Enhancements</th>
+                    </thead>
+        """
+        for check in parsed_report_output['MP Login Enhancements']:
+            html_report += f"""
+                        <tr class="expandable-row">
+                            <td class="toggle-btn">{check['CIS Check']}</td>
+                            <td class="toggle-btn">{check['Level']}</td>
+                            <td class="toggle-btn">{check['Compliant']}</td>
+                        </tr>
+                        <tr class="expanded-content">
+                            <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                                <p>{check['Current Configuration']}
+                            </td>
+                        </tr>
+                    """
     html_report += """
             </table>
                 <div class="table-section">
@@ -285,6 +304,24 @@ def report_html_output_ios15(parsed_report_output, compliance_score_dict, html_f
                     </thead>
     """
     for check in parsed_report_output['DP Routing Rules']:
+        html_report += f"""
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">{check['CIS Check']}</td>
+                        <td class="toggle-btn">{check['Level']}</td>
+                        <td class="toggle-btn">{check['Compliant']}</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>{check['Current Configuration']}
+                        </td>
+                    </tr>
+                """
+    html_report += """
+                    <thead class="table-subsection">
+                        <th colspan="3">3.2 Border Router Filtering</th>
+                    </thead>
+                """
+    for check in parsed_report_output['DP Border Router Filtering']:
         html_report += f"""
                     <tr class="expandable-row">
                         <td class="toggle-btn">{check['CIS Check']}</td>

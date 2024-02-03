@@ -32,21 +32,13 @@ def compliance_check_proxy_arp(connection, command, cis_check, level, global_rep
 
 def compliance_check_urpf(connection, command, cis_check, level, global_report_output):
     command_output = ssh_send(connection, command)
-    regex_pattern = re.compile(r'^(?P<interface>\S+).*?IP verify source reachable-via RX', re.MULTILINE | re.DOTALL)
-    parser = regex_pattern.finditer(command_output)
-    interface_list = []
-
-    if not parser:
-        compliant = False
-    else:
-        for match in parser:
-            interface = match.group('interface')
-            interface_list.append(interface)
-        compliant = True
+    regex_pattern = re.compile(r'interface (?P<interface>\S+)(?:(?!interface).)*?ip verify unicast source reachable-via rx allow-default\n(?:.*?(?=(?:interface|$)))', re.DOTALL)
+    parser = regex_pattern.findall(command_output)
     
-    current_configuration = interface_list if interface_list else None
+    compliant = bool(parser)
+    current_configuration = {'Interface':parser if parser else None}
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
-    
+
 
 def compliance_check_dynamic_routing_tester(connection, command):
     command_output = ssh_send(connection, command)
@@ -545,7 +537,7 @@ def compliance_check_ospf(connection, command_one, command_two, level, global_re
 
     def compliance_check_ospf_int(connection, command, level, global_report_output):
         command_output = ssh_send(connection, command)
-        regex_pattern = re.compile(r'interface (?P<interface>\S+).*?ip ospf message-digest-key (?P<key>\d+) md5 (?P<md5_key>\S+)', re.DOTALL)
+        regex_pattern = re.compile(r'interface (?P<interface>\S+)(?:(?!interface).)*?ip ospf message-digest-key (?P<key>\d+) md5 (?P<md5_key>\S+)\n(?:.*?(?=(?:interface|$)))', re.DOTALL)
         parser = regex_pattern.findall(command_output)
 
         ospf_int_list = []
@@ -626,7 +618,7 @@ def compliance_check_rip(connection, command_one, command_two, level, global_rep
     
     def compliance_check_rip_key_chain(connection, command, level, global_report_output):
         command_output = ssh_send(connection, command)
-        regex_pattern = re.compile(r'interface (?P<interface>\S+).*?ip rip authentication key-chain (?P<key_chain>\S+)', re.DOTALL)
+        regex_pattern = re.compile(r'interface (?P<interface>\S+)(?:(?!interface).)*?ip rip authentication key-chain (?P<key_chain>\S+)\n(?:.*?(?=(?:interface|$)))', re.DOTALL)
         parser = regex_pattern.findall(command_output)
 
         rip_int_list = []
@@ -650,7 +642,7 @@ def compliance_check_rip(connection, command_one, command_two, level, global_rep
 
     def compliance_check_rip_mode(connection, command, level, global_report_output):
         command_output = ssh_send(connection, command)
-        regex_pattern = re.compile(r'interface (?P<interface>\S+).*?ip rip authentication mode (?P<mode>\S+)', re.DOTALL)
+        regex_pattern = re.compile(r'interface (?P<interface>\S+)(?:(?!interface).)*?ip rip authentication mode (?P<mode>\S+)\n(?:.*?(?=(?:interface|$)))', re.DOTALL)
         parser = regex_pattern.findall(command_output)
 
         rip_int_list = []

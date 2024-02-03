@@ -134,7 +134,7 @@ def run_cis_cisco_ios_17_assessment(connection):
     routing_parsers.compliance_check_source_route(connection, "show running-config | include ip source-route", "3.1.1 Set 'no ip source-route'", 1, global_report_output)
     routing_parsers.compliance_check_proxy_arp(connection, "show ip interface", "3.1.2 Set 'no ip proxy-arp'", 2, global_report_output)
     general_parsers.compliance_check_with_expected_empty_output(connection, "show ip interface brief | include Tunnel", "3.1.3 Set 'no interface tunnel;", 2, global_report_output)
-    routing_parsers.compliance_check_urpf(connection, "show ip interface", "3.1.4 Set 'ip verify unicast source reachable-via'", 2, global_report_output)
+    routing_parsers.compliance_check_urpf(connection, "show running-config | section interface", "3.1.4 Set 'ip verify unicast source reachable-via'", 2, global_report_output)
 
     border_parsers.compliance_check_border_router_filtering(connection, "show ip access-list", "show running-config | section interface", 
                                                             "3.2.1 Set 'ip access-list extended' to Forbid Private Source Addresses frrom External Networks", 
@@ -142,5 +142,18 @@ def run_cis_cisco_ios_17_assessment(connection):
     
     routing_check.compliance_check_routing(connection, global_report_output)
 
-
     return global_report_output
+
+
+def parsed_output_ios17(report_output):
+    
+    parsed_output_dict = {'Management Plane Checks':report_output[0:42], 'Control Plane Checks':report_output[42:72], 'Data Plane Checks':report_output[72:98], 
+                          'MP Local AAA Rules':report_output[0:10], 'MP Access Rules':report_output[10:21], 'MP Banner Rules':report_output[21:25], 
+                          'MP Password Rules':report_output[25:28], 'MP SNMP Rules':report_output[28:38], 'MP Login Enhancements':report_output[38:42],
+                          'CP Global Services SSH Rules':report_output[42:48], 'CP Global Services Rules':report_output[48:55], 'CP Logging Rules':report_output[55:63],
+                          'CP NTP Rules':report_output[63:68], 'CP Loopback Rules':report_output[68:72], 
+                          'DP Routing Rules':report_output[72:76], 'DP Border Router Filtering':report_output[76:78],
+                          'DP Neighbor Auth EIGRP':report_output[78:87], 'DP Neighbor Auth OSPF':report_output[87:89],
+                          'DP Neighbor Auth RIP':report_output[89:94], 'DP Neighbor Auth BGP':report_output[94]}
+    
+    return parsed_output_dict

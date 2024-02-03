@@ -1,6 +1,6 @@
 
 
-def score_ios15(parsed_report_output):
+def score_compute(parsed_report_output):
 
     compliance_score_dict = {'Passed Management Plane Checks':0, 'Failed Management Plane Checks':0,
                                'NA Management Plane Checks':0, 'Passed Control Plane Checks':0,

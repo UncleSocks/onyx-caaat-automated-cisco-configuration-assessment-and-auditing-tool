@@ -1,0 +1,1134 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width", initial-scale="1.0">
+            <title>ONYX: Cisco Another Automated Assessment Tool Report</title>
+            <link rel="icon" href="../assets/icon.png" type="image/x-icon">
+            <link rel="stylesheet" href="../html_report_styles.css">
+            <script src="../html_report_script.js"></script>
+        </head>
+        <body>
+            <div class="header">
+                <div class="logo"></div>
+                <div class="title">
+                    <p>CIS Cisco IOS Benchmark Assessment Report</p>
+                </div>
+                <div class="bar"></div>
+            </div>
+            <div class="summary-container">
+                <div class="summary-title">
+                    <div class="summary-font">
+                        Report Summary
+                    </div>
+                    <div class="date">
+                        <p>Report Generated: 2024-02-04 00:25:33.286828</p>
+                    </div>
+                </div>
+                <div class="summary-body">
+                    <div class="target">
+                        <p id="target-font">Target Details</p>
+                        <p>Target: 192.168.157.252
+                        <p>IOS Version: 15
+                        <p>Check: CIS Cisco IOS 15 Benchmark</p>
+                    </div>
+                    <div class="passed">
+                        <p id="score-font">Passed Checks</p>
+                        <div class="summary-bar"></div>
+                        <p><span id="score-value">33</span> out of 78 total assessment checks</p>
+                    </div>
+                    <div class="failed">
+                        <p id="score-font">Failed Checks</p>
+                        <div class="summary-bar"></div>
+                        <p><span id="score-value">45</span> out of 78 total assessment checks</p>
+                    </div>
+                    <div class="na">
+                        <p id="score-font">Not Applicable</p>
+                        <div class="summary-bar"></div>
+                        <p><span id="score-value">2</span> checks were not applicable</p>
+                    </div>
+                </div>
+            <div class="plane">
+                <div class="management">
+                    <p id="plane-font">Management Plane</p>
+                    <p><span id="plane-value-passed">10</span> checks passed; <span id="plane-value-failed">21</span> checks failed; <span id="plane-value-na">0</span> not applicable checks</p>
+                </div>
+                <div class="control">
+                    <p id="plane-font">Control Plane</p>
+                    <p><span id="plane-value-passed">10</span> checks passed; <span id="plane-value-failed">19</span> checks failed; <span id="plane-value-na">0</span> not applicable checks</p>
+                </div>
+                <div class="data">
+                    <p id="plane-font">Data Plane</p>
+                    <p><span id="plane-value-passed">13</span> checks passed; <span id="plane-value-failed">5</span> checks failed; <span id="plane-value-na">2</span> not applicable checks</p>
+                </div>
+            </div>
+            </div>
+            <div class="table-container">
+                <div class="table-header">
+                    <p class="table-header-font">Assessment Breakdown</p>
+                    <div class="table-bar"></div>
+                </div>
+                <div class="table-section">
+                    <p id="section-font">Management Plane</p>
+                </div>
+                <table class="expandable-table">
+                    <thead class="table-top-font">
+                        <th>CIS CHECK</th>
+                        <th>LEVEL</th>
+                        <th>COMPLIANT</th>
+                    </thead>
+                    <thead class="table-subsection">
+                        <th colspan="3">1.1 Local Authentication, Authorization and Accounting (AAA) Rules</th>
+                    </thead>
+        
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.1.1 Enable 'aaa new-model'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>no aaa new-model
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.1.2 Enable 'aaa authentication login'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.1.3 Enable 'aaa authentication enable default'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.1.4 Set 'login authentication for 'line con 0'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>[{'Channel': '0', 'Config': ' exec-timeout 0 0'}]
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.1.5 Set 'login authentication for 'line tty'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.1.6 Set 'login authentication for 'line vty'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>[{'Channel': '0 4', 'Config': ' login local'}]
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.1.7 Set 'aaa accounting' to log all privileged use commands using commands 15</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.1.8 Set 'aaa accounting connection'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.1.9 Set 'aaa accounting exec'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.1.10 Set 'aaa accounting network'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.1.11 Set 'aaa accounting system'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <thead class="table-subsection">
+                        <th colspan="3">1.2 Access Rules</th>
+                    </thead>
+    
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.2.1 Set 'privilege 1' for local users</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.2.2 Set 'transport input ssh' for 'line vty' connections</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>[{'Start': '0', 'End': '4', 'Transport Input': 'all'}]
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.2.4 Create 'access-list' for use with 'line vty'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.2.5 Set 'access-class' for 'line vty'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <thead class="table-subsection">
+                        <th colspan="3">1.3 Banner Rules</th>
+                    </thead>
+    
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.3.1 Set the 'banner-text' for 'banner exec'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.3.2 Set the 'banner-text' for 'banner login'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.3.3 Set the 'banner-text' for 'banner motd'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <thead class="table-subsection">
+                        <th colspan="3">1.4 Password Rules</th>
+                    </thead>
+    
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.4.1 Set 'password' for 'enable secret'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>enable secret 9 $9$OA/uEtSWvSe1p9$lzEOCuVEZ9FVjy9GdDvGv3q6XbmyFg40jp9F5dL3fbo
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.4.2 Enable 'service password-encryption'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>no service password-encryption
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.4.3 Set 'username secret' for all local users</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>[{'Username': 'admin', 'Secret': False, 'Config': 'password 0 password'}]
+                        </td>
+                    </tr>
+                
+                    <thead class="table-subsection">
+                        <th colspan="3">1.5 SNMP Rules</th>
+                    </thead>
+    
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.5.1 Set 'no snmp-server' to disable SNMP when unused</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>snmp agent enabled
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.5.2 Unset private for 'snmp-server community'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>Community name: private
+Community Index: private
+Community SecurityName: private
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.5.3 Unset public for 'snmp-server community'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>Community name: public
+Community Index: public
+Community SecurityName: public
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.5.4 Do not set 'RW' for any 'snmp-server community'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>[{'String': 'public', 'Access': 'RO'}, {'String': 'private', 'Access': 'RO'}, {'String': 'mouse', 'Access': 'RO'}]
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.5.5 Set the ACL for each 'snmp-server community'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>[{'String': 'public', 'ACL': '2'}, {'String': 'private', 'ACL': None}, {'String': 'mouse', 'ACL': '5'}]
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.5.6 Create an 'access-list' for use with SNMP</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.5.7 Set 'snmp-server host' when using SNMP</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>snmp-server host 192.168.157.200 public  bgp tty config
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.5.8 Set 'snmp-server enable traps snmp'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>snmp-server enable traps snmp authentication linkdown linkup coldstart
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.5.9 Set 'priv' for each 'snmp-server group' using SNMPv3</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>[{'Groupname': 'ILMI', 'Security Models': ['v1', 'v2c']}, {'Groupname': 'mouse', 'Security Models': ['v1', 'v2c']}, {'Groupname': 'public', 'Security Models': ['v1', 'v2c']}, {'Groupname': 'private', 'Security Models': ['v1', 'v2c', 'v3 priv']}]
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">1.5.10 Require 'aes 128' as minimum for 'snmp-server user' when using SNMPv3</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>[{'Username': 'brother', 'Authentication Protocol': 'None', 'Privacy Protocol': 'None', 'Groupname': 'public'}]
+                        </td>
+                    </tr>
+                
+            </table>
+                <div class="table-section">
+                    <p id="section-font">Control Plane</p>
+                </div>
+                <table class="expandable-table">
+                    <thead class="table-top-font">
+                        <th>CIS CHECK</th>
+                        <th>LEVEL</th>
+                        <th>COMPLIANT</th>
+                    </thead>
+                    <thead class="table-subsection">
+                        <th colspan="3">2.1 Global Services Rules</th>
+                    </thead>
+                    <thead class="table-subsection">
+                        <th colspan="3">2.1.1 Setup SSH</th>
+                    </thead>
+    
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.1.1.1.1 Set the 'hostname'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>hostname R1
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.1.1.1.2 Set the 'ip domain-name'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>ip domain name mydomain
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.1.1.1.3 Set 'modulus' to greater than or equal to 2048 for 'crypto key generate rsa'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>% Key pair was generated at: 14:04:39 UTC Feb 3 2024
+Key name: R1.mydomain
+Key type: RSA KEYS
+ Storage Device: not specified
+ Usage: General Purpose Key
+ Key is not exportable.
+ Key Data:
+  30820122 300D0609 2A864886 F70D0101 01050003 82010F00 3082010A 02820101 
+  00B5BB93 274B83B4 B1EF8D07 F6F4DFAD 4355BAC9 A072C028 3FB88C73 B864C735 
+  E5208CBD A92451E5 D33F6AE5 8265D66B D281B0ED F8768109 720DCB6B DB102516 
+  7CE0BC2E 5992BCF2 648EC971 6D1BD58A 2DBA770B 1B83A7FA 01B0CAA6 BF70506B 
+  8CF2779F FAEE77E6 E7DD92C8 9084E057 D63475EF FD7A1103 AAC999B2 06C02A9A 
+  14C454E9 C23744C6 9184F0F1 63380F55 5046655C 943B5FCC 5C1C9639 C848CF93 
+  008E337D 3709F7BF 9E0981F4 82F983ED E180BE95 45CB9922 521F1916 59DFDC4B 
+  F66F54D9 4BCB10FB 8F940CE2 7D1CE00F CB2560BA DE1DD110 909EC4F9 0315498A 
+  5A2AE1E1 0A9663B5 B7D43564 CAF7189B 53523FAB 5E6837FD 0386082F 982CDD43 
+  3B020301 0001
+% Key pair was generated at: 14:04:40 UTC Feb 3 2024
+Key name: R1.mydomain.server
+Key type: RSA KEYS
+Temporary key
+ Usage: Encryption Key
+ Key is not exportable.
+ Key Data:
+  307C300D 06092A86 4886F70D 01010105 00036B00 30680261 00CD612E 92E33C4D 
+  8D75BBB6 91700466 71E7227B E414A975 D1EA5B0D 48DE36DE D1C8A855 52352A97 
+  7A5460BA B4325D3A 3C02A8DA ED209850 270EC95F 8078F79E D9C60739 B605960B 
+  715C83DC 3F7B7813 D01B3F33 3BB1A5C5 0313B81A 053A7E34 F5020301 0001
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.1.1.1.4 Set 'seconds' for 'ip ssh timeout'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>Authentication Timeout: 120 secs
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.1.1.1.5 Set maximum value for 'ip ssh authentication-retries'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>Authentication Retries: 3
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.1.1.2 Set version 2 for 'ip ssh version'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>{'Status': 'Enabled', 'Version': '1.99', 'Authentication Timeout': 120, 'Authentication Retries': 3}
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.1.2 Set 'no cdp run'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>Global CDP information:
+	Sending CDP packets every 60 seconds
+	Sending a holdtime value of 180 seconds
+	Sending CDPv2 advertisements is  enabled
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.1.3 Set 'no ip bootp server'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.1.4 Set 'no service dhcp'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.1.5 Set 'no ip identd'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.1.6 Set 'service tcp-keepalives-in'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.1.7 Set 'service tcp-keepalives-out'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.1.8 Set 'no service pad'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <thead class="table-subsection">
+                        <th colspan="3">2.2 Logging Rules</th>
+                    </thead>
+    
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.2.1 Set 'logging on'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.2.2 Set 'buffer size' for 'logging buffered'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.2.3 Set 'logging console critical'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.2.4 Set IP address for 'logging host'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.2.5 Set 'logging trap informational'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>{'Trap Logging Level': 'informational'}
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.2.6 Set 'service timestamps debug datetime'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>service timestamps debug datetime msec
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.2.7 Set 'logging source interface</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <thead class="table-subsection">
+                        <th colspan="3">2.3 NTP Rules</th>
+                    </thead>
+    
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.3.1.1 Set 'ntp authenticate'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.3.1.2 Set 'ntp authentication-key'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.3.1.3 Set the 'ntp trusted key'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.3.1.4 Set 'key' for each 'ntp server'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.3.2 Set 'ip address' for 'ntp server'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <thead class="table-subsection">
+                        <th colspan="3">2.4 Loopback Rules</th>
+                    </thead>
+    
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.4.1 Create a single 'interface loopback'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.4.2 Set AAA 'source-interface'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.4.3 Set 'ntp source' to Loopback Interface</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">2.4.4 Set 'ip tftp source-interface' to the Loopback Interface</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+            </table>
+                <div class="table-section">
+                    <p id="section-font">Data Plane</p>
+                </div>
+                <table class="expandable-table">
+                    <thead class="table-top-font">
+                        <th>CIS CHECK</th>
+                        <th>LEVEL</th>
+                        <th>COMPLIANT</th>
+                    </thead>
+                    <thead class="table-subsection">
+                        <th colspan="3">3.1 Routing Rules</th>
+                    </thead>
+    
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">3.1.1 Set 'no ip source-route'</td>
+                        <td class="toggle-btn">1</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">3.1.2 Set 'no ip proxy-arp'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>[{'Interface': 'GigabitEthernet0/0', 'Proxy ARP': 'enabled'}]
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">3.1.3 Set 'no interface tunnel;</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">3.1.4 Set 'ip verify unicast source reachable-via'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>{'Interface': ['GigabitEthernet0/2']}
+                        </td>
+                    </tr>
+                
+                    <thead class="table-subsection">
+                        <th colspan="3">3.2 Border Router Filtering</th>
+                    </thead>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">3.2.1 Set 'ip access-list extended' to Forbid Private Source Addresses frrom External Networks</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">3.2.2 Set inbound 'ip access-group' on the External Interface</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <thead class="table-subsection">
+                        <th colspan="3">3.3 Neighbor Authentication</th>
+                    </thead>
+                    <thead class="table-subsection">
+                        <th colspan="3">3.3.1 Require EIGRP Authentication if Protocol is Used</th>
+                    </thead>
+    
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">3.3.1.1 Set 'key chain'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>[{'Key Chain': 'MYCHAIN', 'Key': '10', 'Key String': 'secureroute'}]
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">3.3.1.2 Set 'key'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>[{'Key Chain': 'MYCHAIN', 'Key': '10', 'Key String': 'secureroute'}]
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">3.3.1.3 Set 'key-string'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>[{'Key Chain': 'MYCHAIN', 'Key': '10', 'Key String': 'secureroute'}]
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">3.3.1.4 Set 'address-family ipv4 autonomous-system</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>[{'VRF': 'DLSU', 'Autonomous System': '100'}]
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">3.3.1.5 Set 'af-interface default'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>[{'VRF': 'DLSU', 'AF Interface': ['default']}]
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">3.3.1.6 Set 'authentication key-chain</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>[{'VRF': 'DLSU', 'Auth Key Chain': ['MYCHAIN']}]
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">3.3.1.7 Set 'authentication mode md5'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>[{'VRF': 'DLSU', 'Auth Mode': ['md5']}]
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">3.3.1.8 Set 'ip authentication key-chain eigrp'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">Not Applicable</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>No Classic EIGRP Configured
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">3.3.1.9 Set 'ip authentication mode eigrp'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">Not Applicable</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>No Classic EIGRP Configured
+                        </td>
+                    </tr>
+                
+                    <thead class="table-subsection">
+                        <th colspan="3">3.3.2 Require OSPF Authentication if Protocol is Used</th>
+                    </thead>
+    
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">3.3.2.1 Set 'authentication message-digest' for OSPF area</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>[{'Process ID': '10', 'Area Number': ['100'], 'Authentication': ['message-digest']}]
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">3.3.2.2 Set 'ip ospf message-digest-key md5'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">False</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>None
+                        </td>
+                    </tr>
+                
+                    <thead class="table-subsection">
+                        <th colspan="3">3.3.3 Require RIPv2 Authentication if Protocol is Used</th>
+                    </thead>
+    
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">3.3.3.1 Set 'key chain'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>[{'Key Chain': 'MYCHAIN', 'Key': '10', 'Key String': 'secureroute'}]
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">3.3.3.2 Set 'key'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>[{'Key Chain': 'MYCHAIN', 'Key': '10', 'Key String': 'secureroute'}]
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">3.3.3.3 Set 'key-string</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>[{'Key Chain': 'MYCHAIN', 'Key': '10', 'Key String': 'secureroute'}]
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">3.3.3.4 Set 'ip rip authentication key-chain'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>[{'Interface': 'GigabitEthernet0/0', 'Key Chain': 'MYCHAIN'}]
+                        </td>
+                    </tr>
+                
+                    <tr class="expandable-row">
+                        <td class="toggle-btn">3.3.3.5 Set 'ip rip authentication mode'</td>
+                        <td class="toggle-btn">2</td>
+                        <td class="toggle-btn">True</td>
+                    </tr>
+                    <tr class="expanded-content">
+                        <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                            <p>[{'Interface': 'GigabitEthernet0/0', 'Mode': 'md5'}]
+                        </td>
+                    </tr>
+                
+                    <thead class="table-subsection">
+                        <th colspan="3">3.3.4 Require BGP Authentication if Protocol is Used</th>
+                    </thead>
+    
+                <tr class="expandable-row">
+                    <td class="toggle-btn">3.3.4.1 Set 'neighbor password'</td>
+                    <td class="toggle-btn">2</td>
+                    <td class="toggle-btn">True</td>
+                </tr>
+                <tr class="expanded-content">
+                    <td colspan="3"><span id="current-config-font">CURRENT CONFIGURATION</span>
+                        <p>[{'Autonomous System': '10', 'Neighbor': [{'Neighbor': '1.1.2.2', 'Peer-Group': 'DLSU', 'Password': None}, {'Neighbor': '1.1.3.3', 'Peer-Group': None, 'Password': 'test'}, {'Neighbor': '1.1.4.4', 'Peer-Group': 'UPC', 'Password': None}], 'Peer-Group': [{'Peer': 'DLSU', 'Password': 'test'}, {'Peer': 'UPC', 'Password': 'TEST'}]}]
+                    </td>
+                </tr>
+            
+                </table>
+            </div>
+        </body>
+        </html>
+    
