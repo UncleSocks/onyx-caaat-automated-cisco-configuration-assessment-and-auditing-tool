@@ -1,6 +1,5 @@
 ![icon](https://github.com/UncleSocks/onyx-caaat/assets/79778613/50651130-797f-4e7d-b3f9-72ad903db40b)
 
-**NOTE: IOS17 ASSESSMENT CHECKS ARE STILL UNDER DEVELOPMENT**
 # ONYX: Cisco Another Automated Assessment Tool (CAAAT)
 
 ONYX: CAAAT is a Python3 tool, named after our rescued black cat, that performs automated Center for Internet Security (CIS) Cisco IOS Benchmarks version 8 audits on Cisco routers.
