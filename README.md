@@ -1,4 +1,5 @@
-![icon](https://github.com/UncleSocks/onyx-caaat/assets/79778613/50651130-797f-4e7d-b3f9-72ad903db40b)
+![onyx](https://github.com/UncleSocks/onyx-caaat-cis-cisco-ios-assessment/assets/79778613/00acbed4-5b01-4c06-bfe5-963b53cd6559)
+
 
 # ONYX: Cisco Another Automated Assessment Tool (CAAAT)
 
