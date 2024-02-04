@@ -27,3 +27,4 @@ The tool uses `Netmiko` to connect to the target Cisco IOS router via SSH. The `
 **Start with Options**: Run `onyx.py -v [15|17] -o <filename>.html` to explicitly specify the Cisco IOS version and export the output in HTML format.
 
 **Note**: The HTML reports are located under the `./report_modules/reports/` folder. A `sample.html` file is provided as a reference.
+
