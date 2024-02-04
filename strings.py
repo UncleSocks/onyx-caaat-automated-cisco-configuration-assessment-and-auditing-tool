@@ -26,7 +26,7 @@ def logo():
                                                                                   
 Created by Tyrone Kevin Ilisan (@unclesocks)
 
-[+] Release 2023.1.0
+[+] Release 2024.1.0
 [+] Audits CIS Cisco IOS 15 and IOS 17 Benchmarks version 8
 [+] Supports HTML and CLI output
 
