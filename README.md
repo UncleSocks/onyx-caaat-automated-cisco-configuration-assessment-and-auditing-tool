@@ -11,6 +11,8 @@ ONYX: CAAAT is a Python3 tool, named after our rescued black cat, that performs 
 
 Run `pip install -r requirements.txt` to install the tool's dependencies.
 
+### Dependencies
+
 The tool uses `Netmiko` to connect to the target Cisco IOS router via SSH. The `Maskpass` and `PrettyTable` are used to obfuscate the login password and display the report output in the CLI, respectively.
 
 **Note:** SSH must already be configured on the target Cisco IOS router and the host machine, running the tool, should also have a stable connection to the router.
@@ -29,3 +31,46 @@ The tool uses `Netmiko` to connect to the target Cisco IOS router via SSH. The `
 
 **Note**: The HTML reports are located under the `./report_modules/reports/` folder. A `sample.html` file is provided as a reference.
 
+### Running ONYX: CAAAT
+When running ONYX, it will require you to enter the Cisco router's **IP address**, **username**, **password**, and **enable password/secret**. Ensure that you have connectivity to the target.
+```
+==================================================================================================================================
+==================================================================================================================================
+                                        :;       ..    _______
+                                          +X$XxxX$x    < MEOW >
+                                          X$$$XXX+    [_______]
+                                          :$$X$xX$:   /
+                                      .;$X$$$X$$$
+                                    :X$$X$$$$XXx;+
+                                  :XX$$$$$$$$$&$XX
+                                .XXX$$$$$XXX$&&$.
+                                xXXX$$$$$XX$&$;   +$&+ &&X.  .;&&&&&+  ;&&;.$&&&&&.  ;&$. :&&&&&x. ;&$:
+                                x$$X$$$&$X$$$+  :&&&&. $&&&X   x$&&&&X  ..   X&&&&$   :    .&&&&&+ :;
+                                ;$$$$$$$$$$$$   &&&&&. $&&&&x  x +&&&&&..     X&&&&$::      .&&&&&x
+                                .$$$$$$$$$$$X  .&&&&&. $&&&&X  x  .&&&&&X      x&&&&+        .&&&&&;
+                                .X$$$$$$$$$$x   $&&&&. $&&&&.  x    $&&&&      ;&&&&+       :.:&&&&&:
+                                ;$$$$$$$$$$$$$$.  +&&&. $&&&.  .&.    +&&&      ;&&&&+      $:  .&&&&&:
+                                ;$$X.   ....XX:     ......     ..    ....      ......      ..  .......  , iii, iv, v
+                                  X$$$Xxxx+xX
+                                      .:;x;           Cisco Another Automated Assessment Tool
+
+
+Created by Tyrone Kevin Ilisan (@unclesocks)
+
+[+] Release 2024.1.0
+[+] Audits CIS Cisco IOS 15 and IOS 17 Benchmarks version 8
+[+] Supports HTML and CLI output
+
+Tip: Use the -h option for more information on how to use Onyx's arguments and ensure stable connectivity between
+the target Cisco router and the host machine running the CAAAT.
+
+GitHub: https[://]github[.]com/UncleSocks/onyx-caaat
+
+==================================================================================================================================
+
+Target > 192.168.157.251
+Username > admin
+Password > ********
+Enable # ********
+
+```
