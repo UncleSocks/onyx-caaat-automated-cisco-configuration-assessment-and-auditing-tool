@@ -1,13 +1,11 @@
 ![onyx](https://github.com/UncleSocks/onyx-caaat-cis-cisco-ios-assessment/assets/79778613/00acbed4-5b01-4c06-bfe5-963b53cd6559)
 
-
 # ONYX: Cisco Another Automated Assessment Tool (CAAAT)
 
-ONYX: CAAAT is a Python3 tool, named after our rescued black cat, that performs automated Center for Internet Security (CIS) Cisco IOS Benchmarks version 8 audits on Cisco routers.
+![Static Badge](https://img.shields.io/badge/License-MIT-yellow) ![Static Badge](https://img.shields.io/badge/Release-2024.1.0-green)
 
-The tool is capable of assessing Cisco IOS versions 15 and 17 routers using the `Netmiko` module against the CIS Cisco IOS 15 and Cisco IOS 17 Benchmarks, respectively.
 
-ONYX is created by Tyrone Kevin Ilisan as part of his Master in Information Security program.
+ONYX: CAAAT is a Python3 tool, named after our rescued black cat, that performs automated Center for Internet Security (CIS) Cisco IOS 15 and 17 Benchmark assessments. It is built by Tyrone Kevin Ilisan for his Master's degree capstone project.
 
 ## Prerequisites
 
@@ -26,6 +24,8 @@ The tool uses `Netmiko` to connect to the target Cisco IOS router via SSH. The `
 **Quick Start**: Simply run `onyx.py` and wait for ONYX to complete its assessment.
 
 **Start with Options**: Run `onyx.py -v [15|17] -o <filename>.html` to explicitly specify the Cisco IOS version and export the output in HTML format.
+
+**Example:** `onyx.py -v 15 -o report.html`
 
 **Note**: The HTML reports are located under the `./report_modules/reports/` folder. A `sample.html` file is provided as a reference.
 
