@@ -164,6 +164,10 @@ The **Assessment Breakdown** provides a more detailed output of each of the CIS 
 ```
 
 ### HTML Assessment Report
-When the `-o` or `--output` option is specified, the tool will output an HTML report. The HTML reports are stored under the `reports_module/reports` folder. Two sample HTML reports are provided for reference; `sample_ios15` for Cisco IOS 15 and `sample_ios17` for Cisco IOS 17. 
+When the `-o` or `--output` option is specified, the tool will output an HTML report. 
+
+**Note:** The HTML reports are stored under the `reports_module/reports` folder. 
 
 ![image](https://github.com/UncleSocks/onyx-caaat-cis-cisco-ios-assessment/assets/79778613/83977183-c97e-44a3-87a4-68fa0996cf05)
+
+Two sample HTML reports are provided for reference; `sample_ios15` for Cisco IOS 15 and `sample_ios17` for Cisco IOS 17. 
