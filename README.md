@@ -86,6 +86,10 @@ Once SSH connection is established, it will identify the Cisco IOS version and r
 
 ## Assessment Output
 
+ONYX is capable of displaying its assessments reports in CLI and HTML format.
+
+### CLI Assessment Report
+
 The report is divided into two main sections: the **Report Summary** and the **Assessment Breakdown**. 
 
 The Report Summary displays the overall number of **Passed**, **Failed**, and **Not Applicable (NA)** compliance checks. It also displays a high-level table of the different CIS checks performed and their compliance result.
