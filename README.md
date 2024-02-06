@@ -20,14 +20,18 @@ The tool uses `Netmiko` to connect to the target Cisco IOS router via SSH. The `
 ## Options
 `-v` or `--version`: Explicitly specify the target's Cisco IOS version, either 15 or 17. If this option is not specified, the tool will attempt to identify the router's version automatically. 
 
-`o` or `--output`: Specify the HTML report filename with the `.html` extension. If this option is not specified, the tool will not export the report in HTML format and will only display the output in the CLI.
+`-o` or `--output`: Specify the HTML report filename with the `.html` extension. If this option is not specified, the tool will not export the report in HTML format and will only display the output in the CLI.
 
 ## Usage
 **Quick Start**: Simply run `onyx.py` and wait for ONYX to complete its assessment.
 
 **Start with Options**: Run `onyx.py -v [15|17] -o <filename>.html` to explicitly specify the Cisco IOS version and export the output in HTML format.
 
-**Example:** `onyx.py -v 17 -o report.html`
+**Example:** 
+
+```
+C:\Users\UncleSocks\Documents\Tools\Onyx_Directory\onyx.py -v 17 -o report.html
+```
 
 ### Running ONYX: CAAAT
 When running ONYX, it will require you to enter the Cisco router's **IP address**, **username**, **password**, and **enable password/secret**. Ensure that the target is reachable. 
