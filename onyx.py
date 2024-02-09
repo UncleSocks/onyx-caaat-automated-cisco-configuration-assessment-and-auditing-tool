@@ -3,7 +3,7 @@ from init import ios_version_check, arguments, argument_checks, user_input
 from audit_modules.audit_ios15 import run_cis_cisco_ios_15_assessment, parsed_output_ios15
 from audit_modules.audit_ios17 import run_cis_cisco_ios_17_assessment, parsed_output_ios17
 from report_modules.score import score_compute
-from report_modules.html_report import report_html_output_ios15
+from report_modules.html_report import report_html_output
 from report_modules.main_report import report_cli_output
 
 
@@ -42,7 +42,7 @@ if __name__ == "__main__":
             report_cli_output(parsed_cis_ios_15_assessment, cis_ios_15_compliance_score, connect['IP Address'], ios_version)
 
             print("Exporting to an HTML output.")
-            report_html_output_ios15(parsed_cis_ios_15_assessment, cis_ios_15_compliance_score, arguments().output, connect['IP Address'], ios_version)
+            report_html_output(parsed_cis_ios_15_assessment, cis_ios_15_compliance_score, arguments().output, connect['IP Address'], ios_version)
     
     elif ios_version == 17:
         #Still under development
@@ -60,7 +60,7 @@ if __name__ == "__main__":
             report_cli_output(parsed_cis_ios_17_assessment, cis_ios_17_compliance_score, connect['IP Address'], ios_version)
 
             print("Exporting to an HTML output.")
-            report_html_output_ios15(parsed_cis_ios_17_assessment, cis_ios_17_compliance_score, arguments().output, connect['IP Address'], ios_version)
+            report_html_output(parsed_cis_ios_17_assessment, cis_ios_17_compliance_score, arguments().output, connect['IP Address'], ios_version)
     
     else:
         print("Error 0002 - Unable to identify Cisco IOS version.")

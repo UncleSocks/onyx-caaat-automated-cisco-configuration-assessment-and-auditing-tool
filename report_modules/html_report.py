@@ -1,6 +1,6 @@
 from datetime import datetime
 
-def report_html_output_ios15(parsed_report_output, compliance_score_dict, html_filename, target_ip_address, ios_version):
+def report_html_output(parsed_report_output, compliance_score_dict, html_filename, target_ip_address, ios_version):
 
     html_report = f"""
         <!DOCTYPE html>
