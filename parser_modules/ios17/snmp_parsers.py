@@ -125,9 +125,13 @@ def compliance_check_snmp_v3(connection, command_one, command_two,
         if snmp_v3 == True:
 
             command_output = ssh_send(connection, command)
-            regex_pattern = re.compile(r'''User\ name:\s+(?P<username>\w+)\nEngine\ ID:\s+(?P<engine_id>[\w\d]+)\nstorage-type:\s+(?P<storage_type>\S+\s+\S+)
-                                    \nAuthentication\ Protocol:\s+(?P<auth_protocol>\w+)\nPrivacy\ Protocol:\s+(?P<privacy_protocol>\w+)
-                                    \nGroup-name:\s+(?P<groupname>\w+)\n''', re.VERBOSE)
+            regex_pattern = re.compile(r'''
+                                        User\s+name:\s+(?P<username>\w+)\n
+                                        (?:.*\n)*? 
+                                        Authentication\s+Protocol:\s+(?P<auth_protocol>\w+)\n
+                                        Privacy\s+Protocol:\s+(?P<privacy_protocol>\w+)\n
+                                        Group-name:\s+(?P<groupname>\w+)\n
+                                    ''', re.VERBOSE)
             
             parser = regex_pattern.finditer(command_output)
             snmp_user_list = []
@@ -141,7 +145,7 @@ def compliance_check_snmp_v3(connection, command_one, command_two,
                 current_snmp_user_info = {"Username":username, "Authentication Protocol":auth_protocol,
                                         "Privacy Protocol":privacy_protocol, "Groupname":groupname}
                 
-                if privacy_protocol.lower() != "aes128":
+                if privacy_protocol.lower() != "aes128" and privacy_protocol.lower() != "aes192" and privacy_protocol.lower() != "aes256":
                     non_compliant_snmp_user_counter += 1
 
                 snmp_user_list.append(current_snmp_user_info)
