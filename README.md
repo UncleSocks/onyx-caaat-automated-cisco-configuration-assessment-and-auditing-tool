@@ -9,9 +9,7 @@ ONYX: CAAAT is a Python3 tool, named after our rescued black cat, that performs 
 
 ## Software Architecture
 
-ONYX comprises of multiple Python scripts and modules:
-
-![architecture](https://github.com/UncleSocks/onyx-caaat-automated-cisco-ios-configuration-assessment-and-auditing-tool/assets/79778613/cba5a070-133e-4be9-a2a6-322ec3695982)
+![architecture](https://github.com/UncleSocks/onyx-caaat-automated-cisco-ios-configuration-assessment-and-auditing-tool/assets/79778613/bf862f13-d777-4ab5-aead-bd8344e0bdae)
 
 
 ## Prerequisites
