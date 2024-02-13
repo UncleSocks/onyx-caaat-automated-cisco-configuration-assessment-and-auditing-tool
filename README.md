@@ -1,6 +1,6 @@
 ![onyx](https://github.com/UncleSocks/onyx-caaat-cis-cisco-ios-assessment/assets/79778613/00acbed4-5b01-4c06-bfe5-963b53cd6559)
 
-# ONYX: Cisco Another Automated Assessment Tool (CAAAT)
+# ONYX: Cisco Automated Assessment and Auditing Tool (CAAAT)
 
 ![Static Badge](https://img.shields.io/badge/License-MIT-yellow) ![Static Badge](https://img.shields.io/badge/Release-2024.1.0-green)
 
