@@ -55,7 +55,7 @@ When running ONYX, it will require you to enter the Cisco router's **IP address*
                                 ;$$$$$$$$$$$$$$.  +&&&. $&&&.  .&.    +&&&      ;&&&&+      $:  .&&&&&:
                                 ;$$X.   ....XX:     ......     ..    ....      ......      ..  .......  , iii, iv, v
                                   X$$$Xxxx+xX
-                                      .:;x;           Cisco Another Automated Assessment Tool
+                                      .:;x;           Cisco Automated Assessment and Auditing Tool
 
 
 Created by Tyrone Kevin Ilisan (@unclesocks)
