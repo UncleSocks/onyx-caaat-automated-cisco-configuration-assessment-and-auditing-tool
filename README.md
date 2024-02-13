@@ -7,6 +7,13 @@
 
 ONYX: CAAAT is a Python3 tool, named after our rescued black cat, that performs automated Center for Internet Security (CIS) Cisco IOS 15 and 17 Benchmark assessments. It is built by Tyrone Kevin Ilisan for his Master's degree capstone project.
 
+## Software Architecture
+
+ONYX comprises of multiple Python scripts and modules:
+
+![architecture](https://github.com/UncleSocks/onyx-caaat-automated-cisco-ios-configuration-assessment-and-auditing-tool/assets/79778613/cba5a070-133e-4be9-a2a6-322ec3695982)
+
+
 ## Prerequisites
 
 Run `pip install -r requirements.txt` to install the tool's dependencies.
