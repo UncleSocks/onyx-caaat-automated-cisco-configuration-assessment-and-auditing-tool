@@ -21,7 +21,7 @@ def logo():
                                 ;$$$$$$$$$$$$$$.  +&&&. $&&&.  .&.    +&&&      ;&&&&+      $:  .&&&&&:          
                                 ;$$X.   ....XX:     ......     ..    ....      ......      ..  .......  , iii, iv, v                                     
                                   X$$$Xxxx+xX                                                                    
-                                      .:;x;           Cisco Another Automated Assessment Tool  
+                                      .:;x;           Cisco Automated Assessment and Auditing Tool  
 
                                                                                   
 Created by Tyrone Kevin Ilisan (@unclesocks)
@@ -44,7 +44,7 @@ GitHub: https[://]github[.]com/UncleSocks/onyx-caaat
 def onyx_description():
     
   onyx_description = """
-Onyx is an automated assessment tool, currently supporting Center for Internet Security (CIS) Cisco IOS 15 Benchmark
+Onyx is an automated assessment and auditing tool, currently supporting Center for Internet Security (CIS) Cisco IOS 15 Benchmark
 and Cisco IOS 17 Benchmark version 8. If no option is specified, it will automatically attempt to identify the Cisco
 IOS version and will only output the assessment result in the CLI.
   """
