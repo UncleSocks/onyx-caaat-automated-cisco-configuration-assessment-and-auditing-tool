@@ -14,11 +14,21 @@ def compliance_check_aaa_auth_line_con(connection, command, cis_check, level, gl
     for match in parser:
         line_channel = match.group('channel')
         line_config = match.group('config') if match.group('config') else None
-        current_line_con_info = {'Channel':line_channel, 'Config':line_config}
-        line_con_list.append(current_line_con_info)
 
-        if current_line_con_info['Config'] == None:
+        if line_config == None:
             non_compliant_con_counter += 1
+            login_auth = None
+        
+        else:
+            login_auth_search = re.search(r'login\s+authentication\s+(?P<auth_list>\S+)', line_config)
+            if not login_auth_search:
+                non_compliant_con_counter += 1
+                login_auth = None
+            else:
+                login_auth = login_auth_search.group('auth_list')
+
+        current_line_con_info = {'Channel':line_channel, 'Config':login_auth}
+        line_con_list.append(current_line_con_info)
     
     compliant = bool(line_con_list) and non_compliant_con_counter == 0
     current_configuration = line_con_list if line_con_list else None
@@ -36,11 +46,21 @@ def compliance_check_aaa_auth_line_tty(connection, command, cis_check, level, gl
     for match in parser:
         line_channel = match.group('channel')
         line_config = match.group('config') if match.group('config') else None
-        current_line_tty_info = {'Channel':line_channel, 'Config':line_config}
-        line_tty_list.append(current_line_tty_info)
 
-        if current_line_tty_info['Config'] == None:
+        if line_config == None:
             non_compliant_tty_counter += 1
+            login_auth = None
+        
+        else:
+            login_auth_search = re.search(r'login\s+authentication\s+(?P<auth_list>\S+)', line_config)
+            if not login_auth_search:
+                non_compliant_tty_counter += 1
+                login_auth = None
+            else:
+                login_auth = login_auth_search.group('auth_list')
+
+        current_line_tty_info = {'Channel':line_channel, 'Config':login_auth}
+        line_tty_list.append(current_line_tty_info)
 
     compliant = bool(line_tty_list) and non_compliant_tty_counter == 0
     current_configuration = line_tty_list if line_tty_list else None
@@ -58,11 +78,21 @@ def compliance_check_aaa_auth_line_vty(connection, command, cis_check, level, gl
     for match in parser:
         line_channel = match.group('channel')
         line_config = match.group('config') if match.group('config') else None
-        current_line_vty_info = {'Channel':line_channel, 'Config':line_config}
-        line_vty_list.append(current_line_vty_info)
 
-        if current_line_vty_info['Config'] == None:
+        if line_config == None:
             non_compliant_vty_counter += 1
+            login_auth = None
+        
+        else:
+            login_auth_search = re.search(r'login\s+authentication\s+(?P<auth_list>\S+)', line_config)
+            if not login_auth_search:
+                non_compliant_vty_counter += 1
+                login_auth = None
+            else:
+                login_auth = login_auth_search.group('auth_list')
+        
+        current_line_vty_info = {'Channel':line_channel, 'Auth':login_auth}
+        line_vty_list.append(current_line_vty_info)
     
     compliant = bool(line_vty_list) and non_compliant_vty_counter == 0
     current_configuration = line_vty_list if line_vty_list else None
