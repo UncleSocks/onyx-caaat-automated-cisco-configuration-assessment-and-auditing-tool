@@ -13,7 +13,7 @@ def run_cis_cisco_ios_15_assessment(connection):
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include aaa authentication login", "1.1.2 Enable 'aaa authentication login'", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include aaa authentication enable","1.1.3 Enable 'aaa authentication enable default'", 1, global_report_output)
     aaa_parsers.compliance_check_aaa_auth_line_con(connection, "show running-config | section con | include login authentication", "1.1.4 Set 'login authentication for 'line con 0'", 1, global_report_output)
-    aaa_parsers.compliance_check_aaa_auth_line_tty(connection, "show running-config | section tty | include login authentication", "1.1.5 Set 'login authentication for 'line tty'", 1, global_report_output)
+    aaa_parsers.compliance_check_aaa_auth_line_tty(connection, "show line", "show running-config | section tty | include login authentication", "1.1.5 Set 'login authentication for 'line tty'", 1, global_report_output)
     aaa_parsers.compliance_check_aaa_auth_line_vty(connection, "show running-config | section vty | include login authentication", "1.1.6 Set 'login authentication for 'line vty'", 1, global_report_output)
 
     aaa_accounting_commands = ["commands 15", "connection", "exec", "network", "system"]
