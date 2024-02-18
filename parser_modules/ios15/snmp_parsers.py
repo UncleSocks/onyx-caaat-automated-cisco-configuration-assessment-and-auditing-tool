@@ -125,11 +125,11 @@ def compliance_check_snmp_v3(connection, command_one, command_two,
 
             command_output = ssh_send(connection, command)
             regex_pattern = re.compile(r'''
-                                        User\s+name:\s+(?P<username>\w+)\n
+                                        User\s+name:\s+(?P<username>\S+)\n
                                         (?:.*\n)*? 
                                         Authentication\s+Protocol:\s+(?P<auth_protocol>\w+)\n
                                         Privacy\s+Protocol:\s+(?P<privacy_protocol>\w+)\n
-                                        Group-name:\s+(?P<groupname>\w+)\n
+                                        Group-name:\s+(?P<groupname>\S+)\n
                                     ''', re.VERBOSE)
             
             parser = regex_pattern.finditer(command_output)
