@@ -537,7 +537,7 @@ def compliance_check_ospf(connection, command_one, command_two, level, global_re
 
     def compliance_check_ospf_int(connection, command, level, global_report_output):
         command_output = ssh_send(connection, command)
-        regex_pattern = re.compile(r'interface (?P<interface>\S+)(?:(?!interface).)*?ip ospf message-digest-key (?P<key>\d+) md5 (?P<md5_key>(?:\d+\s+\S+)\S+)\n(?:.*?(?=(?:interface|$)))', re.DOTALL)
+        regex_pattern = re.compile(r'interface (?P<interface>\S+)(?:(?!interface).)*?ip ospf message-digest-key (?P<key>\d+) md5 (?P<md5_key>(?:\d+\s+\S+)|\S+)\n(?:.*?(?=(?:interface|$)))', re.DOTALL)
         parser = regex_pattern.findall(command_output)
 
         ospf_int_list = []
