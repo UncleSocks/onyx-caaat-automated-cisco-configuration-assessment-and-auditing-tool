@@ -443,10 +443,10 @@ def compliance_check_ospf(connection, command_one, command_two, level, global_re
                 non_compliant_ospf_counter += 1
                 current_ospf_info = {'Process ID':ospf_id, 'Area Number':ospf_config, 'Authentication':ospf_config}
                 ospf_list.append(current_ospf_info)
-                print(f"{ospf_id} did not find conf")
+
             
             else:
-                auth_regex_pattern = re.compile(r'^\s*area (?P<area_number>\d+) authentication(?:\s+(?P<authentication_value>\S+))?$', re.MULTILINE)
+                auth_regex_pattern = re.compile(r'^\s*area (?P<area_number>\S+) authentication(?:\s+(?P<authentication_value>\S+))?$', re.MULTILINE)
                 auth_parser = auth_regex_pattern.findall(ospf_config)
 
                 unique_area_with_auth_list = []
@@ -467,7 +467,7 @@ def compliance_check_ospf(connection, command_one, command_two, level, global_re
 
                     area_without_auth_list = []
 
-                    area_regex_pattern = re.compile(r'network\s+\S+\s+\S+\s+area\s+(?P<area_number>\d+)', re.MULTILINE)
+                    area_regex_pattern = re.compile(r'network\s+\S+\s+\S+\s+area\s+(?P<area_number>\S+)', re.MULTILINE)
                     area_parser = area_regex_pattern.findall(ospf_config)
                     for match in area_parser:
                         area_number = match
@@ -495,7 +495,7 @@ def compliance_check_ospf(connection, command_one, command_two, level, global_re
                 else:
                     non_compliant_ospf_counter += 1
 
-                    area_regex_pattern = re.compile(r'network\s+\S+\s+\S+\s+area\s+(?P<area_number>\d+)', re.MULTILINE)
+                    area_regex_pattern = re.compile(r'network\s+\S+\s+\S+\s+area\s+(?P<area_number>\S+)', re.MULTILINE)
                     area_parser = area_regex_pattern.findall(ospf_config)
                     
                     if area_parser:
