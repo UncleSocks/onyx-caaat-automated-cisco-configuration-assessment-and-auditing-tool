@@ -704,7 +704,7 @@ def compliance_check_bgp(connection, command, cis_check, level, global_report_ou
                         bgp_peer_group = regex_pattern_bgp_peer_match.group('peer')
                         current_neighbor_info['Peer-Group'] = bgp_peer_group
 
-                    regex_pattern_bgp_password_match = re.match(r'password (?P<password>\S+)', bgp_neighbor_config)
+                    regex_pattern_bgp_password_match = re.match(r'password (?P<password>(?:\d+\s+\S+)|\S+)', bgp_neighbor_config)
                     if regex_pattern_bgp_password_match:
                         bgp_password = regex_pattern_bgp_password_match.group('password')
                         current_neighbor_info['Password'] = bgp_password
@@ -717,7 +717,7 @@ def compliance_check_bgp(connection, command, cis_check, level, global_report_ou
                         bgp_peer_group = regex_pattern_bgp_peer_match.group('peer')
                         current_neighbor_info['Peer-Group'] = bgp_peer_group
 
-                    regex_pattern_bgp_password_match = re.match(r'password (?P<password>\S+)',bgp_neighbor_config)
+                    regex_pattern_bgp_password_match = re.match(r'password (?P<password>(?:\d+\s+\S+)|\S+)', bgp_neighbor_config)
                     if regex_pattern_bgp_password_match:
                         bgp_password = regex_pattern_bgp_password_match.group('password')
                         current_neighbor_info['Password'] = bgp_password
@@ -727,7 +727,7 @@ def compliance_check_bgp(connection, command, cis_check, level, global_report_ou
 
                 if existing_peer is None:
                     current_peer_info = {'Peer':bgp_neighbor, 'Password':None}
-                    regex_pattern_bgp_password_match = re.match(r'password (?P<password>\S+)', bgp_neighbor_config)
+                    regex_pattern_bgp_password_match = re.match(r'password (?P<password>(?:\d+\s+\S+)|\S+)', bgp_neighbor_config)
 
                     if regex_pattern_bgp_password_match:
                         bgp_password = regex_pattern_bgp_password_match.group('password')
@@ -736,7 +736,7 @@ def compliance_check_bgp(connection, command, cis_check, level, global_report_ou
                     bgp_peer_list.append(current_peer_info)
                 
                 else:
-                    regex_pattern_bgp_password_match = re.match(r'password (?P<password>\S+)', bgp_neighbor_config)
+                    regex_pattern_bgp_password_match = re.match(r'password (?P<password>(?:\d+\s+\S+)|\S+)', bgp_neighbor_config)
                     if regex_pattern_bgp_password_match:
                         bgp_password = regex_pattern_bgp_password_match.group('password')
                         current_peer_info['Password'] = bgp_password
