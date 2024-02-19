@@ -143,7 +143,7 @@ def compliance_check_eigrp(connection, command_one, command_two, level, global_r
                 global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
         
         else:
-            regex_pattern = re.compile(r'key chain (?P<chain>\S+)\n(?: key (?P<key>\d+)(?:\n  key-string (?P<key_string>\S+))?)?')
+            regex_pattern = re.compile(r'key chain (?P<chain>\S+)\n(?: key (?P<key>\d+)(?:\n  key-string (?P<key_string>(?:\d+\s+\S+)|\S+))?)?')
             parser = regex_pattern.finditer(command_output)
             eigrp_key_list = []
             eigrp_without_key_string_counter = 0
@@ -581,7 +581,7 @@ def compliance_check_rip(connection, command_one, command_two, level, global_rep
                 global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
         
         else:
-            regex_pattern = re.compile(r'key chain (?P<chain>\S+)\n(?: key (?P<key>\d+)(?:\n  key-string (?P<key_string>\S+))?)?')
+            regex_pattern = re.compile(r'key chain (?P<chain>\S+)\n(?: key (?P<key>\d+)(?:\n  key-string (?P<key_string>(?:\d+\s+\S+)|\S+))?)?')
             parser = regex_pattern.finditer(command_output)
             rip_key_list = []
             rip_without_key_string_counter = 0
