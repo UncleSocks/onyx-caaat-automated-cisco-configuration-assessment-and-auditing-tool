@@ -686,7 +686,7 @@ def compliance_check_bgp(connection, command, cis_check, level, global_report_ou
         non_compliant_neighbor_counter = 0
         non_compliant_peer_counter = 0
 
-        regex_pattern_bgp_neighbor = re.compile(r'neighbor\s+(?P<neighbor>[\w\.]+)\s+(?P<neighbor_config>.*?)(?=\n|\Z)', re.DOTALL)
+        regex_pattern_bgp_neighbor = re.compile(r'neighbor\s+(?P<neighbor>\S+)\s+(?P<neighbor_config>.*?)(?=\n|\Z)', re.DOTALL)
         bgp_neighbor_parser = regex_pattern_bgp_neighbor.finditer(bgp_config)
 
         for neighbor_match in bgp_neighbor_parser:
@@ -699,7 +699,7 @@ def compliance_check_bgp(connection, command, cis_check, level, global_report_ou
                 if existing_neighbor is None:
                     current_neighbor_info = {'Neighbor':bgp_neighbor, 'Peer-Group':None, 'Password':None}
                     
-                    regex_pattern_bgp_peer_match = re.match(r'peer-group (?P<peer>\w+)', bgp_neighbor_config)
+                    regex_pattern_bgp_peer_match = re.match(r'peer-group (?P<peer>\S+)', bgp_neighbor_config)
                     if regex_pattern_bgp_peer_match:
                         bgp_peer_group = regex_pattern_bgp_peer_match.group('peer')
                         current_neighbor_info['Peer-Group'] = bgp_peer_group
@@ -712,7 +712,7 @@ def compliance_check_bgp(connection, command, cis_check, level, global_report_ou
                     bgp_neighbor_list.append(current_neighbor_info)
 
                 else:
-                    regex_pattern_bgp_peer_match = re.match(r'peer-group (?P<peer>\w+)', bgp_neighbor_config)
+                    regex_pattern_bgp_peer_match = re.match(r'peer-group (?P<peer>\S+)', bgp_neighbor_config)
                     if regex_pattern_bgp_peer_match:
                         bgp_peer_group = regex_pattern_bgp_peer_match.group('peer')
                         current_neighbor_info['Peer-Group'] = bgp_peer_group
