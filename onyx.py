@@ -45,7 +45,6 @@ if __name__ == "__main__":
             report_html_output(parsed_cis_ios_15_assessment, cis_ios_15_compliance_score, arguments().output, connect['IP Address'], ios_version)
     
     elif ios_version == 17:
-        #Still under development
         print(f"Cisco IOS Version: {ios_version}")
         print("Running CIS Ciso IOS 17 Benchmark assessment.\n")
         cis_ios_17_assessment = run_cis_cisco_ios_17_assessment(connection)
