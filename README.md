@@ -179,6 +179,7 @@ When the `-o` or `--output` option is specified, the tool will output an HTML re
 
 **Note:** The HTML reports are stored under the `reports_module/reports` folder. 
 
-![image](https://github.com/UncleSocks/onyx-caaat-cis-cisco-ios-assessment/assets/79778613/83977183-c97e-44a3-87a4-68fa0996cf05)
+![image](https://github.com/UncleSocks/onyx-caaat-automated-cisco-ios-configuration-assessment-and-auditing-tool/assets/79778613/de06d0d6-a7d3-4ca4-8321-64cf59cdeacc)
+
 
 Two sample HTML reports are provided for reference; `sample_ios15` for Cisco IOS 15 and `sample_ios17` for Cisco IOS 17. 
