@@ -2,7 +2,7 @@
 
 # ONYX: Cisco Automated Assessment and Auditing Tool (CAAAT)
 
-![Static Badge](https://img.shields.io/badge/License-MIT-yellow) ![Static Badge](https://img.shields.io/badge/Release-2024.1.0-green)
+![Static Badge](https://img.shields.io/badge/License-MIT-yellow) ![Static Badge](https://img.shields.io/badge/Release-2024.1.0-pink) ![Static Badge](https://img.shields.io/badge/Supported%20Cisco%20IOS%20Versions-15%20and%2017-black)
 
 
 ONYX: CAAAT is a Python3 tool, named after our rescued black cat, that performs automated Center for Internet Security (CIS) Cisco IOS 15 and 17 Benchmark assessments. It is built by Tyrone Kevin Ilisan for his Master's degree capstone project.
