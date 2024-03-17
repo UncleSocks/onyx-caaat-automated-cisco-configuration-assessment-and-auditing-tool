@@ -21,6 +21,28 @@ The tool uses `Netmiko` to connect to the target Cisco IOS router via SSH. The `
 **Note:** SSH must already be configured on the target Cisco IOS router and the host machine, running the tool, should also have a stable connection to the router.
 
 ## Options
+
+Use the `-h` or `--help` option to display a brief guide on how to use ONYX.
+
+```
+C:\Users\UncleSocks\Documents\Tools\Onyx_Directory\onyx.py -h
+usage: ONYX [-h] [-v VERSION] [-o OUTPUT]
+
+Onyx is an automated assessment and auditing tool, currently supporting Center for Internet Security (CIS) Cisco IOS 15 Benchmark and Cisco IOS 17 Benchmark version 8. If no option is specified, it will automatically attempt to
+identify the Cisco IOS version and will only output the assessment result in the CLI.
+
+options:
+  -h, --help            show this help message and exit
+  -v VERSION, --version VERSION
+                        Cisco IOS version (15|17)
+  -o OUTPUT, --output OUTPUT
+                        HTML report filename with .html extension
+
+The HTML report output is saved under the 'reports_module' directory.
+```
+
+### Available Options
+
 `-v` or `--version`: Explicitly specify the target's Cisco IOS version, either 15 or 17. If this option is not specified, the tool will attempt to identify the router's version automatically. 
 
 `-o` or `--output`: Specify the HTML report filename with the `.html` extension. If this option is not specified, the tool will not export the report in HTML format and will only display the output in the CLI.
@@ -40,6 +62,8 @@ C:\Users\UncleSocks\Documents\Tools\Onyx_Directory\onyx.py -v 17 -o report.html
 When running ONYX, it will require you to enter the Cisco router's **IP address**, **username**, **password**, and **enable password/secret**. Ensure that the target is reachable. 
 
 ```
+C:\Users\UncleSocks\Documents\Tools\Onyx_Directory\onyx.py -v 17 -o report.html
+
 ==================================================================================================================================
 ==================================================================================================================================
                                         :;       ..    _______
