@@ -462,7 +462,7 @@ def compliance_check_ospf(connection, command_one, command_two, level, global_re
                         area_list.append(area_number)
                         auth_list.append(authentication_value)
                     
-                    unique_area_with_auth_list = [area for area in area_list if area not in unique_area_with_auth_list]
+                    [unique_area_with_auth_list.append(area) for area in area_list if area not in unique_area_with_auth_list]
 
                     area_without_auth_list = []
 
