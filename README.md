@@ -2,14 +2,12 @@
 
 # ONYX: Cisco Automated Assessment and Auditing Tool (CAAAT)
 
-![Static Badge](https://img.shields.io/badge/License-MIT-yellow) ![Static Badge](https://img.shields.io/badge/Release-2024.1.0-green)
+![Static Badge](https://img.shields.io/badge/License-MIT-yellow) ![Static Badge](https://img.shields.io/badge/Release-2024.1.0-pink) ![Static Badge](https://img.shields.io/badge/Supported%20Cisco%20IOS%20Versions-15%20and%2017-black)
 
 
 ONYX: CAAAT is a Python3 tool, named after our rescued black cat, that performs automated Center for Internet Security (CIS) Cisco IOS 15 and 17 Benchmark assessments. It is built by Tyrone Kevin Ilisan for his Master's degree capstone project.
 
-## Software Architecture
-
-![architecture](https://github.com/UncleSocks/onyx-caaat-automated-cisco-ios-configuration-assessment-and-auditing-tool/assets/79778613/bf862f13-d777-4ab5-aead-bd8344e0bdae)
+![Software Architecture](https://github.com/UncleSocks/onyx-caaat-automated-cisco-ios-configuration-assessment-and-auditing-tool/assets/79778613/3f53fe8b-8a77-4291-9dcf-f7d0e2713a7c)
 
 
 ## Prerequisites
@@ -23,6 +21,28 @@ The tool uses `Netmiko` to connect to the target Cisco IOS router via SSH. The `
 **Note:** SSH must already be configured on the target Cisco IOS router and the host machine, running the tool, should also have a stable connection to the router.
 
 ## Options
+
+Use the `-h` or `--help` option to display a brief guide on how to use ONYX.
+
+```
+C:\Users\UncleSocks\Documents\Tools\Onyx_Directory\onyx.py -h
+usage: ONYX [-h] [-v VERSION] [-o OUTPUT]
+
+Onyx is an automated assessment and auditing tool, currently supporting Center for Internet Security (CIS) Cisco IOS 15 Benchmark and Cisco IOS 17 Benchmark version 8. If no option is specified, it will automatically attempt to
+identify the Cisco IOS version and will only output the assessment result in the CLI.
+
+options:
+  -h, --help            show this help message and exit
+  -v VERSION, --version VERSION
+                        Cisco IOS version (15|17)
+  -o OUTPUT, --output OUTPUT
+                        HTML report filename with .html extension
+
+The HTML report output is saved under the 'reports_module' directory.
+```
+
+### Available Options
+
 `-v` or `--version`: Explicitly specify the target's Cisco IOS version, either 15 or 17. If this option is not specified, the tool will attempt to identify the router's version automatically. 
 
 `-o` or `--output`: Specify the HTML report filename with the `.html` extension. If this option is not specified, the tool will not export the report in HTML format and will only display the output in the CLI.
@@ -42,6 +62,8 @@ C:\Users\UncleSocks\Documents\Tools\Onyx_Directory\onyx.py -v 17 -o report.html
 When running ONYX, it will require you to enter the Cisco router's **IP address**, **username**, **password**, and **enable password/secret**. Ensure that the target is reachable. 
 
 ```
+C:\Users\UncleSocks\Documents\Tools\Onyx_Directory\onyx.py -v 17 -o report.html
+
 ==================================================================================================================================
 ==================================================================================================================================
                                         :;       ..    _______
@@ -181,6 +203,7 @@ When the `-o` or `--output` option is specified, the tool will output an HTML re
 
 **Note:** The HTML reports are stored under the `reports_module/reports` folder. 
 
-![image](https://github.com/UncleSocks/onyx-caaat-cis-cisco-ios-assessment/assets/79778613/83977183-c97e-44a3-87a4-68fa0996cf05)
+![image](https://github.com/UncleSocks/onyx-caaat-automated-cisco-ios-configuration-assessment-and-auditing-tool/assets/79778613/de06d0d6-a7d3-4ca4-8321-64cf59cdeacc)
+
 
 Two sample HTML reports are provided for reference; `sample_ios15` for Cisco IOS 15 and `sample_ios17` for Cisco IOS 17. 
