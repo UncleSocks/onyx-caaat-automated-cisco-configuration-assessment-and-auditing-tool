@@ -48,7 +48,6 @@ Onyx is an automated assessment and auditing tool, currently supporting Center f
 and Cisco IOS 17 Benchmark version 8. If no option is specified, it will automatically attempt to identify the Cisco
 IOS version and will only output the assessment result in the CLI.
   """
-
   return onyx_description
 
 
@@ -57,5 +56,4 @@ def onyx_epilog():
    onyx_epilog = """
 The HTML report output is saved under the 'reports_module' directory.
     """
-   
    return onyx_epilog
