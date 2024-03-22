@@ -33,7 +33,7 @@ Created by Tyrone Kevin Ilisan (@unclesocks)
 Tip: Use the -h option for more information on how to use Onyx's arguments and ensure stable connectivity between 
 the target Cisco router and the host machine running the CAAAT.
 
-GitHub: https[://]github[.]com/UncleSocks/onyx-caaat
+GitHub: hxxps[://]github[.]com/UncleSocks/onyx-caaat-automated-cisco-ios-configuration-assessment-and-auditing-tool
 
 ============================================================================================================================================                                                                       
     """
