@@ -7,7 +7,7 @@ from report_modules.html_report import report_html_output
 from report_modules.main_report import report_cli_output
 
 
-if __name__ == "__main__":
+def onyx():
 
     argument_checks(arguments().version, arguments().output)
     connect = user_input()
@@ -66,3 +66,7 @@ if __name__ == "__main__":
 
     print("\nClosing SSH connection.")
     connection.disconnect
+
+
+if __name__ == "__main__":
+    onyx()
