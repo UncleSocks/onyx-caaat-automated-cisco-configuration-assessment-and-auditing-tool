@@ -1,3 +1,4 @@
+import time
 from parser_modules.ios17 import general_parsers, aaa_parsers, routing_parsers, users_parsers, line_parsers, login_parsers, \
     snmp_parsers, ssh_parsers, services_parsers, logging_parsers, ntp_parsers
 from parser_modules.ios17 import border_parsers
@@ -138,6 +139,7 @@ def compliance_check_routing(connection, global_report_output):
 
 def run_cis_cisco_ios_17_assessment(connection):
 
+    start_time = time.time()
     global_report_output = []
 
     #1 Management Plane CIS Compliance Checks
@@ -276,6 +278,10 @@ def run_cis_cisco_ios_17_assessment(connection):
     
     compliance_check_routing(connection, global_report_output)
 
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    print(f"Assessment done. Elapsed time: {elapsed_time:.2f} seconds")
+    
     return global_report_output
 
 
