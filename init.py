@@ -11,6 +11,7 @@ def arguments():
     argument_parser = ArgumentParser(prog = "ONYX", description = onyx_description(), epilog = onyx_epilog())
     argument_parser.add_argument('-v', '--version', type = int, default = None, help = "Cisco IOS version (15|17)")
     argument_parser.add_argument('-o', '--output', type = str, default = None, help = "HTML report filename with .html extension")
+    argument_parser.add_argument('-t', '--type', type=str, default=None, help="Cisco hardware type (e.g., IOS, ASA)")
     argument = argument_parser.parse_args()
 
     return argument

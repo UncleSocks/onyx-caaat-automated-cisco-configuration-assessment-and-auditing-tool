@@ -1,7 +1,6 @@
 import time
 from parser_modules.ios17 import general_parsers, aaa_parsers, routing_parsers, users_parsers, line_parsers, login_parsers, \
-    snmp_parsers, ssh_parsers, services_parsers, logging_parsers, ntp_parsers
-from parser_modules.ios17 import border_parsers
+    snmp_parsers, ssh_parsers, services_parsers, logging_parsers, ntp_parsers, border_parsers
 
 
 def compliance_check_routing(connection, global_report_output):
