@@ -76,5 +76,27 @@ def ios_version_check(connection):
             ios_version = 15
         else:
             ios_version = 17
-    
+
+    else:
+        version = None
+
     return ios_version
+
+
+def cisco_type_check(connection):
+    command = "show version | include Cisco"
+    command_output = ssh_send(connection, command)
+
+    regex_pattern_cisco_type_search = re.search(r'Cisco\s+(?P<type>IOS|Adaptive\s+Security\s+Appliance)\s+Software.*', command_output)
+
+    if regex_pattern_cisco_type_search:
+        cisco_type_match = regex_pattern_cisco_type_search.group('type')
+        if cisco_type_match == "IOS":
+            cisco_type = "ios"
+        else:
+            cisco_type = "asa"
+
+    else:
+        cisco_type = None
+        
+    return cisco_type

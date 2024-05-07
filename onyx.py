@@ -1,5 +1,5 @@
 from ssh import ssh_login
-from init import ios_version_check, arguments, argument_checks, user_input
+from init import ios_version_check, cisco_type_check, arguments, argument_checks, user_input
 from audit_modules.audit_ios15 import run_cis_cisco_ios_15_assessment, parsed_output_ios15
 from audit_modules.audit_ios17 import run_cis_cisco_ios_17_assessment, parsed_output_ios17
 from audit_modules.audit_asa import run_cis_cisco_asa_assessment
@@ -22,8 +22,14 @@ def onyx():
         print("Exiting the Onyx: CAAAT.")
         exit()
 
-    if arguments().type == "ios":
+    if arguments().type is None:
+        print("Identifying Cisco type.")
+        cisco_type = cisco_type_check(connection)
+    else:
+        cisco_type = arguments().type
     
+
+    if cisco_type == "ios":
         if arguments().version is None:
             print("Identifying Ciso IOS version.")
             ios_version = ios_version_check(connection)
@@ -63,15 +69,17 @@ def onyx():
 
                 print("Exporting to an HTML output.")
                 report_html_output(parsed_cis_ios_17_assessment, cis_ios_17_compliance_score, arguments().output, connect['IP Address'], ios_version)
-        
-        else:
-            print("Error 0002 - Unable to identify Cisco IOS version.")
 
-    elif arguments().type == "asa":
-        print("For Cicso ASA...")
+        else:
+            print("Error 0002 - Unable to identify Cisco IOS version. Use the '-v' option to specify the IOS version manually.")
+
+    elif cisco_type == "asa":
+        print("Cisco ASA support still under development.")
         cis_asa_assessment = run_cis_cisco_asa_assessment(connection)
-        print(cis_asa_assessment)
-        
+        #print(cis_asa_assessment)
+    
+    else:
+        print("Error 0002 - Unable to identify Cisco type. Use the '-t' option to specify the type manually.")
 
     print("\nClosing SSH connection.")
     connection.disconnect
