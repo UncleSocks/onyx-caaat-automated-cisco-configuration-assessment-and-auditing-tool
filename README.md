@@ -207,3 +207,10 @@ When the `-o` or `--output` option is specified, the tool will output an HTML re
 
 
 Two sample HTML reports are provided for reference; `sample_ios15` for Cisco IOS 15 and `sample_ios17` for Cisco IOS 17. 
+
+## Future Development
+- Cisco ASA CIS Benchmark Recommendation assessment (under development).
+- Cisco NX-OS CIS Benchmark Recommendation assessment
+- Cisco IOS XR Benchmark Recommendation assessment
+- Configuration files support
+- Multi-device assessment
