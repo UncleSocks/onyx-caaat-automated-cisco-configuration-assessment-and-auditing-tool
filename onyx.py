@@ -1,5 +1,5 @@
 # ONYX Cisco CAAAT (Configuration Assessment and Auditing Tool)
-# https://github.com/UncleSocks/onyx-caaat-automated-cisco-configuration-assessment-and-auditing-tool/blob/main/LICENSE.md
+# GitHub @unclesocks: https://github.com/UncleSocks
 #
 # MIT License
 #
