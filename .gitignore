@@ -55,3 +55,4 @@ parser_modules/ios15/__pycache__/border_parsers.cpython-310.pyc
 audit_modules/__pycache__/audit_asa.cpython-310.pyc
 parser_modules/asa/__pycache__/general_parsers.cpython-310.pyc
 parser_modules/asa/__pycache__/password_parsers.cpython-310.pyc
+parser_modules/asa/__pycache__/device_parsers.cpython-310.pyc

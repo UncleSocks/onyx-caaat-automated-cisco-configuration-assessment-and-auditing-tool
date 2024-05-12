@@ -1,4 +1,4 @@
-from parser_modules.asa import general_parsers, password_parsers
+from parser_modules.asa import general_parsers, password_parsers, device_parsers
 
 
 def run_cis_cisco_asa_assessment(connection):
@@ -13,6 +13,7 @@ def run_cis_cisco_asa_assessment(connection):
     
     general_parsers.compliance_check_with_expected_output(connection, "show running-config domain-name", "1.2.1 Ensure 'Domain Name' is set", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config hostname", "1.2.2 Ensure 'Host Name' is set", 1, global_report_output)
-    
+    #1.2.3 Ensure 'Failover' is enabled
+    device_parsers.compliance_check_unused_interface(connection, "show interface ip brief | include __down", "1.2.4 Ensure 'Unused Interfaces' is disabled", 1, global_report_output)
     
     return global_report_output
