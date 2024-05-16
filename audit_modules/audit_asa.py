@@ -20,4 +20,6 @@ def run_cis_cisco_asa_assessment(connection):
     
     aaa_parsers.compliance_check_auth_max_failed(connection, "show running-config aaa | include max-fail", "1.4.1.1 Ensure 'aaa local authentication max failed attempts' is set to less than or equal to '3'", 1, global_report_output)
     aaa_parsers.compliance_check_default_accounts(connection, "show running-config username | include _admin_|_asa_|_cisco_|_pix_|_root_", "1.4.1.3 Ensure known default accounts do not exists", 1, global_report_output)
+    aaa_parsers.compliance_check_remote_aaa_servers(connection, "show running-config aaa-server | include protocol.tacacs+", "show running-config aaa-server | include protocol.radius",
+                                                    "1.4.2.1 Ensure 'TACACS+/RADIUS' is configured correctly", 2, global_report_output)
     return global_report_output
