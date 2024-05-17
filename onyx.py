@@ -96,7 +96,8 @@ def onyx():
     elif cisco_type == "asa":
         print("Cisco ASA support still under development.")
         cis_asa_assessment = run_cis_cisco_asa_assessment(connection)
-        print(cis_asa_assessment)
+        for cis_asa in cis_asa_assessment:
+            print(cis_asa)
     
     else:
         print("Error 0002 - Unable to identify Cisco type. Use the '-t' option to specify the type manually.")

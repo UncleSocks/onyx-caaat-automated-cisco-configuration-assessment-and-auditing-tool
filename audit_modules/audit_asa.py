@@ -22,4 +22,17 @@ def run_cis_cisco_asa_assessment(connection):
     aaa_parsers.compliance_check_default_accounts(connection, "show running-config username | include _admin_|_asa_|_cisco_|_pix_|_root_", "1.4.1.3 Ensure known default accounts do not exists", 1, global_report_output)
     aaa_parsers.compliance_check_remote_aaa_servers(connection, "show running-config aaa-server | include protocol.tacacs+", "show running-config aaa-server | include protocol.radius",
                                                     "1.4.2.1 Ensure 'TACACS+/RADIUS' is configured correctly", 2, global_report_output)
+
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include aaa authentication enable console", "1.4.3.1 Enable 'aaa authentication enable console' is configured correctly", 1, global_report_output)
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include aaa authentication http console", "1.4.3.2 Enable 'aaa authentication http console' is configured correctly", 1, global_report_output)
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include aaa authentication secure-http-client", "1.4.3.3 Enable 'aaa authentication secure-http-client' is configured correctly", 1, global_report_output)
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include aaa authentication ssh console", "1.4.3.4 Enable 'aaa authentication ssh console' is configured correctly", 1, global_report_output)
+
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include aaa authorization command", "1.4.4.1 Ensure 'aaa command authorization' is configured correctly", 1, global_report_output)
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include aaa authorization exec", "1.4.4.2 Ensure 'aaa authorization exec' is configured correctly", 1, global_report_output)
+    
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include aaa accounting command", "1.4.5.1 Ensure 'aaa accounting command' is configured correctly", 1, global_report_output)
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include aaa accounting ssh console", "1.4.5.2 Ensure 'aaa accounting for SSH' is configured correctly", 1, global_report_output)
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include aaa accounting enable console", "1.4.5.3 Ensure 'aaa accounting for EXEC mode' is configured correctly", 1, global_report_output)
+
     return global_report_output
