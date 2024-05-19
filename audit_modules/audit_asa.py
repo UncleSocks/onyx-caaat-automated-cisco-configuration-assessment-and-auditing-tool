@@ -42,4 +42,8 @@ def run_cis_cisco_asa_assessment(connection):
 
     ssh_parsers.compliance_check_ssh_source_restriction(connection, "show running-config ssh | include ssh", "1.6.1 Ensure 'SSH source restriction' is set to an authorized IP address", 1, global_report_output)
     ssh_parsers.compliance_check_ssh_version(connection, "show running-config ssh | include version", "1.6.2 Ensure 'SSH veresion 2' is enabled", 1, global_report_output)
+    ssh_parsers.compliance_check_rsa_modulus_size(connection, "show crypto key mypubkey rsa | include Key_Size|_Modulus", "1.6.3 Ensure 'RSA key pair' is greater than or equal to 2048 bits", 2, global_report_output)
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config ssh | grep scopy", "1.6.4 Ensure 'SCP protocol' is set to Enable for file transfers", 2, global_report_output)
+    ssh_parsers.compliance_check_telnet(connection, "show running-config telnet", "1.6.5 Ensure 'Telnet' is disabled", 1, global_report_output)
+
     return global_report_output
