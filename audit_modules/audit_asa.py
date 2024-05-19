@@ -1,4 +1,4 @@
-from parser_modules.asa import general_parsers, password_parsers, device_parsers, aaa_parsers
+from parser_modules.asa import general_parsers, password_parsers, device_parsers, aaa_parsers, ssh_parsers
 
 
 def run_cis_cisco_asa_assessment(connection):
@@ -35,4 +35,10 @@ def run_cis_cisco_asa_assessment(connection):
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include aaa accounting ssh console", "1.4.5.2 Ensure 'aaa accounting for SSH' is configured correctly", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include aaa accounting enable console", "1.4.5.3 Ensure 'aaa accounting for EXEC mode' is configured correctly", 1, global_report_output)
 
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include banner.asdm", "1.5.1 Ensure 'ASDM banner' is set", 1, global_report_output)
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include banner.exec", "1.5.2 Ensure 'EXEC banner' is set", 1, global_report_output)
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include banner.login", "1.5.3 Ensure 'LOGIN banner' is set", 1, global_report_output)
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include banner.motd", "1.5.4 Ensure 'MOTD banner' is set", 1, global_report_output)
+
+    ssh_parsers.compliance_check_ssh_source_restriction(connection, "show running-config ssh | include ssh", "1.6.1 Ensure 'SSH source restriction' is set to an authorized IP address", 1, global_report_output)
     return global_report_output
