@@ -41,4 +41,5 @@ def run_cis_cisco_asa_assessment(connection):
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include banner.motd", "1.5.4 Ensure 'MOTD banner' is set", 1, global_report_output)
 
     ssh_parsers.compliance_check_ssh_source_restriction(connection, "show running-config ssh | include ssh", "1.6.1 Ensure 'SSH source restriction' is set to an authorized IP address", 1, global_report_output)
+    ssh_parsers.compliance_check_ssh_version(connection, "show running-config ssh | include version", "1.6.2 Ensure 'SSH veresion 2' is enabled", 1, global_report_output)
     return global_report_output

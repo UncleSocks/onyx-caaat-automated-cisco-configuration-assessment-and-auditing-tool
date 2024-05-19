@@ -9,6 +9,7 @@ def compliance_check_ssh_source_restriction(connection, command, cis_check, leve
     
     print(command_output)
     regex_pattern = re.compile(r"^ssh\s+(?P<address>(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])(?:\.(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3})\s+(?P<subnet>(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])(?:\.(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3})\s+(?P<interface>\S+)(?:\n|$)", re.MULTILINE)
+    #regex_pattern currently only supports IPv4 addresses.
     ssh_source_restriction_match = regex_pattern.findall(command_output)
     
     if ssh_source_restriction_match:
@@ -24,5 +25,22 @@ def compliance_check_ssh_source_restriction(connection, command, cis_check, leve
     current_configuration = ssh_source_restriction_list if ssh_source_restriction_list else None
     compliant = ssh_source_restriction_list is not None
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
-            
 
+
+def compliance_check_ssh_version(connection, command, cis_check, level, global_report_output):
+    command_output = ssh_send(connection, command)
+
+    ssh_version_match = re.match(r'ssh\s+version\s+(?P<version>\d+)', command_output)
+
+    current_configuration = {'SSH Version':None}
+    compliant = False
+    
+    if ssh_version_match:
+        ssh_version = int(ssh_version_match.group('version'))
+
+        if ssh_version == 2:
+            compliant = True
+
+        current_configuration['SSH Version'] = ssh_version
+
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
