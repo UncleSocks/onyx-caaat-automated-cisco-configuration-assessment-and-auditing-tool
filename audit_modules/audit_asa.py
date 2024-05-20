@@ -1,4 +1,4 @@
-from parser_modules.asa import general_parsers, password_parsers, device_parsers, aaa_parsers, ssh_parsers
+from parser_modules.asa import general_parsers, password_parsers, device_parsers, aaa_parsers, ssh_parsers, http_parsers
 
 
 def run_cis_cisco_asa_assessment(connection):
@@ -46,4 +46,10 @@ def run_cis_cisco_asa_assessment(connection):
     general_parsers.compliance_check_with_expected_output(connection, "show running-config ssh | grep scopy", "1.6.4 Ensure 'SCP protocol' is set to Enable for file transfers", 2, global_report_output)
     ssh_parsers.compliance_check_telnet(connection, "show running-config telnet", "1.6.5 Ensure 'Telnet' is disabled", 1, global_report_output)
 
+    if http_parsers.http_enable_check(connection, "show running-config | include http server enable") == False:
+        http_parsers.complaince_check_no_http_enabled(global_report_output)
+    else:
+        http_parsers.compliance_check_http_source_restriction(connection, "show running-config http | include http", "1.7.1 Ensure 'HTTP source restriction' is set to an authorized IP address", 2, global_report_output)
+        http_parsers.compliance_check_https_tls(connection, "show running-config ssl | include ssl cipher", "1.7.2 Ensure 'TLS 1.2' or greater is set for HTTPS access", 
+                                                "1.7.3 Ensure 'SSL AES 256 encryption' is set for HTTPS access", 1, global_report_output)
     return global_report_output
