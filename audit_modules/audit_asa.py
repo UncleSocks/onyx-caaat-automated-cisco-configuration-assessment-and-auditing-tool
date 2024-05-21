@@ -61,5 +61,6 @@ def run_cis_cisco_asa_assessment(connection):
     general_parsers.compliance_check_with_expected_output(connection, "show running-config ntp | include authenticate", "1.9.1.1 Ensure 'NTP authentication' is enabled", 1, global_report_output)
     clock_parsers.compliance_check_ntp_authentication_key(connection, "show running-config ntp | include authentication-key", "1.9.1.2 Ensure 'NTP authentication key' is configured correctly", 1, global_report_output)
     clock_parsers.compliance_check_ntp_server(connection, "show running-config ntp | include server", "1.9.1.3 Ensure 'trusted NTP server' exists", 1, global_report_output)
+    clock_parsers.compliance_check_local_timezone(connection, "show running-config clock | include timezone", "1.9.2 Ensure 'local timezone' is properly configured", 1, global_report_output)
 
     return global_report_output
