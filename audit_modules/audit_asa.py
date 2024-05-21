@@ -57,5 +57,7 @@ def run_cis_cisco_asa_assessment(connection):
     timout_parsers.compliance_check_console_timeout(connection, "show running console | include timeout", "1.8.1 Ensure 'console session timeout' is less than or equal to '5' minutes", 1, global_report_output)
     timout_parsers.compliance_check_ssh_timeout(connection, "show running-config ssh | include timeout", "1.8.2 Ensure 'SSH session timeout' is less than or equal to '5' minutes", 1, global_report_output)
     timout_parsers.compliance_check_http_idle_timeout(connection, "show running-config http | include idle-timeout", "1.8.3 Ensure 'HTTP idle timeout' is less than or equal to '5' minutes", 1, global_report_output)
+
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config ntp | include authenticate", "1.9.1.1 Ensure 'NTP authentication' is enabled", 1, global_report_output)
     
     return global_report_output
