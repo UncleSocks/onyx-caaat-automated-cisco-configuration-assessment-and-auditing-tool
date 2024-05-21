@@ -1,5 +1,5 @@
 from parser_modules.asa import general_parsers, password_parsers, device_parsers, aaa_parsers, ssh_parsers, http_parsers, \
-    timout_parsers, clock_parsers
+    timout_parsers, clock_parsers, logging_parsers
 
 
 def run_cis_cisco_asa_assessment(connection):
@@ -63,4 +63,6 @@ def run_cis_cisco_asa_assessment(connection):
     clock_parsers.compliance_check_ntp_server(connection, "show running-config ntp | include server", "1.9.1.3 Ensure 'trusted NTP server' exists", 1, global_report_output)
     clock_parsers.compliance_check_local_timezone(connection, "show running-config clock | include timezone", "1.9.2 Ensure 'local timezone' is properly configured", 1, global_report_output)
 
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config logging | include enable", "1.10.1 Ensure 'logging' is enabled", 1, global_report_output)
+    logging_parsers.compliance_check_logging_monitor(connection, "show running-config logging | grep monitor", "1.10.2 Ensure 'logging to monitor' is disabled", 1, global_report_output)
     return global_report_output
