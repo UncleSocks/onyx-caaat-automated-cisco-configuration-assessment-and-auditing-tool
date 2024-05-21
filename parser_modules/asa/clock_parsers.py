@@ -21,7 +21,7 @@ def compliance_check_ntp_authentication_key(connection, command, cis_check, leve
             ntp_authentication_key_list.append(current_ntp_authentication_key_info)
 
     current_configuration = ntp_authentication_key_list if ntp_authentication_key_list else None
-    compliant = ntp_authentication_key_match is not None
+    compliant = bool(ntp_authentication_key_match)
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
 
 
@@ -43,13 +43,14 @@ def compliance_check_ntp_server(connection, command, cis_check, level, global_re
             ntp_server_list.append(current_ntp_server_info)
 
     current_configuration = ntp_server_list if ntp_server_list else None
-    compliant = ntp_server_match is not None
+    compliant = bool(ntp_server_match)
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
 
 
 def compliance_check_local_timezone(connection, command, cis_check, level, global_report_output):
     command_output = ssh_send(connection, command)
 
+    current_configuration = None
     local_timezone_match = re.match(r'clock\s+timezone\s+(?P<zone_name>\w+)\s+(?P<offset>(?:-)\d+)', command_output)
 
     if local_timezone_match:
@@ -58,6 +59,5 @@ def compliance_check_local_timezone(connection, command, cis_check, level, globa
 
         current_configuration = {'Zone':zone_name, 'Offset':offset_value}
 
-    current_configuration = current_configuration if current_configuration else None
     compliant = local_timezone_match is not None
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
