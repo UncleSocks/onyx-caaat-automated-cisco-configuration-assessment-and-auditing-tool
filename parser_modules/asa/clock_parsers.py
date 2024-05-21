@@ -45,3 +45,19 @@ def compliance_check_ntp_server(connection, command, cis_check, level, global_re
     current_configuration = ntp_server_list if ntp_server_list else None
     compliant = ntp_server_match is not None
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+
+def compliance_check_local_timezone(connection, command, cis_check, level, global_report_output):
+    command_output = ssh_send(connection, command)
+
+    local_timezone_match = re.match(r'clock\s+timezone\s+(?P<zone_name>\w+)\s+(?P<offset>(?:-)\d+)', command_output)
+
+    if local_timezone_match:
+        zone_name = local_timezone_match.group('zone_name')
+        offset_value = local_timezone_match.group('offset')
+
+        current_configuration = {'Zone':zone_name, 'Offset':offset_value}
+
+    current_configuration = current_configuration if current_configuration else None
+    compliant = local_timezone_match is not None
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
