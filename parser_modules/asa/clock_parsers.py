@@ -14,8 +14,8 @@ def compliance_check_ntp_authentication_key(connection, command, cis_check, leve
     if ntp_authentication_key_match:
         for ntp_authentication_key in ntp_authentication_key_match:
             key = ntp_authentication_key[0]
-            key_mode = ntp_authentication_key_match[1]
-            key_string = ntp_authentication_key_match[2]
+            key_mode = ntp_authentication_key[1]
+            key_string = ntp_authentication_key[2]
 
             current_ntp_authentication_key_info = {'Key':key, 'Key Mode':key_mode, 'Key String':key_string}
             ntp_authentication_key_list.append(current_ntp_authentication_key_info)

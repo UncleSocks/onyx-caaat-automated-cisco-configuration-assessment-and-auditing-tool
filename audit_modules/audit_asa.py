@@ -1,5 +1,5 @@
 from parser_modules.asa import general_parsers, password_parsers, device_parsers, aaa_parsers, ssh_parsers, http_parsers, \
-    timout_parsers
+    timout_parsers, clock_parsers
 
 
 def run_cis_cisco_asa_assessment(connection):
@@ -59,5 +59,6 @@ def run_cis_cisco_asa_assessment(connection):
     timout_parsers.compliance_check_http_idle_timeout(connection, "show running-config http | include idle-timeout", "1.8.3 Ensure 'HTTP idle timeout' is less than or equal to '5' minutes", 1, global_report_output)
 
     general_parsers.compliance_check_with_expected_output(connection, "show running-config ntp | include authenticate", "1.9.1.1 Ensure 'NTP authentication' is enabled", 1, global_report_output)
-    
+    clock_parsers.compliance_check_ntp_authentication_key(connection, "show running-config ntp | include authentication-key", "1.9.1.2 Ensure 'NTP authentication key' is configured correctly", 1, global_report_output)
+
     return global_report_output
