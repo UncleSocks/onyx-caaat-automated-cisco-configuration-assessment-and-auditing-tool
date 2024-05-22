@@ -68,5 +68,7 @@ def run_cis_cisco_asa_assessment(connection):
     logging_parsers.compliance_check_syslog_hosts(connection, "show running-config logging | include host", "1.10.3 Ensure 'syslog hosts' is configured correctly", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config logging | include device-id", "1.10.4 Ensure 'logging with the device ID' is configured correctly", 1, global_report_output)
     logging_parsers.compliance_check_logging_history(connection, "show running-config logging | include history", "1.10.5 Ensure 'logging history severity level' is set greater than or equal to '5'", 1, global_report_output)
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config logging | include timestamp", "1.10.6 Ensure 'logging with timestamps' is enabled", 1, global_report_output)
+    logging_parsers.compliance_check_logging_buffer_size(connection, "show running-config logging | include buffer-size", "1.10.7 Ensure 'logging buffer size' is greater '524288' bytes", 1, global_report_output)
     
     return global_report_output

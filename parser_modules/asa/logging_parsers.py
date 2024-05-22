@@ -52,3 +52,22 @@ def compliance_check_logging_history(connection, command, cis_check, level, glob
     current_configuration = {'Logging History Level':logging_history_level}
     compliant = logging_history_level == "notifications" or logging_history_level == "informational" or logging_history_level == "debugging"
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+
+def compliance_check_logging_buffer_size(connection, command, cis_check, level, global_report_output):
+    command_output = ssh_send(connection, command)
+
+    logging_buffer_size_match = re.match(r'logging\s+buffer-size\s+(?P<size>\d+)', command_output)
+
+    if logging_buffer_size_match:
+        buffer_size = int(logging_buffer_size_match.group('size')) 
+
+        current_configuration = buffer_size
+
+    else:
+        buffer_size = 4096
+
+    current_configuration = {'Logging Buffer Size (bytes)':buffer_size}
+    compliant = buffer_size >= 524288
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+        
