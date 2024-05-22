@@ -70,4 +70,19 @@ def compliance_check_logging_buffer_size(connection, command, cis_check, level, 
     current_configuration = {'Logging Buffer Size (bytes)':buffer_size}
     compliant = buffer_size >= 524288
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
-        
+
+
+def compliance_check_logging_buffered(connection, command, cis_check, level, global_report_output):
+    command_output = ssh_send(connection, command)
+
+    logging_buffered_level_match = re.match(r'logging\s+buffered\s+(?P<level>\w+)', command_output)
+
+    logging_buffered_level = None
+    if logging_buffered_level_match:
+        logging_buffered_level = logging_buffered_level_match.group('level')
+
+    current_configuration = {'Logging Buffered Level':logging_buffered_level}
+    compliant = logging_buffered_level == "errors" or logging_buffered_level == "warnings" or logging_buffered_level == "notifications" \
+        or logging_buffered_level == "informational" or logging_buffered_level == "debugging"
+    
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
