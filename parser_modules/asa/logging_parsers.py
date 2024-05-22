@@ -86,3 +86,17 @@ def compliance_check_logging_buffered(connection, command, cis_check, level, glo
         or logging_buffered_level == "informational" or logging_buffered_level == "debugging"
     
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+
+def compliance_check_logging_trap(connection, command, cis_check, level, global_report_output):
+    command_output = ssh_send(connection, command)
+
+    logging_trap_level_match = re.match(r'logging\s+trap\s+(?P<level>\w+)', command_output)
+
+    logging_trap_level = None
+    if logging_trap_level_match:
+        logging_trap_level = logging_trap_level_match.group('level')
+
+    current_configuration = {'Logging Trap Level':logging_trap_level}
+    compliant = logging_trap_level == "notifications" or logging_trap_level == "informational" or logging_trap_level == "debugging"
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))

@@ -71,5 +71,6 @@ def run_cis_cisco_asa_assessment(connection):
     general_parsers.compliance_check_with_expected_output(connection, "show running-config logging | include timestamp", "1.10.6 Ensure 'logging with timestamps' is enabled", 1, global_report_output)
     logging_parsers.compliance_check_logging_buffer_size(connection, "show running-config logging | include buffer-size", "1.10.7 Ensure 'logging buffer size' is greater '524288' bytes", 1, global_report_output)
     logging_parsers.compliance_check_logging_buffered(connection, "show running-config logging | include buffered", "1.10.8 Ensure 'logging buffered severity level' is greather than or equal to '3'", 1, global_report_output)
+    logging_parsers.compliance_check_logging_trap(connection, "show running-config logging | include trap", "1.10.9 Ensure 'logging trap severity level' is greater than or equal to '5'", 1, global_report_output)
     
     return global_report_output
