@@ -38,4 +38,17 @@ def compliance_check_syslog_hosts(connection, command, cis_check, level, global_
     current_configuration = syslog_host_list if syslog_host_list else None
     compliant = bool(syslog_hosts_match)
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
-        
+
+
+def compliance_check_logging_history(connection, command, cis_check, level, global_report_output):
+    command_output = ssh_send(connection, command)
+
+    logging_history_level = None
+    logging_history_match = re.match(r'logging\s+history\s+(?P<level>\w+)', command_output)
+
+    if logging_history_match:
+        logging_history_level = logging_history_match.group('level')    
+    
+    current_configuration = {'Logging History Level':logging_history_level}
+    compliant = logging_history_level == "notifications" or logging_history_level == "informational" or logging_history_level == "debugging"
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))

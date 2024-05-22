@@ -66,5 +66,7 @@ def run_cis_cisco_asa_assessment(connection):
     general_parsers.compliance_check_with_expected_output(connection, "show running-config logging | include enable", "1.10.1 Ensure 'logging' is enabled", 1, global_report_output)
     logging_parsers.compliance_check_logging_monitor(connection, "show running-config logging | grep monitor", "1.10.2 Ensure 'logging to monitor' is disabled", 1, global_report_output)
     logging_parsers.compliance_check_syslog_hosts(connection, "show running-config logging | include host", "1.10.3 Ensure 'syslog hosts' is configured correctly", 1, global_report_output)
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config logging | include device-id", "1.10.4 Ensure 'logging with the device ID' is configured correctly", 1, global_report_output)
+    logging_parsers.compliance_check_logging_history(connection, "show running-config logging | include history", "1.10.5 Ensure 'logging history severity level' is set greater than or equal to '5'", 1, global_report_output)
     
     return global_report_output
