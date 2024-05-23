@@ -112,5 +112,5 @@ def compliance_check_logging_mail(connection, command, cis_check, level, global_
         logging_mail_level = logging_mail_level_match.group('level')
 
     current_configuration = {'Logging Mail Level':logging_mail_level}
-    compliant = logging_mail_level == "critical"
+    compliant = logging_mail_level == "critical" or logging_mail_level == "alerts" or logging_mail_level == "emergencies"
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
