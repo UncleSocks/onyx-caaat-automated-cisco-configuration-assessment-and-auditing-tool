@@ -1,5 +1,5 @@
 from parser_modules.asa import general_parsers, password_parsers, device_parsers, aaa_parsers, ssh_parsers, http_parsers, \
-    timout_parsers, clock_parsers, logging_parsers
+    timout_parsers, clock_parsers, logging_parsers, snmp_parsers
 
 
 def run_cis_cisco_asa_assessment(connection):
@@ -73,5 +73,10 @@ def run_cis_cisco_asa_assessment(connection):
     logging_parsers.compliance_check_logging_buffered(connection, "show running-config logging | include buffered", "1.10.8 Ensure 'logging buffered severity level' is greather than or equal to '3'", 1, global_report_output)
     logging_parsers.compliance_check_logging_trap(connection, "show running-config logging | include trap", "1.10.9 Ensure 'logging trap severity level' is greater than or equal to '5'", 1, global_report_output)
     logging_parsers.compliance_check_logging_mail(connection, "show running-config logging | include mail", "1.10.10 Ensure mail logging is configured for critical to emergencies", 1, global_report_output)
+
+    if snmp_parsers.compliance_check_snmp_enabled(connection, "show running-config snmp-server | include host") == False:
+        snmp_parsers.compliance_check_disabled_snmp(global_report_output)
+    else:
+        snmp_parsers.compliance_check_snmp_server_group(connection, "show running-config snmp-server group", "1.11.1 Ensure 'snmp-server group' is set to 'v3 priv'", 1, global_report_output)
 
     return global_report_output
