@@ -32,7 +32,7 @@ def compliance_check_snmp_server_group(connection, command, cis_check, level, gl
     snmp_server_group_list = []
     non_compliant_server_group_counter = 0
 
-    regex_pattern = re.compile(r'snmp-server\s+group\s+(?P<group_name>\S+)\s+v3\s+(?P<security_model>\w+)')
+    regex_pattern = re.compile(r'^snmp-server\s+group\s+(?P<group_name>\S+)\s+v3\s+(?P<security_model>\w+)', re.MULTILINE)
     snmp_server_group_match = regex_pattern.findall(command_output)
 
     if snmp_server_group_match:
@@ -48,4 +48,31 @@ def compliance_check_snmp_server_group(connection, command, cis_check, level, gl
 
     current_configuration = snmp_server_group_list if snmp_server_group_list else None
     compliant = bool(snmp_server_group_list) and non_compliant_server_group_counter == 0
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+
+def compliance_check_snmp_server_user(connection, command, cis_check, level, global_report_output):
+    command_output = ssh_send(connection, command)
+
+    snmp_server_user_list = []
+    non_compliant_snmp_server_user_counter = 0
+
+    regex_pattern = re.compile(r'^snmp-server\s+user\s+(?P<user>\S+)\s+(?P<group>\S+)\s+v3\s+engineID\s+\S+\s+encrypted\s+auth\s+(?P<auth_type>\S+)\s+\S+\s+priv\s+(?P<priv_type>(?:aes\s+\d+)|3des)\s+\S+', re.MULTILINE)
+    snmp_server_user_match = regex_pattern.findall(command_output)
+
+    if snmp_server_user_match:
+        for snmp_server_user in snmp_server_user_match:
+            user_name = snmp_server_user[0]
+            group_name = snmp_server_user[1]
+            auth_type = snmp_server_user[2]
+            priv_type = snmp_server_user[3]
+
+            if priv_type == "3des":
+                non_compliant_snmp_server_user_counter += 1
+
+            current_snmp_server_user_info = {'User Name':user_name, 'Group Name':group_name, 'Auth Type':auth_type, 'Priv Type':priv_type}
+            snmp_server_user_list.append(current_snmp_server_user_info)
+
+    current_configuration = snmp_server_user_list if snmp_server_user_list else None
+    compliant = bool(snmp_server_user_list) and non_compliant_snmp_server_user_counter == 0
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
