@@ -80,4 +80,5 @@ def run_cis_cisco_asa_assessment(connection):
         snmp_parsers.compliance_check_snmp_server_group(connection, "show running-config snmp-server group", "1.11.1 Ensure 'snmp-server group' is set to 'v3 priv'", 1, global_report_output)
         snmp_parsers.compliance_check_snmp_server_user(connection, "show running-config snmp-server user", "1.11.2 Ensure 'snmp-server user' is set to 'v3 auth SHA'", 1, global_report_output)
         snmp_parsers.compliance_check_snmp_server_host(connection, "show running-config snmp-server host", "1.11.3 Ensure 'snmp-server host' is set to 'version 3'", 1, global_report_output)
+        snmp_parsers.compliance_check_snmp_traps(connection, "show running-config all | include snmp-server enable traps snmp", "1.11.4 Ensure 'SNMP traps' is enabled", 1, global_report_output)
     return global_report_output

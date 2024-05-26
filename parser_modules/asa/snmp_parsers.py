@@ -106,3 +106,25 @@ def compliance_check_snmp_server_host(connection, command, cis_check, level, glo
     current_configuration = snmp_host_list if snmp_host_list else None
     compliant = non_compliant_snmp_host_counter == 0
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+
+def compliance_check_snmp_traps(connection, command, cis_check, level, global_report_output):
+    command_output = ssh_send(connection, command)
+
+    if not command_output:
+        compliant = False
+
+    else:
+        snmp_traps_output_split = command_output.split()
+
+        if snmp_traps_output_split[0] == "no":
+            compliant = False
+
+        else:
+            snmp_enabled_traps = snmp_traps_output_split[4:]
+
+            if "authentication" in snmp_enabled_traps and "linkup" in snmp_enabled_traps and "linkdown" in snmp_enabled_traps and "coldstart" in snmp_enabled_traps:
+                compliant = True
+
+    current_configuration = command_output if command_output else None
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
