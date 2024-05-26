@@ -82,6 +82,7 @@ def compliance_check_snmp_server_host(connection, command, cis_check, level, glo
     command_output = ssh_send(connection, command)
 
     snmp_host_list = []
+    non_compliant_snmp_host_counter = 0
 
     regex_pattern = re.compile(r'^snmp-server\s+host\s+(?P<interface>\S+)\s+(?P<ip_address>\S+)\s+(?:(?:community\s+(?P<string>(?:\d+\s+\S+)|\S+)\s+(?:version\s+(?P<version>\w+))?\s*(?:udp-port\s+(?P<port>\d+))?)|(?:version\s+(?P<version_v3>\d+)\s+(?P<user>\S+)\s*(?:udp-port\s+(?P<port_v3>\d+))?))', re.MULTILINE)
     snmp_server_host_iter = regex_pattern.finditer(command_output)
@@ -94,11 +95,14 @@ def compliance_check_snmp_server_host(connection, command, cis_check, level, glo
         user = snmp_server_host.group('user') if snmp_server_host.group('user') else "Not applicable on SNMPv1/v2c"
         udp_port = snmp_server_host.group('port') if snmp_server_host.group('port') else "161" or snmp_server_host.group('port_v3') if snmp_server_host.group('port_v3') else "161"
 
+        if version != "3":
+            non_compliant_snmp_host_counter += 1
+        
         current_snmp_host_info = {'Interface':interface, 'IP Address':ip_address, 'Community String':community_string,
                                   'SNMP Version':version, 'SNMP User':user, 'SNMP UDP Port':udp_port}
         
         snmp_host_list.append(current_snmp_host_info)
 
     current_configuration = snmp_host_list if snmp_host_list else None
-    compliant = False
+    compliant = non_compliant_snmp_host_counter == 0
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
