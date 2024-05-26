@@ -76,3 +76,29 @@ def compliance_check_snmp_server_user(connection, command, cis_check, level, glo
     current_configuration = snmp_server_user_list if snmp_server_user_list else None
     compliant = bool(snmp_server_user_list) and non_compliant_snmp_server_user_counter == 0
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+
+def compliance_check_snmp_server_host(connection, command, cis_check, level, global_report_output):
+    command_output = ssh_send(connection, command)
+
+    snmp_host_list = []
+
+    regex_pattern = re.compile(r'^snmp-server\s+host\s+(?P<interface>\S+)\s+(?P<ip_address>\S+)\s+(?:(?:community\s+(?P<string>(?:\d+\s+\S+)|\S+)\s+(?:version\s+(?P<version>\w+))?\s*(?:udp-port\s+(?P<port>\d+))?)|(?:version\s+(?P<version_v3>\d+)\s+(?P<user>\S+)\s*(?:udp-port\s+(?P<port_v3>\d+))?))', re.MULTILINE)
+    snmp_server_host_iter = regex_pattern.finditer(command_output)
+
+    for snmp_server_host in snmp_server_host_iter:
+        interface = snmp_server_host.group('interface')
+        ip_address = snmp_server_host.group('ip_address')
+        community_string = snmp_server_host.group('string') if snmp_server_host.group('string') else "SNMPv3"
+        version = snmp_server_host.group('version') or snmp_server_host.group('version_v3') if snmp_server_host.group('version') or snmp_server_host.group('version_v3') else "1"
+        user = snmp_server_host.group('user') if snmp_server_host.group('user') else "Not applicable on SNMPv1/v2c"
+        udp_port = snmp_server_host.group('port') if snmp_server_host.group('port') else "161" or snmp_server_host.group('port_v3') if snmp_server_host.group('port_v3') else "161"
+
+        current_snmp_host_info = {'Interface':interface, 'IP Address':ip_address, 'Community String':community_string,
+                                  'SNMP Version':version, 'SNMP User':user, 'SNMP UDP Port':udp_port}
+        
+        snmp_host_list.append(current_snmp_host_info)
+
+    current_configuration = snmp_host_list if snmp_host_list else None
+    compliant = False
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
