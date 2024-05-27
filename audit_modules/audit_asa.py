@@ -74,11 +74,13 @@ def run_cis_cisco_asa_assessment(connection):
     logging_parsers.compliance_check_logging_trap(connection, "show running-config logging | include trap", "1.10.9 Ensure 'logging trap severity level' is greater than or equal to '5'", 1, global_report_output)
     logging_parsers.compliance_check_logging_mail(connection, "show running-config logging | include mail", "1.10.10 Ensure mail logging is configured for critical to emergencies", 1, global_report_output)
 
-    if snmp_parsers.compliance_check_snmp_enabled(connection, "show running-config snmp-server | include host") == False:
+    if snmp_parsers.compliance_check_snmp_enabled(connection, "show snmp-server group | include groupname") == False:
         snmp_parsers.compliance_check_disabled_snmp(global_report_output)
     else:
         snmp_parsers.compliance_check_snmp_server_group(connection, "show running-config snmp-server group", "1.11.1 Ensure 'snmp-server group' is set to 'v3 priv'", 1, global_report_output)
         snmp_parsers.compliance_check_snmp_server_user(connection, "show running-config snmp-server user", "1.11.2 Ensure 'snmp-server user' is set to 'v3 auth SHA'", 1, global_report_output)
         snmp_parsers.compliance_check_snmp_server_host(connection, "show running-config snmp-server host", "1.11.3 Ensure 'snmp-server host' is set to 'version 3'", 1, global_report_output)
         snmp_parsers.compliance_check_snmp_traps(connection, "show running-config all | include snmp-server enable traps snmp", "1.11.4 Ensure 'SNMP traps' is enabled", 1, global_report_output)
+        snmp_parsers.compliance_check_snmp_community_string(connection, "show snmp-server group | include _public", "1.11.5 Ensure 'SNMP community string' is not the default string", 1, global_report_output)
+
     return global_report_output

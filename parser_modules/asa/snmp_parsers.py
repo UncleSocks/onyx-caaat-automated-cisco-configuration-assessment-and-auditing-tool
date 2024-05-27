@@ -20,7 +20,7 @@ def compliance_check_disabled_snmp(global_report_output):
 
     for snmp_cis_check in snmp_cis_checks:
         compliant = "Not Applicable"
-        current_configuration = "SNMP not enabled or incomplete configuration"
+        current_configuration = "SNMP not enabled"
         cis_check = snmp_cis_check['CIS Check']
         level = snmp_cis_check['Level']
         global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
@@ -127,4 +127,25 @@ def compliance_check_snmp_traps(connection, command, cis_check, level, global_re
                 compliant = True
 
     current_configuration = command_output if command_output else None
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+
+def compliance_check_snmp_community_string(connection, command, cis_check, level, global_report_output):
+    command_output = ssh_send(connection, command)
+
+    public_community_string_group_list = []
+    
+    regex_pattern = re.compile(r'^groupname\s+:\s+(public)\s*security\s+model:(?P<version>\w+)', re.MULTILINE)
+    public_community_string_match = regex_pattern.findall(command_output)
+
+    if public_community_string_match:
+        for public_community_string in public_community_string_match:
+            group_name = public_community_string[0]
+            snmp_version = public_community_string[1]
+
+            current_public_community_string_info = {'Group Name':group_name, 'SNMP Version':snmp_version}
+            public_community_string_group_list.append(current_public_community_string_info)
+
+    current_configuration = public_community_string_group_list if public_community_string_group_list else None
+    compliant = not bool(public_community_string_match)
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
