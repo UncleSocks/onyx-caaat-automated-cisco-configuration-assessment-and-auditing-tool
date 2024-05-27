@@ -104,7 +104,7 @@ def compliance_check_snmp_server_host(connection, command, cis_check, level, glo
         snmp_host_list.append(current_snmp_host_info)
 
     current_configuration = snmp_host_list if snmp_host_list else None
-    compliant = non_compliant_snmp_host_counter == 0
+    compliant = non_compliant_snmp_host_counter == 0 and bool(snmp_host_list)
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
 
 
@@ -133,9 +133,10 @@ def compliance_check_snmp_traps(connection, command, cis_check, level, global_re
 def compliance_check_snmp_community_string(connection, command, cis_check, level, global_report_output):
     command_output = ssh_send(connection, command)
 
+    public_community_string_present = False
     public_community_string_group_list = []
     
-    regex_pattern = re.compile(r'^groupname\s+:\s+(public)\s*security\s+model:(?P<version>\w+)', re.MULTILINE)
+    regex_pattern = re.compile(r'^groupname\s+:\s+(?P<group_name>\S+)\s*security\s+model:(?P<version>\w+)', re.MULTILINE)
     public_community_string_match = regex_pattern.findall(command_output)
 
     if public_community_string_match:
@@ -143,9 +144,12 @@ def compliance_check_snmp_community_string(connection, command, cis_check, level
             group_name = public_community_string[0]
             snmp_version = public_community_string[1]
 
+            if group_name == "public":
+                public_community_string_present = True
+
             current_public_community_string_info = {'Group Name':group_name, 'SNMP Version':snmp_version}
             public_community_string_group_list.append(current_public_community_string_info)
 
     current_configuration = public_community_string_group_list if public_community_string_group_list else None
-    compliant = not bool(public_community_string_match)
+    compliant = not public_community_string_present
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
