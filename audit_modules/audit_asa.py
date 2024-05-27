@@ -2,15 +2,6 @@ from parser_modules.asa import general_parsers, password_parsers, device_parsers
     timout_parsers, clock_parsers, logging_parsers, snmp_parsers, routing_parsers
 
 
-def compliance_check_routing(connection, global_report_output):
-
-    match routing_parsers.compliance_check_dynamic_routing_tester(connection, "show running-config router | include ospf|eigrp|bgp"):
-        
-        case {'OSPF':False, 'EIGRP':False, 'BGP':False}:
-            routing_parsers.compliance_check_no_enabled_dynamic_routing(global_report_output)
-
-
-
 def run_cis_cisco_asa_assessment(connection):
 
     global_report_output = []
@@ -92,6 +83,6 @@ def run_cis_cisco_asa_assessment(connection):
         snmp_parsers.compliance_check_snmp_traps(connection, "show running-config all | include snmp-server enable traps snmp", "1.11.4 Ensure 'SNMP traps' is enabled", 1, global_report_output)
         snmp_parsers.compliance_check_snmp_community_string(connection, "show snmp-server group | include v1|v2c", "1.11.5 Ensure 'SNMP community string' is not the default string", 1, global_report_output)
 
-    compliance_check_routing(connection, global_report_output)
+    routing_parsers.compliance_check_ospf(connection, "show running-config router ospf", "show running-config interface", "2.1.1 Ensure 'OSPF authentication' is enabled", 2, global_report_output)
     
     return global_report_output

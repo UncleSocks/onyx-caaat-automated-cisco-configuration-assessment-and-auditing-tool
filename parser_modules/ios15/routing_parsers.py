@@ -424,7 +424,7 @@ def compliance_check_ospf(connection, command_one, command_two, level, global_re
 
     def compliance_check_ospf_auth(connection, command, level, global_report_output):
         command_output = ssh_send(connection, command)
-        regex_pattern = re.compile(r"router ospf (?P<id>\d+)(?:.*?(?P<config>.*?))(?=\nrouter ospf|$)", re.DOTALL)    
+        regex_pattern = re.compile(r'router ospf (?P<id>\d+)(?:.*?(?P<config>.*?))(?=\nrouter ospf|$)', re.DOTALL)    
         parser = regex_pattern.finditer(command_output)
 
         ospf_list = []

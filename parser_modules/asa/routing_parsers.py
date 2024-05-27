@@ -3,46 +3,139 @@ from ssh import ssh_send
 from report_modules.main_report import generate_report
 
 
-def compliance_check_dynamic_routing_tester(connection, command):
+def compliance_check_enabled_routing_protocols(connection, routing_protocol):
+    command = f"show running-config router | include {routing_protocol}"
     command_output = ssh_send(connection, command)
 
-    regex_pattern = re.compile(r'^router\s+(?P<dynamic_route>ospf|eigrp|bgp)', re.MULTILINE)
-    enabled_dynamic_routing_iter = regex_pattern.finditer(command_output)
-    enabled_dynamic_routing = {'OSPF':False, 'EIGRP':False, 'BGP':False}
-
-    if not enabled_dynamic_routing_iter:
-        return enabled_dynamic_routing
-    
+    if command_output:
+        return True
     else:
-        for enabled_dynamic_route in enabled_dynamic_routing_iter:
-            dynamic_route = enabled_dynamic_route.group('dynamic_route').lower()
+        return False
 
-            if dynamic_route == "ospf":
-                enabled_dynamic_routing['OSPF'] = True
-            elif dynamic_route == "eigrp":
-                enabled_dynamic_routing['EIGRP'] = True
-            else:
-                enabled_dynamic_routing['BGP'] = True
 
-        return enabled_dynamic_routing
+def compliance_check_ospf(connection, command_one, command_two, cis_check, level, global_report_output):
     
-
-def compliance_check_no_enabled_dynamic_routing(global_report_output):
-    dynamic_routing_cis_checks = [{'CIS Check':"2.1.1 Ensure 'OSPF authentication' is enabled", 'Level':2},
-                                  {'CIS Check':"2.1.2 Ensure 'EIGP authentication' is enabled", 'Level':2},
-                                  {'CIS Check':"2.1.3 Ensure 'BGP authentication' is enabled", 'Level':2}]
+    def compliance_check_enabled_ospf(connection):
     
-    for dynamic_routing_cis_check in dynamic_routing_cis_checks:
-        cis_check = dynamic_routing_cis_check['CIS Check']
-        compliant = "Not Applicable"
+        routing_protocol = "ospf"
 
-        if dynamic_routing_cis_check['CIS Check'] == "2.1.1 Ensure 'OSPF authentication' is enabled":
+        if compliance_check_enabled_routing_protocols(connection, routing_protocol) == False:
+            compliant = "Not Applicable"
             current_configuration = "OSPF is not enabled."
-        elif dynamic_routing_cis_check['CIS Check'] == "2.1.2 Ensure 'EIGP authentication' is enabled":
-            current_configuration = "EIGP is not enabled."
-        else:
-            current_configuration = "BGP is not enabled."
-
-        level = dynamic_routing_cis_check['Level']
+            global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+            return False
         
+        else:
+            return True
+        
+    def compliance_check_ospf_auth(connection, command, cis_check, level, global_report_output):
+        command_output = ssh_send(connection, command)
+        regex_pattern = re.compile(r'router ospf (?P<id>\d+)(?:.*?(?P<config>.*?))(?=\nrouter ospf|$)', re.DOTALL)    
+        parser = regex_pattern.finditer(command_output)
+
+        ospf_list = []
+
+        non_compliant_ospf_counter = 0
+
+        for match in parser:
+            
+            area_list = []
+            auth_list = []
+            
+            ospf_id = match.group('id')
+            ospf_config = match.group('config') or None
+
+            if ospf_config is None:
+                non_compliant_ospf_counter += 1
+                current_ospf_info = {'Process ID':ospf_id, 'Area Number':ospf_config, 'Authentication':ospf_config}
+                ospf_list.append(current_ospf_info)
+            
+            else:
+                auth_regex_pattern = re.compile(r'^\s*area (?P<area_number>\S+) authentication(?:\s+(?P<authentication_value>\S+))?$', re.MULTILINE)
+                auth_parser = auth_regex_pattern.findall(ospf_config)
+
+                unique_area_with_auth_list = []
+
+                if auth_parser:
+                    
+                    for match in auth_parser:
+                        area_number, authentication_value = match
+                        authentication_value = authentication_value if authentication_value else None
+                        
+                        if authentication_value is None or authentication_value.lower() != "message-digest":
+                            non_compliant_ospf_counter += 1
+                        
+                        area_list.append(area_number)
+                        auth_list.append(authentication_value)
+                    
+                    [unique_area_with_auth_list.append(area) for area in area_list if area not in unique_area_with_auth_list]
+
+                    area_without_auth_list = []
+
+                    area_regex_pattern = re.compile(r'network\s+\S+\s+\S+\s+area\s+(?P<area_number>\S+)', re.MULTILINE)
+                    area_parser = area_regex_pattern.findall(ospf_config)
+                    for match in area_parser:
+                        area_number = match
+                        if area_number not in unique_area_with_auth_list:
+                            area_without_auth_list.append(area_number)
+
+
+                    if area_without_auth_list:
+                        non_compliant_ospf_counter += 1
+                        unique_area_without_list = []
+                        [unique_area_without_list.append(area) for area in area_without_auth_list if area not in unique_area_without_list]
+
+                        area_list.append(unique_area_without_list)
+
+                        authentication_value = None
+                        auth_list.append(authentication_value)
+                    
+                        current_ospf_info = {'Process ID':ospf_id, 'Area Number':area_list, 'Authentication':auth_list}
+                        ospf_list.append(current_ospf_info)
+                    
+                    else:
+                        current_ospf_info = {'Process ID':ospf_id, 'Area Number':area_list, 'Authentication':auth_list}
+                        ospf_list.append(current_ospf_info)
+
+                else:
+                    non_compliant_ospf_counter += 1
+
+                    area_regex_pattern = re.compile(r'network\s+\S+\s+\S+\s+area\s+(?P<area_number>\S+)', re.MULTILINE)
+                    area_parser = area_regex_pattern.findall(ospf_config)
+                    
+                    if area_parser:
+                        
+                        area_without_auth_list = []
+                        
+                        for match in area_parser:
+                            area_number = match
+                            if area_number not in unique_area_with_auth_list:
+                                non_compliant_ospf_counter += 1
+                                area_without_auth_list.append(area_number)
+                        
+                        unique_area_without_list = []
+                        [unique_area_without_list.append(area) for area in area_without_auth_list if area not in unique_area_without_list]
+                        area_list.append(unique_area_without_list)
+
+                        authentication_value = None
+                        auth_list.append(authentication_value)
+
+                        current_ospf_info = {'Process ID':ospf_id, 'Area Number':area_list, 'Authentication':auth_list}
+                        ospf_list.append(current_ospf_info)
+
+                    else:
+                        area = None
+                        area_list.append(area)
+
+                        authentication_value = None
+                        auth_list.append(authentication_value)
+
+                        current_ospf_info = {'Process ID':ospf_id, 'Area Number':area_list, 'Authentication':auth_list}
+                        ospf_list.append(current_ospf_info)
+                    
+        compliant = non_compliant_ospf_counter == 0
+        current_configuration = ospf_list
         global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+    if compliance_check_enabled_ospf(connection) == True:
+        compliance_check_ospf_auth(connection, command_one, cis_check, level, global_report_output)
