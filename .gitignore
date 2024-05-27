@@ -63,3 +63,4 @@ parser_modules/asa/__pycache__/timout_parsers.cpython-310.pyc
 parser_modules/asa/__pycache__/clock_parsers.cpython-310.pyc
 parser_modules/asa/__pycache__/logging_parsers.cpython-310.pyc
 parser_modules/asa/__pycache__/snmp_parsers.cpython-310.pyc
+parser_modules/asa/__pycache__/routing_parsers.cpython-310.pyc
