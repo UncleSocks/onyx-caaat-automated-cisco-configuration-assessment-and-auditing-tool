@@ -84,5 +84,6 @@ def run_cis_cisco_asa_assessment(connection):
         snmp_parsers.compliance_check_snmp_community_string(connection, "show snmp-server group | include v1|v2c", "1.11.5 Ensure 'SNMP community string' is not the default string", 1, global_report_output)
 
     routing_parsers.compliance_check_ospf(connection, "show running-config router ospf", "show running-config interface", "2.1.1 Ensure 'OSPF authentication' is enabled", 2, global_report_output)
-    
+    routing_parsers.compliance_check_eigrp(connection, "show running-config router eigrp", "show running-config interface", "2.1.2 Ensure 'EIGRP authentication' is enabled", 2, global_report_output)
+
     return global_report_output
