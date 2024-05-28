@@ -52,13 +52,13 @@ def compliance_check_ospf(connection, command_one, command_two, cis_check, level
     def compliance_check_ospf_auth(connection, command_one, command_two, cis_check, level, global_report_output):
         command_output = ssh_send(connection, command_one)
         regex_pattern = re.compile(r'router ospf (?P<id>\d+)(?:.*?(?P<config>.*?))(?=\nrouter ospf|$)', re.DOTALL)    
-        parser = regex_pattern.finditer(command_output)
+        ospf_match = regex_pattern.finditer(command_output)
 
         ospf_list = []
 
         non_compliant_ospf_counter = 0
 
-        for match in parser:
+        for match in ospf_match:
             
             area_list = []
             auth_list = []
@@ -181,8 +181,44 @@ def compliance_check_eigrp(connection, command_one, command_two, cis_check, leve
             return True
         
     
-    def compliance_check_eigrp_auth(connection, command, cis_check, level, global_report_output):
-        print("EIGRP is enabled")
+    def compliance_check_eigrp_int(connection, command, process_id):
+        command_output = ssh_send(connection, command)
+        
+        eigrp_int_list = []
+
+        regex_pattern = re.compile(fr'interface\s+(?P<interface>\S+)(?:(?!interface)).*?authentication\s+key\s+eigrp\s+{process_id}\s+\S+\s+key-id\s+(?P<key_id>\d+)\n(?:.*?(?=(?:interface|$)))', re.DOTALL)
+        eigrp_int_match = regex_pattern.findall(command_output)
+
+        if eigrp_int_match:
+            for eigrp_int in eigrp_int_match:
+
+                interface = eigrp_int[0]
+                key_id = eigrp_int[1]
+
+                current_eigrp_int_info = {'Interface':interface, 'Key ID':key_id}
+                eigrp_int_list.append(current_eigrp_int_info)
+
+            return eigrp_int_list
+        
+        else:
+            return None
+        
+    
+    def compliance_check_eigrp_auth(connection, command_one, command_two, cis_check, level, global_report_output):
+        command_output = ssh_send(connection, command_one)
+
+        current_configuration = {'Process ID':None, 'Authentication':None}
+        eigrp_search = re.search(r'router\s+eigrp\s+(?P<process_id>\d+)(?:.*?)(?:(?=\nrouter eigrp|$))', command_output, re.DOTALL)
+        
+        if eigrp_search:
+            process_id = eigrp_search.group('process_id')
+
+            current_configuration['Process ID'] = process_id
+            current_configuration['Authentication'] = compliance_check_eigrp_int(connection, command_two, process_id)
+
+        compliant = current_configuration['Authentication'] != None
+        global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
 
     if compliance_check_enabled_eigrp(connection) == True:
-        compliance_check_eigrp_auth(connection, command_one, cis_check, level, global_report_output)
+        compliance_check_eigrp_auth(connection, command_one, command_two, cis_check, level, global_report_output)
