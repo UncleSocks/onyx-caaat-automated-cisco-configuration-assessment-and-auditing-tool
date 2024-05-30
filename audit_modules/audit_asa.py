@@ -1,10 +1,30 @@
+import os
 from parser_modules.asa import general_parsers, password_parsers, device_parsers, aaa_parsers, ssh_parsers, http_parsers, \
-    timout_parsers, clock_parsers, logging_parsers, snmp_parsers, routing_parsers
+    timout_parsers, clock_parsers, logging_parsers, snmp_parsers, routing_parsers, control_parsers
+
+
+def check_untrusted_interfaces():
+    
+    untrusted_nameifs_list = []
+
+    try:
+        
+        with open('nameif.txt') as untrusted_nameifs:
+            for untrusted_nameif in untrusted_nameifs:
+                untrusted_nameif = untrusted_nameif.strip()
+                untrusted_nameifs_list.append(untrusted_nameif)
+
+    except:
+        untrusted_nameifs_list = None
+
+    return untrusted_nameifs_list if untrusted_nameifs_list else None
 
 
 def run_cis_cisco_asa_assessment(connection):
 
     global_report_output = []
+
+    untrusted_interface_list = check_untrusted_interfaces() 
 
     general_parsers.compliance_check_with_expected_output(connection, "show running-config passwd", "1.1.1 Ensure 'Logon Password' is set", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include enable password", "1.1.2 Ensure 'Enable Password' is set", 1, global_report_output)
@@ -87,7 +107,7 @@ def run_cis_cisco_asa_assessment(connection):
     routing_parsers.compliance_check_eigrp(connection, "show running-config router eigrp", "show running-config interface", "2.1.2 Ensure 'EIGRP authentication' is enabled", 2, global_report_output)
     #2.1.3 Ensure 'BGP authentication' is enabled
 
-    #2.2 Ensure 'noproxyarp' is enabled for untrusted interfaces
+    control_parsers.compliance_check_noproxyarp(connection, "2.2 Ensure 'noproxyarp' is enabled for untrusted interfaces", 2, global_report_output, untrusted_interface_list)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config dns-guard", "2.3 Ensure 'DNS Guard' is enabled", 2, global_report_output)
 
     return global_report_output
