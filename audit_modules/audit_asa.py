@@ -85,5 +85,9 @@ def run_cis_cisco_asa_assessment(connection):
 
     routing_parsers.compliance_check_ospf(connection, "show running-config router ospf", "show running-config interface", "2.1.1 Ensure 'OSPF authentication' is enabled", 2, global_report_output)
     routing_parsers.compliance_check_eigrp(connection, "show running-config router eigrp", "show running-config interface", "2.1.2 Ensure 'EIGRP authentication' is enabled", 2, global_report_output)
+    #2.1.3 Ensure 'BGP authentication' is enabled
+
+    #2.2 Ensure 'noproxyarp' is enabled for untrusted interfaces
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config dns-guard", "2.3 Ensure 'DNS Guard' is enabled", 2, global_report_output)
 
     return global_report_output
