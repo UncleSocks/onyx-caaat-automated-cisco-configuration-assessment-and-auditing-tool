@@ -110,5 +110,6 @@ def run_cis_cisco_asa_assessment(connection):
     control_parsers.compliance_check_noproxyarp(connection, "2.2 Ensure 'noproxyarp' is enabled for untrusted interfaces", 2, global_report_output, untrusted_nameifs_list)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config dns-guard", "2.3 Ensure 'DNS Guard' is enabled", 2, global_report_output)
     control_parsers.compliance_check_dhcp_services(connection, "2.4 Ensure DHCP services are disabled for untrusted interfaces", 1, global_report_output, untrusted_nameifs_list)
+    control_parsers.compliance_check_icmp_deny(connection, "2.5 Ensure ICMP is restricted for untrusted interfaces", 1, global_report_output, untrusted_nameifs_list)
 
     return global_report_output
