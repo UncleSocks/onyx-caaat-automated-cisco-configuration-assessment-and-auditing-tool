@@ -24,7 +24,7 @@ def run_cis_cisco_asa_assessment(connection):
 
     global_report_output = []
 
-    untrusted_interface_list = check_untrusted_interfaces() 
+    untrusted_nameifs_list = check_untrusted_interfaces() 
 
     general_parsers.compliance_check_with_expected_output(connection, "show running-config passwd", "1.1.1 Ensure 'Logon Password' is set", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include enable password", "1.1.2 Ensure 'Enable Password' is set", 1, global_report_output)
@@ -107,7 +107,8 @@ def run_cis_cisco_asa_assessment(connection):
     routing_parsers.compliance_check_eigrp(connection, "show running-config router eigrp", "show running-config interface", "2.1.2 Ensure 'EIGRP authentication' is enabled", 2, global_report_output)
     #2.1.3 Ensure 'BGP authentication' is enabled
 
-    control_parsers.compliance_check_noproxyarp(connection, "2.2 Ensure 'noproxyarp' is enabled for untrusted interfaces", 2, global_report_output, untrusted_interface_list)
+    control_parsers.compliance_check_noproxyarp(connection, "2.2 Ensure 'noproxyarp' is enabled for untrusted interfaces", 2, global_report_output, untrusted_nameifs_list)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config dns-guard", "2.3 Ensure 'DNS Guard' is enabled", 2, global_report_output)
+    control_parsers.compliance_check_dhcp_services(connection, "2.4 Ensure DHCP services are disabled for untrusted interfaces", 1, global_report_output, untrusted_nameifs_list)
 
     return global_report_output

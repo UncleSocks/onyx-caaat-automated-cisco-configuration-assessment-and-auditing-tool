@@ -7,7 +7,7 @@ def compliance_check_noproxyarp(connection, cis_check, level, global_report_outp
 
     if untrusted_nameifs_list:
         
-        non_compliant_untrusted_nameifs_list = untrusted_nameifs_list
+        non_compliant_untrusted_nameifs_list = untrusted_nameifs_list.copy()
         compliant_untrusted_nameifs_list = []
 
         for untrusted_nameif in untrusted_nameifs_list:
@@ -26,4 +26,49 @@ def compliance_check_noproxyarp(connection, cis_check, level, global_report_outp
         compliant = "Not Applicable"
         current_configuration = "Untrusted interface list (nameif.txt) is not defined."
 
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+
+def compliance_check_dhcp_services(connection, cis_check, level, global_report_output, untrusted_nameifs_list):
+
+    if untrusted_nameifs_list:
+
+        untrusted_nameifs_dhcp_server_list = []
+        untrusted_nameifs_dhcp_relay_list = []
+
+        dhcp_server_check_command = "show running-config | include dhcpd.enable"
+        dhcp_server_check = ssh_send(connection, dhcp_server_check_command)
+
+        dhcp_relay_check_command = "show running-config | include dhcprelay.enable"
+        dhcp_relay_check = ssh_send(connection, dhcp_relay_check_command)
+
+        if dhcp_server_check:
+            for untrusted_nameif in untrusted_nameifs_list:
+                dhcp_server_untrusted_nameif_command = f"show running-config | include dhcpd.enable.{untrusted_nameif}"
+                command_output = ssh_send(connection, dhcp_server_untrusted_nameif_command)
+
+                if command_output:
+                    untrusted_nameifs_dhcp_server_list.append(untrusted_nameif)
+
+            current_configuration = {'DHCP Server Untrusted Interfaces':untrusted_nameifs_dhcp_server_list, 'DHCP Relay Untrusted Interfaces':"Firewall is configured as a DHCP server."}
+
+        elif dhcp_relay_check:
+            for untrusted_nameif in untrusted_nameifs_list:
+                dhcp_relay_untrusted_nameif_command = f"show running-config | include dhcprelay.enable.{untrusted_nameif}"
+                command_output = ssh_send(connection, dhcp_relay_untrusted_nameif_command)
+
+                if command_output:
+                    untrusted_nameifs_dhcp_relay_list.append(untrusted_nameif)
+
+            current_configuration = {'DHCP Server Untrusted Interfaces':"Firewall is configured as a DHCP relay.", 'DHCP Relay Untrusted Interfaces':untrusted_nameifs_dhcp_relay_list}
+
+        else:
+            current_configuration = {'DHCP Server Untrusted Interfaces':None, 'DHCP Relay Untrusted Interfaces':None}
+
+        compliant = not bool(untrusted_nameifs_dhcp_server_list) and not bool(untrusted_nameifs_dhcp_relay_list)
+
+    else:
+        compliant = "Not Applicable"
+        current_configuration = "Untrusted interface list (nameif.txt) is not defined."
+    
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
