@@ -14,7 +14,9 @@ def compliance_check_noproxyarp(connection, cis_check, level, global_report_outp
             noproxy_untrusted_nameif_command = f"show running-config systopt | grep proxyarp.{untrusted_nameif}"
             command_output = ssh_send(connection, noproxy_untrusted_nameif_command)
 
-            if command_output:
+            non_existent_interface_search = re.search(r'ERROR:(?:\s*.*?)', command_output)
+
+            if command_output and not non_existent_interface_search:
                 non_compliant_untrusted_nameifs_list.remove(untrusted_nameif)
                 compliant_untrusted_nameifs_list.append(untrusted_nameif)
 
@@ -47,7 +49,9 @@ def compliance_check_dhcp_services(connection, cis_check, level, global_report_o
                 dhcp_server_untrusted_nameif_command = f"show running-config | include dhcpd.enable.{untrusted_nameif}"
                 command_output = ssh_send(connection, dhcp_server_untrusted_nameif_command)
 
-                if command_output:
+                non_existent_interface_search = re.search(r'ERROR:(?:\s*.*?)', command_output)
+
+                if command_output and not non_existent_interface_search:
                     untrusted_nameifs_dhcp_server_list.append(untrusted_nameif)
 
             current_configuration = {'DHCP Server Untrusted Interfaces':untrusted_nameifs_dhcp_server_list, 'DHCP Relay Untrusted Interfaces':"Firewall is configured as a DHCP server."}
@@ -85,7 +89,9 @@ def compliance_check_icmp_deny(connection, cis_check, level, global_report_outpu
             icmp_deny_untrusted_nameif_command = f"show running-config icmp | include deny.any.{untrusted_name_if}"
             command_output = ssh_send(connection, icmp_deny_untrusted_nameif_command)
 
-            if command_output:
+            non_existent_interface_search = re.search(r'ERROR:(?:\s*.*?)', command_output)
+
+            if command_output and not non_existent_interface_search:
                 non_compliant_untrusted_nameifs_list.remove(untrusted_name_if)
                 compliant_untrusted_nameifs_list.append(untrusted_name_if)
 
