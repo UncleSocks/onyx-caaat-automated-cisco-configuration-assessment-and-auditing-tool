@@ -24,7 +24,7 @@ def compliance_check_noproxyarp(connection, cis_check, level, global_report_outp
 
     else:
         compliant = "Not Applicable"
-        current_configuration = "Untrusted interface list (nameif.txt) is not defined."
+        current_configuration = "Untrusted interface list empty."
 
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
 
@@ -69,17 +69,17 @@ def compliance_check_dhcp_services(connection, cis_check, level, global_report_o
 
     else:
         compliant = "Not Applicable"
-        current_configuration = "Untrusted interface list (nameif.txt) is not defined."
+        current_configuration = "Untrusted interface list empty."
     
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
 
 
 def compliance_check_icmp_deny(connection, cis_check, level, global_report_output, untrusted_nameifs_list):
 
-    non_compliant_untrusted_nameifs_list = untrusted_nameifs_list.copy()
-    compliant_untrusted_nameifs_list = []
-
     if untrusted_nameifs_list:
+        
+        non_compliant_untrusted_nameifs_list = untrusted_nameifs_list.copy()
+        compliant_untrusted_nameifs_list = []
 
         for untrusted_name_if in untrusted_nameifs_list:
             icmp_deny_untrusted_nameif_command = f"show running-config icmp | include deny.any.{untrusted_name_if}"
@@ -95,6 +95,6 @@ def compliance_check_icmp_deny(connection, cis_check, level, global_report_outpu
 
     else:
         compliant = "Not Applicable"
-        current_configuration = "Untrusted interface list (nameif.txt) is not defined."
+        current_configuration = "Untrusted interface list empty."
 
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))

@@ -1,30 +1,33 @@
-import os
+import json
 from parser_modules.asa import general_parsers, password_parsers, device_parsers, aaa_parsers, ssh_parsers, http_parsers, \
-    timout_parsers, clock_parsers, logging_parsers, snmp_parsers, routing_parsers, control_parsers
+    timout_parsers, clock_parsers, logging_parsers, snmp_parsers, routing_parsers, control_parsers, data_parsers
 
 
-def check_untrusted_interfaces():
+def unpack_cisco_asa_config():
     
     untrusted_nameifs_list = []
 
     try:
         
-        with open('nameif.txt') as untrusted_nameifs:
-            for untrusted_nameif in untrusted_nameifs:
-                untrusted_nameif = untrusted_nameif.strip()
-                untrusted_nameifs_list.append(untrusted_nameif)
+        with open('cisco_config.json') as cisco_config_file:
+            asa_config = json.load(cisco_config_file)
+            untrusted_nameifs_list = asa_config['asa']['interfaces']['untrusted'] if asa_config['asa']['interfaces']['untrusted'] else None
+            internetfacing_nameifs_list = asa_config['asa']['interfaces']['internet-facing'] if asa_config['asa']['interfaces']['internet-facing'] else None
 
+            dns_server_list = asa_config['asa']['dns_servers']
+    
     except:
         untrusted_nameifs_list = None
+        internetfacing_nameifs_list = None
 
-    return untrusted_nameifs_list if untrusted_nameifs_list else None
+    return untrusted_nameifs_list, internetfacing_nameifs_list, dns_server_list
 
 
 def run_cis_cisco_asa_assessment(connection):
 
     global_report_output = []
 
-    untrusted_nameifs_list = check_untrusted_interfaces() 
+    untrusted_nameifs_list, internetfacing_nameifs_list, dns_server_list = unpack_cisco_asa_config() 
 
     general_parsers.compliance_check_with_expected_output(connection, "show running-config passwd", "1.1.1 Ensure 'Logon Password' is set", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include enable password", "1.1.2 Ensure 'Enable Password' is set", 1, global_report_output)
@@ -111,5 +114,7 @@ def run_cis_cisco_asa_assessment(connection):
     general_parsers.compliance_check_with_expected_output(connection, "show running-config dns-guard", "2.3 Ensure 'DNS Guard' is enabled", 2, global_report_output)
     control_parsers.compliance_check_dhcp_services(connection, "2.4 Ensure DHCP services are disabled for untrusted interfaces", 1, global_report_output, untrusted_nameifs_list)
     control_parsers.compliance_check_icmp_deny(connection, "2.5 Ensure ICMP is restricted for untrusted interfaces", 1, global_report_output, untrusted_nameifs_list)
+    
+    data_parsers.compliance_check_dns_services(connection, "show running-config all | include domain-lookup", "3.1 Ensure DNS services are configured correctly", 1, global_report_output, dns_server_list)
 
     return global_report_output
