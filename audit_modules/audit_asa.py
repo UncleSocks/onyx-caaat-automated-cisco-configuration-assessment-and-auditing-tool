@@ -117,5 +117,6 @@ def run_cis_cisco_asa_assessment(connection):
     
     data_parsers.compliance_check_dns_services(connection, "show running-config all | include domain-lookup", "3.1 Ensure DNS services are configured correctly", 1, global_report_output, dns_server_list)
     data_parsers.compliance_check_ips(connection, "show running-config ip audit name | include _attack_", "3.2 Ensure intrusion prevention is enabled for untrusted interfaces", 1, global_report_output, untrusted_nameifs_list)
+    data_parsers.compliance_check_fragments(connection, "3.3 Ensure packet fragments are restricted for untrusted interfaces", 1, global_report_output, untrusted_nameifs_list)
 
     return global_report_output

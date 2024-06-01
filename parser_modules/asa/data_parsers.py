@@ -102,3 +102,31 @@ def compliance_check_ips(connection, command, cis_check, level, global_report_ou
         current_configuration = "No Intrusion Prevention configured."
 
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+
+def compliance_check_fragments(connection, cis_check, level, global_report_output, untrusted_nameifs_list):
+
+    if untrusted_nameifs_list:
+
+        non_compliant_untrusted_nameifs_list = untrusted_nameifs_list.copy()
+        compliant_untrusted_nameifs_list = []
+
+        for untrusted_name_if in untrusted_nameifs_list:
+            packet_fragment_untrusted_nameif_command = f"show running-config fragment {untrusted_name_if} | include chain_1_"
+            command_output = ssh_send(connection, packet_fragment_untrusted_nameif_command)
+
+            non_existent_interface_search = re.search(r'ERROR:(?:\s*.*?)', command_output)
+
+            if command_output and not non_existent_interface_search:
+                non_compliant_untrusted_nameifs_list.remove(untrusted_name_if)
+                compliant_untrusted_nameifs_list.append(untrusted_name_if)
+
+        compliant = not bool(non_compliant_untrusted_nameifs_list)
+        current_configuration = {'Restricted Packet Fragments Untrusted Interfaces':compliant_untrusted_nameifs_list if compliant_untrusted_nameifs_list else None,
+                                 'Untrestricted Packet Fragments Untrusted Interfaces':non_compliant_untrusted_nameifs_list if non_compliant_untrusted_nameifs_list else None}
+        
+    else:
+        compliant = "Not Applicable"
+        current_configuration = "Untrusted interface list empty."
+
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
