@@ -1,9 +1,10 @@
 {
     "asa": {
         "interfaces": {
-            "untrusted":[],
+            "untrusted":["MGMT", "TEST"],
             "internet-facing":[]
         },
-        "dns_servers":[]
+        "dns_servers":[],
+        "inspect_protocol":[]
     }
 }

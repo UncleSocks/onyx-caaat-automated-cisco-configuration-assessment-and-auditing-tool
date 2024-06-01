@@ -73,6 +73,7 @@ def compliance_check_ips(connection, command, cis_check, level, global_report_ou
         if untrusted_nameifs_list:
             non_compliant_untrusted_nameifs_list = untrusted_nameifs_list.copy()
             compliant_untrusted_nameifs_list = []
+            non_existent_untrusted_nameifs_list = []
 
             for untrusted_nameif in untrusted_nameifs_list:
                 for ips_audit_name in ips_audit_name_list:
@@ -86,16 +87,22 @@ def compliance_check_ips(connection, command, cis_check, level, global_report_ou
                         compliant_untrusted_nameifs_list.append(untrusted_nameif)
                         break
 
+                    elif command_output and non_existent_interface_search:
+                        non_compliant_untrusted_nameifs_list.remove(untrusted_nameif)
+                        non_existent_untrusted_nameifs_list.append(untrusted_nameif)
+                        break
+
             compliant = not bool(non_compliant_untrusted_nameifs_list) and non_compliant_ips_audit_counter == 0
             current_configuration = {'IPS Audit List':ips_audit_list, 
                                      'Intrusion Prevention Enabled Untrusted Interfaces':compliant_untrusted_nameifs_list if compliant_untrusted_nameifs_list else None,
-                                     'No Intrusion Prevention Unstrusted Interfcaes':non_compliant_untrusted_nameifs_list if non_compliant_untrusted_nameifs_list else None}
+                                     'No Intrusion Prevention Unstrusted Interfcaes':non_compliant_untrusted_nameifs_list if non_compliant_untrusted_nameifs_list else None,
+                                     'Non-existent Untrusted Interfaces':non_existent_untrusted_nameifs_list if non_existent_untrusted_nameifs_list else None}
             
         else:
             compliant = "Not Applicable"
             current_configuration = {'IPS Audit List':ips_audit_list, 
                                      'Intrusion Prevention Enabled Untrusted Interfaces':"Untrusted interfaces list is not defined.",
-                            'No Intrusion Prevention Unstrusted Interfcaes':"Untrusted interfaces list is not defined."}
+                                     'No Intrusion Prevention Unstrusted Interfcaes':"Untrusted interfaces list is not defined."}
 
     else:
         compliant = False
@@ -110,6 +117,7 @@ def compliance_check_fragments(connection, cis_check, level, global_report_outpu
 
         non_compliant_untrusted_nameifs_list = untrusted_nameifs_list.copy()
         compliant_untrusted_nameifs_list = []
+        non_existent_untrusted_nameifs_list = []
 
         for untrusted_name_if in untrusted_nameifs_list:
             packet_fragment_untrusted_nameif_command = f"show running-config fragment {untrusted_name_if} | include chain_1_"
@@ -121,9 +129,14 @@ def compliance_check_fragments(connection, cis_check, level, global_report_outpu
                 non_compliant_untrusted_nameifs_list.remove(untrusted_name_if)
                 compliant_untrusted_nameifs_list.append(untrusted_name_if)
 
+            elif command_output and non_existent_interface_search:
+                non_compliant_untrusted_nameifs_list.remove(untrusted_name_if)
+                non_existent_untrusted_nameifs_list.append(untrusted_name_if)
+
         compliant = not bool(non_compliant_untrusted_nameifs_list)
         current_configuration = {'Restricted Packet Fragments Untrusted Interfaces':compliant_untrusted_nameifs_list if compliant_untrusted_nameifs_list else None,
-                                 'Untrestricted Packet Fragments Untrusted Interfaces':non_compliant_untrusted_nameifs_list if non_compliant_untrusted_nameifs_list else None}
+                                 'Untrestricted Packet Fragments Untrusted Interfaces':non_compliant_untrusted_nameifs_list if non_compliant_untrusted_nameifs_list else None,
+                                 'Non-existent Untrusted Interfaces':non_existent_untrusted_nameifs_list if non_existent_untrusted_nameifs_list else None}
         
     else:
         compliant = "Not Applicable"
