@@ -143,3 +143,59 @@ def compliance_check_fragments(connection, cis_check, level, global_report_outpu
         current_configuration = "Untrusted interface list empty."
 
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+
+def compliance_check_application_inspection(connection, command, cis_check, level, global_report_output, non_default_protocol_list):
+    command_output = ssh_send(connection, command)
+
+    inspection_default_config_search = re.search(r'\s*class\s+inspection_default\s*\n(?:(?P<protocol_list>(?:\s*inspect\s+\S+.*\n)*))', command_output)
+    regex_protocol_list = inspection_default_config_search.group('protocol_list')
+
+    regex_pattern = re.compile(r'^\s*inspect\s+(?P<protocol>\S+)', re.MULTILINE)
+    default_protocol_list = regex_pattern.findall(regex_protocol_list)
+
+    supported_protocol_list = ["ctiqbe", "dcerpc", "diameter", "dns", "esmtp", "ftp", "gtp", "h323", "http", "icmp", 
+                               "ils", "im", "ip-options", "ipsec-pass-thru", "ipv6", "lisp", "m3ua", "mgcp", "mmp",
+                               "netbios", "pptp", "rsh", "rtsp", "scansafe", "sctp", "sip", "skinny", "snmp", "sqlnet",
+                               "stun", "sunrpc", "tftp", "vxlan", "waas", "xdmcp"]
+    
+    non_existent_protocol_list = []
+
+    inspected_non_default_protocol_list = []
+    uninspected_non_default_protocol_list = []
+
+    if non_default_protocol_list:
+    
+        for non_default_protocol in non_default_protocol_list:
+            
+            if non_default_protocol.lower() not in supported_protocol_list:
+                non_existent_protocol_list.append(non_default_protocol.lower())
+
+            elif non_default_protocol.lower() in supported_protocol_list and non_default_protocol.lower() in default_protocol_list:
+                inspected_non_default_protocol_list.append(non_default_protocol.lower())
+
+            elif non_default_protocol.lower() in supported_protocol_list and non_default_protocol.lower() not in default_protocol_list:
+                non_default_protocol_command = f"show running-config policy-map | include __inspect.{non_default_protocol.lower()}"
+                non_default_protocol_command_output = ssh_send(connection, non_default_protocol_command)
+
+                if non_default_protocol_command_output:
+                    inspected_non_default_protocol_list.append(non_default_protocol.lower())
+
+                else:
+                    uninspected_non_default_protocol_list.append(non_default_protocol.lower())
+
+            compliant = not bool(uninspected_non_default_protocol_list)
+            current_configuration = {'Inspected Applications':inspected_non_default_protocol_list if inspected_non_default_protocol_list else None,
+                                    'Uninspected Applications':uninspected_non_default_protocol_list if uninspected_non_default_protocol_list else None,
+                                    'Unsupported Applications':non_existent_protocol_list if non_existent_protocol_list else None,
+                                    'Default Policy Inspected Applications':default_protocol_list if default_protocol_list else None}
+            
+    else:
+
+        compliant = "Not Applicable"
+        current_configuration = {'Inspected Applications':"Non-standard application list is not defined.",
+                        'Uninspected Applications':"Non-standard application list is not defined.",
+                        'Unsupported Applications':"Non-standard application list is not defined.",
+                        'Default Policy Inspected Applications':default_protocol_list if default_protocol_list else None}
+        
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))

@@ -14,20 +14,23 @@ def unpack_cisco_asa_config():
             untrusted_nameifs_list = asa_config['asa']['interfaces']['untrusted'] if asa_config['asa']['interfaces']['untrusted'] else None
             internetfacing_nameifs_list = asa_config['asa']['interfaces']['internet-facing'] if asa_config['asa']['interfaces']['internet-facing'] else None
 
-            dns_server_list = asa_config['asa']['dns_servers']
+            dns_server_list = asa_config['asa']['dns_servers'] if asa_config['asa']['dns_servers'] else None
+            non_default_application_list = asa_config['asa']['inspect_protocol'] if asa_config['asa']['inspect_protocol'] else None
     
     except:
         untrusted_nameifs_list = None
         internetfacing_nameifs_list = None
+        dns_server_list = None
+        non_default_application_list = None
 
-    return untrusted_nameifs_list, internetfacing_nameifs_list, dns_server_list
+    return untrusted_nameifs_list, internetfacing_nameifs_list, dns_server_list, non_default_application_list
 
 
 def run_cis_cisco_asa_assessment(connection):
 
     global_report_output = []
 
-    untrusted_nameifs_list, internetfacing_nameifs_list, dns_server_list = unpack_cisco_asa_config() 
+    untrusted_nameifs_list, internetfacing_nameifs_list, dns_server_list, non_default_application_list = unpack_cisco_asa_config() 
 
     general_parsers.compliance_check_with_expected_output(connection, "show running-config passwd", "1.1.1 Ensure 'Logon Password' is set", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include enable password", "1.1.2 Ensure 'Enable Password' is set", 1, global_report_output)
@@ -118,5 +121,6 @@ def run_cis_cisco_asa_assessment(connection):
     data_parsers.compliance_check_dns_services(connection, "show running-config all | include domain-lookup", "3.1 Ensure DNS services are configured correctly", 1, global_report_output, dns_server_list)
     data_parsers.compliance_check_ips(connection, "show running-config ip audit name | include _attack_", "3.2 Ensure intrusion prevention is enabled for untrusted interfaces", 1, global_report_output, untrusted_nameifs_list)
     data_parsers.compliance_check_fragments(connection, "3.3 Ensure packet fragments are restricted for untrusted interfaces", 1, global_report_output, untrusted_nameifs_list)
+    data_parsers.compliance_check_application_inspection(connection, "show running-config policy-map global_policy", "3.4 Ensure non-default application inspection is configured", 1, global_report_output, non_default_application_list)
 
     return global_report_output
