@@ -124,5 +124,6 @@ def run_cis_cisco_asa_assessment(connection):
     data_parsers.compliance_check_application_inspection(connection, "show running-config policy-map global_policy", "3.4 Ensure non-default application inspection is configured", 1, global_report_output, non_default_application_list)
     #3.5 Ensure DOS protection is enabled for untrusted interfaces
     general_parsers.compliance_check_with_expected_output(connection, "show running-config threat-detection statistics | include tcp-intercept", "3.6 Ensure 'threat-detection statistics' is set to 'tcp-intercept'", 1, global_report_output)
+    data_parsers.compliance_check_reverse_path(connection, "3.7 Ensure 'ip verify' is set to 'reverse-path' for untrusted interfaces", 1, global_report_output, untrusted_nameifs_list)
 
     return global_report_output

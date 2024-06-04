@@ -199,3 +199,37 @@ def compliance_check_application_inspection(connection, command, cis_check, leve
                         'Default Policy Inspected Applications':default_protocol_list if default_protocol_list else None}
         
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+
+def compliance_check_reverse_path(connection, cis_check, level, global_report_output, untrusted_nameifs_list):
+
+    if untrusted_nameifs_list:
+
+        non_compliant_untrusted_nameifs_list = untrusted_nameifs_list.copy()
+        compliant_untrusted_nameifs_list = []
+        non_existent_untrusted_nameifs_list = []
+
+        for untrusted_nameif in untrusted_nameifs_list:
+            reverse_path_untrusted_nameif_command = f"show running-config ip verify reverse-path interface {untrusted_nameif}"
+            command_output = ssh_send(connection, reverse_path_untrusted_nameif_command)
+            
+            non_existent_interface_search = re.search(r'ERROR:(?:\s*.*?)', command_output)
+
+            if command_output and not non_existent_interface_search:
+                non_compliant_untrusted_nameifs_list.remove(untrusted_nameif)
+                compliant_untrusted_nameifs_list.append(untrusted_nameif)
+
+            elif command_output and non_existent_interface_search:
+                non_compliant_untrusted_nameifs_list.remove(untrusted_nameif)
+                non_existent_untrusted_nameifs_list.append(untrusted_nameif)
+
+        compliant = not bool(non_compliant_untrusted_nameifs_list)
+        current_configuration = {'Reverse Path Untrusted Interfaces':compliant_untrusted_nameifs_list if compliant_untrusted_nameifs_list else None,
+                                 'Unconfigured Reverse Path Untrusted Interfaces':non_compliant_untrusted_nameifs_list if non_compliant_untrusted_nameifs_list else None,
+                                 'Non-existent Reverse Path Untrusted Interfaces':non_existent_untrusted_nameifs_list if non_existent_untrusted_nameifs_list else None}
+        
+    else:
+        compliant = "Not Applicable"
+        current_configuration = "Untrusted interface list empty."
+
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
