@@ -233,3 +233,42 @@ def compliance_check_reverse_path(connection, cis_check, level, global_report_ou
         current_configuration = "Untrusted interface list empty."
 
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+
+def compliance_check_security_level(connection, cis_check, level, global_report_output, internet_facing_int_list):
+
+    if internet_facing_int_list:
+
+        non_compliant_internet_facing_int_counter = 0
+        processed_internet_facing_int_list = []
+        non_existent_internet_facing_int_list = []
+
+        for internet_facing_int in internet_facing_int_list:
+ 
+            internet_facing_int_command = f"show running-config interface {internet_facing_int}"
+            command_output = ssh_send(connection, internet_facing_int_command)
+            print(command_output)
+
+            security_level_search = re.search(r'security-level\s+(?P<level>\d+)', command_output)
+            non_existent_interface_search = re.search(r'ERROR:(?:\s*.*?)', command_output)
+
+            if security_level_search and not non_existent_interface_search:
+                security_level = int(security_level_search.group('level'))
+                if security_level != 0:
+                    non_compliant_internet_facing_int_counter += 1
+
+                current_internetfacing_int_info = {'Internet Facing Interface':internet_facing_int, 'Security Level':security_level}
+                processed_internet_facing_int_list.append(current_internetfacing_int_info)
+
+            elif security_level_search and non_existent_interface_search:
+                non_existent_internet_facing_int_list.append(internet_facing_int)
+
+        compliant = non_compliant_internet_facing_int_counter == 0
+        current_configuration = {'Internet Facing Interfaces':processed_internet_facing_int_list if processed_internet_facing_int_list else None, 
+                                 'Non-existent Internet Facing Interfaces':non_existent_internet_facing_int_list if non_existent_internet_facing_int_list else None}
+        
+    else:
+        compliant = "Not Applicable"
+        current_configuration = "Internet-facing list is not defined."
+
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
