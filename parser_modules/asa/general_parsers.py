@@ -4,7 +4,7 @@ from report_modules.main_report import generate_report
 
 def compliance_check_with_expected_output(connection, command, cis_check, level, global_report_output):
     command_output = ssh_send(connection, command)
-    if command_output:
+    if command_output and command_output.split(" ")[0].lower() != "no":
         compliant = True
     else:
         compliant = False
