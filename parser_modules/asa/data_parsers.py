@@ -247,7 +247,6 @@ def compliance_check_security_level(connection, cis_check, level, global_report_
  
             internet_facing_int_command = f"show running-config interface {internet_facing_int}"
             command_output = ssh_send(connection, internet_facing_int_command)
-            print(command_output)
 
             security_level_search = re.search(r'security-level\s+(?P<level>\d+)', command_output)
             non_existent_interface_search = re.search(r'ERROR:(?:\s*.*?)', command_output)
@@ -271,4 +270,48 @@ def compliance_check_security_level(connection, cis_check, level, global_report_
         compliant = "Not Applicable"
         current_configuration = "Internet-facing list is not defined."
 
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+
+def compliance_check_acl_deny(connection, command_one, command_two, cis_check, level, global_report_output):
+    command_output = ssh_send(connection, command_one)
+
+    access_group_list = []
+    non_compliant_access_list = []
+    present_access_list = []
+
+    regex_pattern = re.compile(r'access-group\s+(?P<acg_name>\S+)\s+(?:(?P<direction>in|out|global))(?:\s+interface\s+(?P<interface>\S+))?', re.MULTILINE)
+    access_group_match = regex_pattern.findall(command_output)
+
+    if access_group_match:
+
+        for access_group in access_group_match:
+            acg_name = access_group[0]
+            direction = access_group[1]
+            interface = access_group[2] if access_group[2] else None
+
+            current_access_group_info = {'Access Group Name':acg_name, 'Direction':direction, 'Interface':interface}
+            access_group_list.append(current_access_group_info)
+
+            non_compliant_access_list.append(acg_name)
+                
+        acl_command_output = ssh_send(connection, command_two)
+        print(acl_command_output)
+        acl_regex_pattern = re.compile(r'access-list\s+(?P<acl_name>\S+)\s+extended\s+deny\s+ip\s+any\s+any\s+log', re.MULTILINE)
+        acl_match = acl_regex_pattern.findall(acl_command_output)
+        print(acl_match)
+
+        if acl_match:
+            for access_list in acl_match:
+                non_compliant_access_list.remove(access_list)
+                present_access_list.append(access_list)
+
+        current_configuration = {'Access Groups':access_group_list if access_group_list else None,
+                                 'Present Access Lists':present_access_list if present_access_list else None,
+                                 'Non Compliant Access Lists':non_compliant_access_list if non_compliant_access_list else None}
+
+    else:
+        current_configuration = "No access group configured."
+
+    compliant = not bool(non_compliant_access_list)
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))

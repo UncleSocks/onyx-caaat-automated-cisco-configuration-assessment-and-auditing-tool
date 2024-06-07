@@ -126,5 +126,9 @@ def run_cis_cisco_asa_assessment(connection):
     general_parsers.compliance_check_with_expected_output(connection, "show running-config threat-detection statistics | include tcp-intercept", "3.6 Ensure 'threat-detection statistics' is set to 'tcp-intercept'", 1, global_report_output)
     data_parsers.compliance_check_reverse_path(connection, "3.7 Ensure 'ip verify' is set to 'reverse-path' for untrusted interfaces", 1, global_report_output, untrusted_nameifs_list)
     data_parsers.compliance_check_security_level(connection, "3.8 Ensure 'security-level' is set to '0' for Internet-facing interface", 1, global_report_output, internetfacing_nameifs_list)
+    #3.9 Ensure Botnet protection is enabled for untrusted interfaces
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config filter | include activex", "3.10 Ensure ActiveX filtering is enabled", 2, global_report_output)
+    general_parsers.compliance_check_with_expected_output(connection, "show running-config filter | include java", "3.11 Ensure Java applet filtering is enabled", 2, global_report_output)
+    data_parsers.compliance_check_acl_deny(connection, "show running-config access-group", "show running-config access-list | include deny.ip.any.any", "3.12 Ensure explicit deny in access lists is configured correctly", 1, global_report_output)
 
     return global_report_output
