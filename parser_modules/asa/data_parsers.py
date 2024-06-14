@@ -201,7 +201,7 @@ def compliance_check_application_inspection(connection, command, cis_check, leve
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
 
 
-def compliance_check_dos(connection, command, cis_check, level, global_report_output):
+def compliance_check_dos_protection(connection, command, cis_check, level, global_report_output):
     command_output = ssh_send(connection, command)
 
     current_configuration = {'Conn-Max':None, 'Embryonic-Conn-Max': None, 'Per-Client-Embryonic-Max':None, 'Per-Client-Max':None}
@@ -304,6 +304,31 @@ def compliance_check_security_level(connection, cis_check, level, global_report_
         compliant = "Not Applicable"
         current_configuration = "Internet-facing list is not defined."
 
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+
+
+def complaince_check_botnet_protection(connection, cis_check, level, global_report_output, untrusted_nameifs_list):
+    
+    if untrusted_nameifs_list:
+        non_compliant_untrusted_nameifs_list = untrusted_nameifs_list.copy()
+        compliant_untrusted_nameifs_list = []
+
+        for untrusted_nameif in untrusted_nameifs_list:
+            botnet_protection_command = f"show running-config dynamic-filter | include blacklist.interface.{untrusted_nameif}"
+            command_output = ssh_send(connection, botnet_protection_command)
+
+            if command_output:
+                non_compliant_untrusted_nameifs_list.remove(untrusted_nameif)
+                compliant_untrusted_nameifs_list.append(untrusted_nameif)
+
+        compliant = not bool(non_compliant_untrusted_nameifs_list)
+        current_configuration = {'Untrusted Interfaces with Botnet Protection':compliant_untrusted_nameifs_list,
+                                 'Untrusted Interfaces without Botnet Protection':non_compliant_untrusted_nameifs_list}
+        
+    else:
+        compliant = "Not Applicable"
+        current_configuration = "Untrusted interface list empty."
+    
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
 
 

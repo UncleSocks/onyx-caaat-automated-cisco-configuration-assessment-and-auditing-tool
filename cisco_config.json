@@ -2,7 +2,7 @@
     "asa": {
         "interfaces": {
             "untrusted":[],
-            "internet-facing":["gigabitethernet 0/0", "management 0/0"]
+            "internet-facing":[]
         },
         "dns_servers":[],
         "inspect_protocol":[]
