@@ -201,6 +201,40 @@ def compliance_check_application_inspection(connection, command, cis_check, leve
     global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
 
 
+def compliance_check_dos(connection, command, cis_check, level, global_report_output):
+    command_output = ssh_send(connection, command)
+
+    current_configuration = {'Conn-Max':None, 'Embryonic-Conn-Max': None, 'Per-Client-Embryonic-Max':None, 'Per-Client-Max':None}
+
+    if command_output:
+        conn_max_search = re.search(r'(?:set\s+connection\s+)?(?<!embryonic-)conn-max\s+(?P<conn_max>\d+)', command_output)
+        embryonic_conn_max_search = re.search(r'(?:set\s+connection\s+)?embryonic-conn-max\s+(?P<embryonic_conn_max>\d+)', command_output)
+        per_client_embryonic_max_search = re.search(r'(?:set\s+connection\s+)?per-client-embryonic-max\s+(?P<per_client_embryonic_max>\d+)', command_output)
+        per_client_max_search = re.search(r'(?:set\s+connection\s+)?per-client-max\s+(?P<per_client_max>\d+)', command_output)
+
+        if conn_max_search:
+           conn_max_value = int(conn_max_search.group('conn_max'))
+           current_configuration['Conn-Max'] = conn_max_value
+
+        if embryonic_conn_max_search:
+            embryonic_conn_max_value = int(embryonic_conn_max_search.group('embryonic_conn_max'))
+            current_configuration['Embryonic-Conn-Max'] = embryonic_conn_max_value
+
+        if per_client_embryonic_max_search:
+            per_client_embryonic_max_value = int(per_client_embryonic_max_search.group('per_client_embryonic_max'))
+            current_configuration['Per-Client-Embryonic-Max'] = per_client_embryonic_max_value
+
+        if per_client_max_search:
+            per_client_max_value = int(per_client_max_search.group('per_client_max'))
+            current_configuration['Per-Client-Max'] = per_client_max_value
+
+    dos_compliant_value_check = ['Conn-Max', 'Embryonic-Conn-Max', 'Per-Client-Embryonic-Max', 'Per-Client-Max']
+    compliant = all(current_configuration.get(dos_value) is not None for dos_value in dos_compliant_value_check)
+
+    global_report_output.append(generate_report(cis_check, level, compliant, current_configuration))
+    
+
+
 def compliance_check_reverse_path(connection, cis_check, level, global_report_output, untrusted_nameifs_list):
 
     if untrusted_nameifs_list:

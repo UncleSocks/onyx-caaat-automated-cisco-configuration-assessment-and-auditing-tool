@@ -122,7 +122,7 @@ def run_cis_cisco_asa_assessment(connection):
     data_parsers.compliance_check_ips(connection, "show running-config ip audit name | include _attack_", "3.2 Ensure intrusion prevention is enabled for untrusted interfaces", 1, global_report_output, untrusted_nameifs_list)
     data_parsers.compliance_check_fragments(connection, "3.3 Ensure packet fragments are restricted for untrusted interfaces", 1, global_report_output, untrusted_nameifs_list)
     data_parsers.compliance_check_application_inspection(connection, "show running-config policy-map global_policy", "3.4 Ensure non-default application inspection is configured", 1, global_report_output, non_default_application_list)
-    #3.5 Ensure DOS protection is enabled for untrusted interfaces
+    data_parsers.compliance_check_dos(connection, "show running-config policy-map | include set.connection", "3.5 Ensure DOS protection is enabled for untrusted interfaces", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config threat-detection statistics | include tcp-intercept", "3.6 Ensure 'threat-detection statistics' is set to 'tcp-intercept'", 1, global_report_output)
     data_parsers.compliance_check_reverse_path(connection, "3.7 Ensure 'ip verify' is set to 'reverse-path' for untrusted interfaces", 1, global_report_output, untrusted_nameifs_list)
     data_parsers.compliance_check_security_level(connection, "3.8 Ensure 'security-level' is set to '0' for Internet-facing interface", 1, global_report_output, internetfacing_nameifs_list)
