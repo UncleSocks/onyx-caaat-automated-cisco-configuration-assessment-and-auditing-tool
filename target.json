@@ -1,0 +1,16 @@
+{
+    "t1" : {
+        "ip_address":"192.168.157.198",
+        "type":"ios",
+        "version":17,
+        "username":"admin",
+        "password":"password",
+        "enable":"password"
+    }, 
+    "t2" : {
+        "ip_address":"192.168.157.199",
+        "username":"admin",
+        "password":"password",
+        "enable":"password"
+    }
+}

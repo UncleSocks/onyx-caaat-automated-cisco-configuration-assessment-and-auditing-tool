@@ -1,5 +1,6 @@
 import re
 import os
+import json
 from argparse import ArgumentParser
 from maskpass import askpass
 from ssh import ssh_send
@@ -12,6 +13,7 @@ def arguments():
     argument_parser.add_argument('-v', '--version', type = int, default = None, help = "Cisco IOS version (15|17)")
     argument_parser.add_argument('-o', '--output', type = str, default = None, help = "HTML report filename with .html extension")
     argument_parser.add_argument('-t', '--type', type=str, default=None, help="Cisco hardware type (e.g., IOS, ASA)")
+    argument_parser.add_argument('-i', '--interactive', action='store_true', help="Enter interactive mode.")
     argument = argument_parser.parse_args()
 
     return argument
@@ -50,8 +52,6 @@ def argument_checks(version_argument, html_agrument):
 
 
 def user_input():
-        
-        logo()
         
         ip_address = input("Target > ")
         username = input("Username > ")
@@ -100,3 +100,12 @@ def cisco_type_check(connection):
         cisco_type = None
         
     return cisco_type
+
+
+def target_parse():
+
+    with open('target.json') as target_file:
+        target = json.load(target_file)
+        target_count = len(target)
+
+    return target, target_count
