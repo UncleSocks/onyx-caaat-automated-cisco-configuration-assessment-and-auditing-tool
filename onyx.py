@@ -60,13 +60,18 @@ def onyx():
             connection = ssh_login(ip_address, username, password, enable)
 
         except:
-            print("Error 0001 - Unable to login to the target router, check IP address, login credentials, and connectivity.")
+            print("Error 0001 - Unable to login to the target router, check IP address, login credentials, and device key for non-interactive mode.")
             print("Exiting the Onyx: CAAAT.")
             exit()
 
-        if arguments().type is None and 'type' not in target.get(device_key, {}):
+        if arguments().interactive and arguments().type is None:
             print("Identifying Cisco type.")
             cisco_type = cisco_type_check(connection)
+        
+        elif not arguments().interactive and 'type' not in target.get(device_key, {}):
+            print("Identifying Cisco type.")
+            cisco_type = cisco_type_check(connection)            
+        
         else:
             cisco_type = arguments().type if arguments().interactive else target[device_key]['type']
         
@@ -76,9 +81,14 @@ def onyx():
 
             report_filename = arguments().output if arguments().interactive else f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}-{device_key}.html"
 
-            if arguments().version is None and 'version' not in target.get(device_key, {}):
+            if arguments().interactive and arguments().version is None:
                 print("Identifying Ciso IOS version.")
                 ios_version = ios_version_check(connection)
+
+            elif not arguments().interactive and 'version' not in target.get(device_key, {}):
+                print("Identifying Ciso IOS version.")
+                ios_version = ios_version_check(connection)
+
             else:
                 ios_version = arguments().version if arguments().interactive else target[device_key]['version']
 
