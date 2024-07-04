@@ -201,7 +201,7 @@ def run_cis_cisco_ios_15_assessment(connection):
     print("Performing CIS Cisco IOS 15 Control Plane Benchmarks assessment.")
 
     ssh_parsers.compliance_check_hostname(connection, "show running-config | include hostname", "2.1.1.1.1 Set the 'hostname'", 1, global_report_output)
-    general_parsers.compliance_check_with_expected_output(connection, "show running-config | include domain name", "2.1.1.1.2 Set the 'ip domain-name'", 1, global_report_output)
+    ssh_parsers.compliance_check_domain_name(connection, "show running-config | include ip domain", "2.1.1.1.2 Set the 'ip domain-name'", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show crypto key mypubkey rsa", "2.1.1.1.3 Set 'modulus' to greater than or equal to 2048 for 'crypto key generate rsa'",
                                        1, global_report_output)
     
