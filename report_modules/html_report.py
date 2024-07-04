@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 def open_style_file(file_path):
@@ -12,6 +13,17 @@ def open_script_file(file_path):
         scripts = script_file.read()
 
     return scripts
+
+
+def reports_dir_check(dir_path):
+
+    try:
+        os.makedirs(dir_path, exist_ok=True)
+        return
+    
+    except OSError as error:
+        print(f"Error 00x - {error}")
+        return
 
 
 def icon_base64():
@@ -438,6 +450,7 @@ def report_html_output(parsed_report_output, compliance_score_dict, html_filenam
         </body>
         </html>
     """
+    reports_dir_check("./report_modules/reports")
     with open(f'./report_modules/reports/{html_filename}', 'w') as file:
         file.write(html_report)
     
