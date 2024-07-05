@@ -5,7 +5,7 @@ from report_modules.main_report import generate_report
 
 def compliance_check_aaa_auth_line_con(connection, command, cis_check, level, global_report_output):
     command_output = ssh_send(connection, command)
-    regex_pattern = re.compile(r'line con (?P<channel>\d+(?: \d)?)?(\n(?P<config>.*?))?(\nline con|$)', re.DOTALL | re.MULTILINE)
+    regex_pattern = re.compile(r'line con (?P<channel>\d+(?: \d+)*)(\n(?P<config>(?: [^\n]*\n?)*))(?=\nline con|$)', re.DOTALL)
     parser = regex_pattern.finditer(command_output)
 
     line_con_list = []
@@ -44,7 +44,7 @@ def compliance_check_aaa_auth_line_tty(connection, command_one, command_two, cis
 
     else:
         command_output = ssh_send(connection, command_two)
-        regex_pattern = re.compile(r'line tty (?P<channel>\d+(?: \d)?)?(\n(?P<config>.*?))?(\nline tty|$)', re.DOTALL | re.MULTILINE)
+        regex_pattern = re.compile(r'line tty (?P<channel>\d+(?: \d+)*)(\n(?P<config>(?: [^\n]*\n?)*))(?=\nline tty|$)', re.DOTALL)
         parser = regex_pattern.finditer(command_output)
 
         line_tty_list = []
@@ -77,7 +77,7 @@ def compliance_check_aaa_auth_line_tty(connection, command_one, command_two, cis
 
 def compliance_check_aaa_auth_line_vty(connection, command, cis_check, level, global_report_output):
     command_output = ssh_send(connection, command)
-    regex_pattern = re.compile(r'line vty (?P<channel>\d+(?: \d)?)?(\n(?P<config>.*?))?(\nline vty|$)', re.DOTALL | re.MULTILINE)
+    regex_pattern = re.compile(r'line vty (?P<channel>\d+(?: \d+)*)(\n(?P<config>(?: [^\n]*\n?)*))(?=\nline vty|$)', re.DOTALL)
     parser = regex_pattern.finditer(command_output)
 
     line_vty_list = []

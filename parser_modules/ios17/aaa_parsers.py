@@ -5,7 +5,7 @@ from report_modules.main_report import generate_report
 
 def compliance_check_aaa_auth_line_vty(connection, command, cis_check, level, global_report_output):
     command_output = ssh_send(connection, command)
-    regex_pattern = re.compile(r'line vty (?P<channel>\d+(?: \d)?)?(\n(?P<config>.*?))?(\nline vty|$)', re.DOTALL | re.MULTILINE)
+    regex_pattern = re.compile(r'line vty (?P<channel>\d+(?: \d+)*)(\n(?P<config>(?: [^\n]*\n?)*))(?=\nline vty|$)', re.DOTALL)
     parser = regex_pattern.finditer(command_output)
 
     line_vty_list = []
