@@ -16,6 +16,8 @@ ONYX currently asses your Cisco devices against the following Cisco CIS Benchmar
 |CIS Cisco IOS 15 Benchmark|v4.1.1|
 |CIS Cisco IOS 17.x Benchmark|v2.0.0|
 
+Both documents are available under the "CIS Benchmark Documents" folder.
+
 ## Prerequisites
 
 Run `pip install -r requirements.txt` to install the tool's dependencies.
