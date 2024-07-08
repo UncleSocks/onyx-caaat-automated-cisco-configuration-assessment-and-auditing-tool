@@ -9,6 +9,12 @@ ONYX: CAAAT is a Python3 tool, named after our rescued black cat, that performs 
 
 ![Software Architecture](https://github.com/UncleSocks/onyx-caaat-automated-cisco-ios-configuration-assessment-and-auditing-tool/assets/79778613/3f53fe8b-8a77-4291-9dcf-f7d0e2713a7c)
 
+### Supported Cisco CIS Benchmark Versions
+ONYX currently asses your Cisco devices against the following Cisco CIS Benchmark versions:
+|Cisco Benchmark|Version|
+|---|---|
+|CIS Cisco IOS 15 Benchmark|v4.1.1|
+|CIS Cisco IOS 17.x Benchmark|v2.0.0|
 
 ## Prerequisites
 
