@@ -232,12 +232,12 @@ def run_cis_cisco_ios_17_assessment(connection):
                          "2.1.1.2 Set version 2 for 'ip ssh version'", 1, global_report_output)
 
     services_parsers.compliance_check_cdp(connection, "show cdp", "2.1.2 Set 'no cdp run'", 1, global_report_output)
-    general_parsers.compliance_check_with_expected_empty_output(connection, "show running-config | include bootp", "2.1.3 Set 'no ip bootp server'", 1, global_report_output)
-    general_parsers.compliance_check_with_expected_empty_output(connection, "show running-config | include dhcp", "2.1.4 Set 'no service dhcp'", 1, global_report_output)
-    general_parsers.compliance_check_with_expected_empty_output(connection, "show running-config | include identd", "2.1.5 Set 'no ip identd'", 1, global_report_output)
+    general_parsers.compliance_check_with_expected_empty_output(connection, "show running-config all | include ip bootp", "2.1.3 Set 'no ip bootp server'", 1, global_report_output)
+    general_parsers.compliance_check_with_expected_empty_output(connection, "show running-config all | include service dhcp", "2.1.4 Set 'no service dhcp'", 1, global_report_output)
+    general_parsers.compliance_check_with_expected_empty_output(connection, "show running-config all | include ip identd", "2.1.5 Set 'no ip identd'", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include service tcp-keepalives-in", "2.1.6 Set 'service tcp-keepalives-in'", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include service tcp-keepalives-out", "2.1.7 Set 'service tcp-keepalives-out'", 1, global_report_output)
-    general_parsers.compliance_check_with_expected_empty_output(connection, "show running-config | include service pad", "2.1.8 Set 'no service pad'", 1, global_report_output)
+    general_parsers.compliance_check_with_expected_empty_output(connection, "show running-config all | include service pad$", "2.1.8 Set 'no service pad'", 1, global_report_output)
     
     general_parsers.compliance_check_without_no_prefix(connection, "show running-config | include logging on", "2.2.1 Set 'logging on'", 1, global_report_output)
     general_parsers.compliance_check_with_expected_output(connection, "show running-config | include logging buffered", "2.2.2 Set 'buffer size' for 'logging buffered'", 1, global_report_output)
@@ -266,7 +266,7 @@ def run_cis_cisco_ios_17_assessment(connection):
     #3 Data Plane CIS Compliance Checks
     print("Performing CIS Cisco IOS 17 Data Plane Benchmarks assessment.")
 
-    routing_parsers.compliance_check_source_route(connection, "show running-config | include ip source-route", "3.1.1 Set 'no ip source-route'", 1, global_report_output)
+    routing_parsers.compliance_check_source_route(connection, "show running-config all | include ip source-route", "3.1.1 Set 'no ip source-route'", 1, global_report_output)
     routing_parsers.compliance_check_proxy_arp(connection, "show ip interface", "3.1.2 Set 'no ip proxy-arp'", 2, global_report_output)
     general_parsers.compliance_check_with_expected_empty_output(connection, "show ip interface brief | include Tunnel", "3.1.3 Set 'no interface tunnel;", 2, global_report_output)
     routing_parsers.compliance_check_urpf(connection, "show running-config | section interface", "3.1.4 Set 'ip verify unicast source reachable-via'", 2, global_report_output)

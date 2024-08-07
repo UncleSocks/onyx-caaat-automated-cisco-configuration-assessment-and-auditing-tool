@@ -15,8 +15,12 @@ def compliance_check_with_expected_output(connection, command, cis_check, level,
 
 def compliance_check_with_expected_empty_output(connection, command, cis_check, level, global_report_output):
     command_output = ssh_send(connection, command)
-    if not command_output and command_output.split(" ")[0].lower() == "no":
+    if not command_output:
         compliant = True
+    
+    elif command_output.split(" ")[0].lower() == "no":
+        compliant = True
+        
     else:
         compliant = False
     current_configuration = None if not command_output else command_output
