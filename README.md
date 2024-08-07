@@ -222,3 +222,6 @@ Two sample HTML reports are provided for reference; `sample_ios15` for Cisco IOS
 - Cisco IOS XR Benchmark Recommendation assessment
 - Configuration files support
 - Multi-device assessment
+
+## Special Thanks To
+- **grotewortel** for providing multiple fixes, especially on the accuracy of the parsing, and for the recommending various features/functionality.
